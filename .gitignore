@@ -1,0 +1,26 @@
+
+# STM32 build artifacts
+firmware/stm32/*/Debug/
+firmware/stm32/*/Release/
+*.o
+*.d
+*.elf
+*.bin
+*.map
+
+# ROS2 build artifacts
+ros2/build/
+ros2/install/
+ros2/log/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# VSCode
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
