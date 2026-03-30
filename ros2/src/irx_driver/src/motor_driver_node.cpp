@@ -146,6 +146,15 @@ void MotorDriver::read_odometry()
     odom.twist.twist.linear.x = linear;
     odom.twist.twist.angular.z = angular;
 
+    // Pose covariance
+    odom.pose.covariance[0] = 0.001;
+    odom.pose.covariance[7] = 0.001;
+    odom.pose.covariance[35] = 0.01;
+
+    // Twist covariance
+    odom.twist.covariance[0] = 0.001;
+    odom.twist.covariance[35] = 0.01;
+
     odom_pub_->publish(odom);
 
     // Publish TF
