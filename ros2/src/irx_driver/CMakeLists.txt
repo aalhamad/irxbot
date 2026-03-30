@@ -9,6 +9,9 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
 
 add_executable(motor_driver_node src/motor_driver_node.cpp)
 
@@ -21,7 +24,10 @@ target_compile_features(motor_driver_node PUBLIC cxx_std_17)
 ament_target_dependencies(motor_driver_node
   rclcpp
   geometry_msgs
-  std_msgs)
+  std_msgs
+  nav_msgs
+  tf2
+  tf2_ros)
 
 install(TARGETS motor_driver_node
   DESTINATION lib/${PROJECT_NAME})
