@@ -1,0 +1,3 @@
+[submodule "firmware/stm32/lib/sh2"]
+	path = firmware/stm32/lib/sh2
+	url = https://github.com/ceva-dsp/sh2

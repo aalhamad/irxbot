@@ -1,4 +1,4 @@
-W#include <Wire.h>
+#include <Wire.h>
 
 #define INA228_ADDR     0x40
 #define REG_CONFIG      0x00

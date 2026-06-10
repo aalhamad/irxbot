@@ -12,5 +12,6 @@
 #include "stm32f4xx_hal.h"
 
 HAL_StatusTypeDef vesc_set_rpm(uint8_t id, int32_t rpm);
+HAL_StatusTypeDef vesc_get_rpm(uint8_t id, int32_t *rpm);
 
 #endif /* INC_VESC_CAN_H_ */
