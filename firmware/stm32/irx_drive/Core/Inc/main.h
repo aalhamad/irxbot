@@ -65,12 +65,20 @@ void Error_Handler(void);
 #define USART_RX_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
+#define TOF_XSHUT_FRONT_Pin GPIO_PIN_0
+#define TOF_XSHUT_FRONT_GPIO_Port GPIOB
+#define TOF_XSHUT_LEFT_Pin GPIO_PIN_7
+#define TOF_XSHUT_LEFT_GPIO_Port GPIOC
+#define TOF_XSHUT_REAR_Pin GPIO_PIN_8
+#define TOF_XSHUT_REAR_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14
 #define TCK_GPIO_Port GPIOA
 #define SWO_Pin GPIO_PIN_3
 #define SWO_GPIO_Port GPIOB
+#define TOF_XSHUT_RIGHT_Pin GPIO_PIN_6
+#define TOF_XSHUT_RIGHT_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

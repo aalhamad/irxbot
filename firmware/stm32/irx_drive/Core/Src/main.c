@@ -25,6 +25,8 @@
 #include "robot_drive.h"
 #include <stdio.h>
 #include <string.h>
+#include "vl53l1x.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -59,6 +61,9 @@ static int32_t cmd_right_rpm = 0;
 static uint32_t last_send_tick = 0;
 
 static uint32_t last_imu_tick = 0;
+
+static uint32_t last_tof_tick = 0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -132,6 +137,29 @@ int main(void)
   {
       HAL_UART_Transmit(&huart2, (uint8_t*)"IMU_OK\r\n", 8, 100);
   }
+
+  HAL_GPIO_WritePin(TOF_XSHUT_FRONT_GPIO_Port, TOF_XSHUT_FRONT_Pin, GPIO_PIN_SET);
+  HAL_Delay(5);
+
+
+  /* TEMP: I2C scan */
+    for (uint8_t a = 0x08; a < 0x78; a++)
+    {
+      if (HAL_I2C_IsDeviceReady(&hi2c1, (uint16_t)(a << 1), 1, 5) == HAL_OK)
+      {
+        char b[24];
+        int l = snprintf(b, sizeof(b), "I2C_FOUND %02X\r\n", a);
+        HAL_UART_Transmit(&huart2, (uint8_t*)b, l, 50);
+      }
+    }
+
+  {
+      uint8_t n = ToF_InitAll(&hi2c1);
+      char buf[32];
+      int len = snprintf(buf, sizeof(buf), "TOF_OK %u/4\r\n", n);
+      HAL_UART_Transmit(&huart2, (uint8_t*)buf, len, 100);
+    }
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -155,6 +183,19 @@ int main(void)
               imu->qw, imu->qx, imu->qy, imu->qz,
               imu->ax, imu->ay, imu->az,
               imu->gx, imu->gy, imu->gz);
+          HAL_UART_Transmit(&huart2, (uint8_t*)buf, len, 10);
+      }
+
+      ToF_Process();
+      if ((now - last_tof_tick) >= 100)
+      {
+    	  last_tof_tick = now;
+          char buf[64];
+          int len = snprintf(buf, sizeof(buf), "TOF %u %u %u %u\r\n",
+        		  ToF_Get(TOF_FRONT)->online ? ToF_Get(TOF_FRONT)->distance_mm : 0,
+                  ToF_Get(TOF_REAR)->online  ? ToF_Get(TOF_REAR)->distance_mm  : 0,
+                  ToF_Get(TOF_LEFT)->online  ? ToF_Get(TOF_LEFT)->distance_mm  : 0,
+                  ToF_Get(TOF_RIGHT)->online ? ToF_Get(TOF_RIGHT)->distance_mm : 0);
           HAL_UART_Transmit(&huart2, (uint8_t*)buf, len, 10);
       }
 
@@ -337,7 +378,13 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LD2_Pin|TOF_XSHUT_REAR_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, TOF_XSHUT_FRONT_Pin|TOF_XSHUT_RIGHT_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(TOF_XSHUT_LEFT_GPIO_Port, TOF_XSHUT_LEFT_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -345,12 +392,26 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : LD2_Pin */
-  GPIO_InitStruct.Pin = LD2_Pin;
+  /*Configure GPIO pins : LD2_Pin TOF_XSHUT_REAR_Pin */
+  GPIO_InitStruct.Pin = LD2_Pin|TOF_XSHUT_REAR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : TOF_XSHUT_FRONT_Pin TOF_XSHUT_RIGHT_Pin */
+  GPIO_InitStruct.Pin = TOF_XSHUT_FRONT_Pin|TOF_XSHUT_RIGHT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : TOF_XSHUT_LEFT_Pin */
+  GPIO_InitStruct.Pin = TOF_XSHUT_LEFT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(TOF_XSHUT_LEFT_GPIO_Port, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
