@@ -25,7 +25,7 @@
 #include "robot_drive.h"
 #include <stdio.h>
 #include <string.h>
-#include "vl53l1x.h"
+#include <stdlib.h>
 
 /* USER CODE END Includes */
 
@@ -52,17 +52,14 @@ I2C_HandleTypeDef hi2c1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-static uint8_t uart_rx_char;
-static char uart_rx_buf[64];
-static uint8_t uart_rx_idx = 0;
-
-static int32_t cmd_left_rpm = 0;
-static int32_t cmd_right_rpm = 0;
-static uint32_t last_send_tick = 0;
-
-static uint32_t last_imu_tick = 0;
-
-static uint32_t last_tof_tick = 0;
+static uint32_t last_imu_tick     = 0;
+static uint32_t last_odo_tick     = 0;
+static uint32_t last_err_tick[4]  = {0};
+static uint8_t  cmd_buf[32];
+static uint8_t  cmd_len           = 0;
+static int32_t  cmd_left          = 0;
+static int32_t  cmd_right         = 0;
+static uint32_t last_cmd_tick     = 0;
 
 /* USER CODE END PV */
 
@@ -114,51 +111,28 @@ int main(void)
   MX_USART2_UART_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-  HAL_UART_Transmit(&huart2, (uint8_t*)"BOOT\r\n", strlen("BOOT\r\n"), 100);
+  HAL_UART_Transmit(&huart2, (uint8_t*)"BOOT\r\n", 6, 100);
 
-  if (HAL_CAN_Start(&hcan1) != HAL_OK)
+  /* CAN: accept-all filter then start */
   {
-    char buf[64];
-    sprintf(buf, "CAN_FAIL ERR=%lu\r\n", HAL_CAN_GetError(&hcan1));
-    HAL_UART_Transmit(&huart2, (uint8_t*)buf, strlen(buf), 100);
-    Error_Handler();
+      CAN_FilterTypeDef f = {0};
+      f.FilterBank           = 0;
+      f.FilterMode           = CAN_FILTERMODE_IDMASK;
+      f.FilterScale          = CAN_FILTERSCALE_32BIT;
+      f.FilterFIFOAssignment = CAN_RX_FIFO0;
+      f.FilterActivation     = ENABLE;
+      if (HAL_CAN_ConfigFilter(&hcan1, &f) != HAL_OK ||
+          HAL_CAN_Start(&hcan1) != HAL_OK)
+          HAL_UART_Transmit(&huart2, (uint8_t*)"ERR:CAN\r\n", 9, 100);
+      else
+          HAL_UART_Transmit(&huart2, (uint8_t*)"CAN_OK\r\n", 8, 100);
   }
 
-  HAL_UART_Transmit(&huart2, (uint8_t*)"CAN_OK\r\n", strlen("CAN_OK\r\n"), 100);
-  HAL_UART_Receive_IT(&huart2, &uart_rx_char, 1);
-
-  HAL_UART_Transmit(&huart2, (uint8_t*)"I2C_OK\r\n", 8, 100);
-
+  /* IMU */
   if (BNO085_Init(&hi2c1) != HAL_OK)
-  {
-      HAL_UART_Transmit(&huart2, (uint8_t*)"IMU_FAIL\r\n", 10, 100);
-  }
+      HAL_UART_Transmit(&huart2, (uint8_t*)"ERR:IMU\r\n", 9, 100);
   else
-  {
       HAL_UART_Transmit(&huart2, (uint8_t*)"IMU_OK\r\n", 8, 100);
-  }
-
-  HAL_GPIO_WritePin(TOF_XSHUT_FRONT_GPIO_Port, TOF_XSHUT_FRONT_Pin, GPIO_PIN_SET);
-  HAL_Delay(5);
-
-
-  /* TEMP: I2C scan */
-    for (uint8_t a = 0x08; a < 0x78; a++)
-    {
-      if (HAL_I2C_IsDeviceReady(&hi2c1, (uint16_t)(a << 1), 1, 5) == HAL_OK)
-      {
-        char b[24];
-        int l = snprintf(b, sizeof(b), "I2C_FOUND %02X\r\n", a);
-        HAL_UART_Transmit(&huart2, (uint8_t*)b, l, 50);
-      }
-    }
-
-  {
-      uint8_t n = ToF_InitAll(&hi2c1);
-      char buf[32];
-      int len = snprintf(buf, sizeof(buf), "TOF_OK %u/4\r\n", n);
-      HAL_UART_Transmit(&huart2, (uint8_t*)buf, len, 100);
-    }
 
   /* USER CODE END 2 */
 
@@ -169,42 +143,110 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-      uint32_t now = HAL_GetTick();  /* must be first */
+      uint32_t now = HAL_GetTick();
 
+      /* ── IMU ── */
       BNO085_Process();
 
-      if ((now - last_imu_tick) >= 20)
+      /* ── UART RX: accumulate CMD <left> <right> ── */
+      while (__HAL_UART_GET_FLAG(&huart2, UART_FLAG_RXNE))
+      {
+          uint8_t b = (uint8_t)(huart2.Instance->DR & 0xFF);
+          if (b == '\n' || b == '\r')
+          {
+              if (cmd_len == 0) continue;   /* ignore empty / duplicate CR+LF */
+              cmd_buf[cmd_len] = '\0';
+              if (cmd_len >= 7 &&
+                  cmd_buf[0]=='C' && cmd_buf[1]=='M' &&
+                  cmd_buf[2]=='D' && cmd_buf[3]==' ')
+              {
+                  char *p   = (char*)cmd_buf + 4;
+                  int32_t l = strtol(p, &p, 10);
+                  int32_t r = (*p == ' ') ? strtol(p + 1, NULL, 10) : 0;
+
+                  char ack[32];
+                  int an = snprintf(ack, sizeof(ack), "CMD_OK %ld %ld\r\n", l, r);
+                  HAL_UART_Transmit(&huart2, (uint8_t*)ack, an, 50);
+
+                  cmd_left  = l;
+                  cmd_right = r;
+                  last_cmd_tick = now;
+                  robot_set_rpm(l, r);
+
+                  /* Report CAN peripheral error state after the send attempt */
+                  HAL_Delay(5);
+                  vesc_can_dump_status();
+              }
+              else
+              {
+                  HAL_UART_Transmit(&huart2, (uint8_t*)"ERR:CMD\r\n", 9, 50);
+              }
+              cmd_len = 0;
+          }
+          else if (cmd_len < (uint8_t)(sizeof(cmd_buf) - 1))
+          {
+              cmd_buf[cmd_len++] = b;
+          }
+      }
+
+      /* ── CAN RX: update cached VESC feedback ── */
+      vesc_process_rx();
+
+      /* ── Periodic CMD resend @ 200 ms — keeps VESCs alive within their 1s timeout ── */
+      if (last_cmd_tick > 0 && (now - last_cmd_tick) >= 200)
+      {
+          last_cmd_tick = now;
+          robot_set_rpm(cmd_left, cmd_right);
+      }
+
+      /* ── IMU report @ 10 s (debug rate) ── */
+      if ((now - last_imu_tick) >= 5000)
       {
           last_imu_tick = now;
           BNO085_Data_t *imu = BNO085_GetData();
-          char buf[128];
-          int len = snprintf(buf, sizeof(buf),
-              "IMU %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f\r\n",
-              imu->qw, imu->qx, imu->qy, imu->qz,
-              imu->ax, imu->ay, imu->az,
-              imu->gx, imu->gy, imu->gz);
-          HAL_UART_Transmit(&huart2, (uint8_t*)buf, len, 10);
+          if (imu->valid)
+          {
+              char buf[128];
+              int n = snprintf(buf, sizeof(buf),
+                  "IMU %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f\r\n",
+                  imu->qw, imu->qx, imu->qy, imu->qz,
+                  imu->ax, imu->ay, imu->az,
+                  imu->gx, imu->gy, imu->gz);
+              HAL_UART_Transmit(&huart2, (uint8_t*)buf, n, 10);
+          }
       }
 
-      ToF_Process();
-      if ((now - last_tof_tick) >= 100)
+      /* ── ODO report @ 10 s (debug rate) ── */
+      if ((now - last_odo_tick) >= 10000)
       {
-    	  last_tof_tick = now;
-          char buf[64];
-          int len = snprintf(buf, sizeof(buf), "TOF %u %u %u %u\r\n",
-        		  ToF_Get(TOF_FRONT)->online ? ToF_Get(TOF_FRONT)->distance_mm : 0,
-                  ToF_Get(TOF_REAR)->online  ? ToF_Get(TOF_REAR)->distance_mm  : 0,
-                  ToF_Get(TOF_LEFT)->online  ? ToF_Get(TOF_LEFT)->distance_mm  : 0,
-                  ToF_Get(TOF_RIGHT)->online ? ToF_Get(TOF_RIGHT)->distance_mm : 0);
-          HAL_UART_Transmit(&huart2, (uint8_t*)buf, len, 10);
+          last_odo_tick = now;
+
+          /* FL = left reference, FR = right (negated — commanded inverse) */
+          int32_t l_rpm = 0, r_rpm = 0;
+          vesc_get_rpm(VESC_FL, &l_rpm);
+          vesc_get_rpm(VESC_FR, &r_rpm);
+          r_rpm = -r_rpm;
+
+          char buf[32];
+          int n = snprintf(buf, sizeof(buf), "ODO %ld %ld\r\n", l_rpm, r_rpm);
+          HAL_UART_Transmit(&huart2, (uint8_t*)buf, n, 10);
+
+          /* Report any VESC that has stopped responding (rate-limited to 1 per 2 s) */
+          for (uint8_t id = 1; id <= 4; id++)
+          {
+              uint32_t last = vesc_last_seen(id);
+              if (last == 0) continue;  /* never heard — VESC may not be powered */
+              if ((now - last) > 1000 && (now - last_err_tick[id-1]) > 2000)
+              {
+                  last_err_tick[id-1] = now;
+                  char err[16];
+                  int en = snprintf(err, sizeof(err), "ERR:ODO%d\r\n", id);
+                  HAL_UART_Transmit(&huart2, (uint8_t*)err, en, 50);
+              }
+          }
       }
 
-      if ((now - last_send_tick) >= 50)
-      {
-          last_send_tick = now;
-          robot_set_rpm(cmd_left_rpm, cmd_right_rpm);
-      }
-  }
+}
   /* USER CODE END 3 */
 }
 
@@ -308,7 +350,7 @@ static void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.ClockSpeed = 400000;
+  hi2c1.Init.ClockSpeed = 100000;
   hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
   hi2c1.Init.OwnAddress1 = 0;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
@@ -392,6 +434,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : BUMPER_FL_Pin BUMPER_FR_Pin BUMPER_RL_Pin BUMPER_RR_Pin */
+  GPIO_InitStruct.Pin = BUMPER_FL_Pin|BUMPER_FR_Pin|BUMPER_RL_Pin|BUMPER_RR_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
   /*Configure GPIO pins : LD2_Pin TOF_XSHUT_REAR_Pin */
   GPIO_InitStruct.Pin = LD2_Pin|TOF_XSHUT_REAR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -419,53 +467,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-  if (huart->Instance == USART2)
-  {
-    char c = (char)uart_rx_char;
-
-    if (c == '\r' || c == '\n')
-    {
-      uart_rx_buf[uart_rx_idx] = '\0';
-
-      int32_t l = 0;
-      int32_t r = 0;
-
-      if (sscanf(uart_rx_buf, "CMD %ld %ld", &l, &r) == 2)
-      {
-        cmd_left_rpm = l;
-        cmd_right_rpm = r;
-
-        char buf[64];
-        sprintf(buf, "OK L=%ld R=%ld\r\n", l, r);
-        HAL_UART_Transmit(&huart2, (uint8_t*)buf, strlen(buf), 100);
-
-        HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-      }
-      else if (uart_rx_idx > 0)
-      {
-        HAL_UART_Transmit(&huart2, (uint8_t*)"BAD_CMD\r\n", strlen("BAD_CMD\r\n"), 100);
-      }
-
-      uart_rx_idx = 0;
-    }
-    else
-    {
-      if (uart_rx_idx < sizeof(uart_rx_buf) - 1)
-      {
-        uart_rx_buf[uart_rx_idx++] = c;
-      }
-      else
-      {
-        uart_rx_idx = 0;
-        HAL_UART_Transmit(&huart2, (uint8_t*)"BUF_FULL\r\n", strlen("BUF_FULL\r\n"), 100);
-      }
-    }
-
-    HAL_UART_Receive_IT(&huart2, &uart_rx_char, 1);
-  }
-}
 /* USER CODE END 4 */
 
 /**

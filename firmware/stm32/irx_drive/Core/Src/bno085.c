@@ -13,6 +13,7 @@
 /* ── Private state ─────────────────────────────────────────────────────────── */
 
 static I2C_HandleTypeDef *_hi2c        = NULL;
+static uint16_t           _i2c_addr    = BNO085_I2C_ADDR_LOW;
 static sh2_Hal_t          _sh2hal;
 static BNO085_Data_t      _imu_data;
 static uint8_t            _initialized = 0;
@@ -34,8 +35,11 @@ static int hal_read(sh2_Hal_t *self, uint8_t *pBuffer, unsigned len, uint32_t *t
 {
     (void)self;
 
+    /* First transaction: read 4-byte SHTP header to get packet length.
+     * BNO085 resets its read pointer to byte 0 on every new I2C transaction,
+     * so the second read below will re-fetch the full packet from the start. */
     uint8_t header[4];
-    if (HAL_I2C_Master_Receive(_hi2c, BNO085_I2C_ADDR, header, 4, 10) != HAL_OK)
+    if (HAL_I2C_Master_Receive(_hi2c, _i2c_addr, header, 4, 10) != HAL_OK)
         return 0;
 
     uint16_t packet_len = ((uint16_t)(header[1] & 0x7F) << 8) | header[0];
@@ -43,7 +47,8 @@ static int hal_read(sh2_Hal_t *self, uint8_t *pBuffer, unsigned len, uint32_t *t
     if (packet_len == 0 || packet_len > (uint16_t)len)
         return 0;
 
-    if (HAL_I2C_Master_Receive(_hi2c, BNO085_I2C_ADDR, pBuffer, packet_len, 50) != HAL_OK)
+    /* Second transaction: read complete packet (header + payload) into pBuffer. */
+    if (HAL_I2C_Master_Receive(_hi2c, _i2c_addr, pBuffer, packet_len, 50) != HAL_OK)
         return 0;
 
     *t_us = HAL_GetTick() * 1000;
@@ -53,8 +58,8 @@ static int hal_read(sh2_Hal_t *self, uint8_t *pBuffer, unsigned len, uint32_t *t
 static int hal_write(sh2_Hal_t *self, uint8_t *pBuffer, unsigned len)
 {
     (void)self;
-    if (HAL_I2C_Master_Transmit(_hi2c, BNO085_I2C_ADDR, pBuffer, len, 50) != HAL_OK)
-        return 0;
+    if (HAL_I2C_Master_Transmit(_hi2c, _i2c_addr, pBuffer, len, 50) != HAL_OK)
+        return SH2_ERR_IO;
     return (int)len;
 }
 
@@ -71,7 +76,21 @@ static void async_event_handler(void *cookie, sh2_AsyncEvent_t *event)
     (void)cookie;
     if (event->eventId == SH2_RESET)
     {
-        _initialized = 0;
+        /* Device (re)booted — re-enable reports so the main loop keeps working
+         * whether this fires during sh2_open or later in BNO085_Process(). */
+        sh2_SensorConfig_t config;
+        memset(&config, 0, sizeof(config));
+
+        config.reportInterval_us = BNO085_ROT_VECTOR_US;
+        sh2_setSensorConfig(SH2_ROTATION_VECTOR, &config);
+
+        config.reportInterval_us = BNO085_ACCEL_US;
+        sh2_setSensorConfig(SH2_ACCELEROMETER, &config);
+
+        config.reportInterval_us = BNO085_GYRO_US;
+        sh2_setSensorConfig(SH2_GYROSCOPE_CALIBRATED, &config);
+
+        _initialized = 1;
     }
 }
 
@@ -123,6 +142,14 @@ HAL_StatusTypeDef BNO085_Init(I2C_HandleTypeDef *hi2c)
     _hi2c = hi2c;
     memset(&_imu_data, 0, sizeof(_imu_data));
     _imu_data.qw = 1.0f;
+
+    /* Auto-detect I2C address (ADDR pin LOW=0x4A, HIGH=0x4B) */
+    if (HAL_I2C_IsDeviceReady(_hi2c, BNO085_I2C_ADDR_LOW, 3, 10) == HAL_OK)
+        _i2c_addr = BNO085_I2C_ADDR_LOW;
+    else if (HAL_I2C_IsDeviceReady(_hi2c, BNO085_I2C_ADDR_HIGH, 3, 10) == HAL_OK)
+        _i2c_addr = BNO085_I2C_ADDR_HIGH;
+    else
+        return HAL_ERROR;
 
     _sh2hal.open      = hal_open;
     _sh2hal.close     = hal_close;

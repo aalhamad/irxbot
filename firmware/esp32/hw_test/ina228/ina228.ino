@@ -75,7 +75,7 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
 
-  Wire.begin(21, 22);
+  Wire.begin(8, 9);
   Wire.setClock(10000);
   Wire.setTimeOut(200);
 

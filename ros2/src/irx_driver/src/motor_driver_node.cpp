@@ -15,10 +15,11 @@ MotorDriver::MotorDriver(const rclcpp::NodeOptions &options)
     // Declare parameters
     this->declare_parameter("serial_port", "/dev/ttyACM0");
     this->declare_parameter("baud_rate", 115200);
-    this->declare_parameter("wheel_base", 0.635);
-    this->declare_parameter("wheel_radius", 0.0762);
-    this->declare_parameter("max_rpm", 10000);
+    this->declare_parameter("wheel_base", 0.400);
+    this->declare_parameter("wheel_radius", 0.101);
+    this->declare_parameter("max_rpm", 6000);
     this->declare_parameter("gear_ratio", 50.0);
+    this->declare_parameter("pole_pairs", 2.0);
 
     // Get parameters
     serial_port_ = this->get_parameter("serial_port").as_string();
@@ -27,6 +28,7 @@ MotorDriver::MotorDriver(const rclcpp::NodeOptions &options)
     wheel_radius_ = this->get_parameter("wheel_radius").as_double();
     max_rpm_ = this->get_parameter("max_rpm").as_int();
     gear_ratio_ = this->get_parameter("gear_ratio").as_double();
+    pole_pairs_ = this->get_parameter("pole_pairs").as_double();
 
     // Open serial port
     if (!open_serial(serial_port_, baud_rate_))
@@ -83,9 +85,10 @@ void MotorDriver::cmd_vel_callback(const geometry_msgs::msg::Twist::SharedPtr ms
     double left_vel = linear - (angular * wheel_base_ / 2.0);
     double right_vel = linear + (angular * wheel_base_ / 2.0);
 
+    // Wheel m/s -> motor ERPM: wheel rev/s * 60 * gearbox ratio * pole pairs
     double wheel_circumference = 2.0 * M_PI * wheel_radius_;
-    int32_t left_rpm = (int32_t)((left_vel / wheel_circumference) * 60.0 * 2.0 * gear_ratio_);
-    int32_t right_rpm = (int32_t)((right_vel / wheel_circumference) * 60.0 * 2.0 * gear_ratio_);
+    int32_t left_rpm = (int32_t)((left_vel / wheel_circumference) * 60.0 * pole_pairs_ * gear_ratio_);
+    int32_t right_rpm = (int32_t)((right_vel / wheel_circumference) * 60.0 * pole_pairs_ * gear_ratio_);
 
     left_rpm = std::clamp(left_rpm, -max_rpm_, max_rpm_);
     right_rpm = std::clamp(right_rpm, -max_rpm_, max_rpm_);
@@ -111,8 +114,8 @@ void MotorDriver::read_odometry()
 
     // Convert ERPM to wheel velocity (m/s)
     double wheel_circumference = 2.0 * M_PI * wheel_radius_;
-    double left_vel = (left_rpm / (60.0 * 2.0 * gear_ratio_)) * wheel_circumference;
-    double right_vel = (-right_rpm / (60.0 * 2.0 * gear_ratio_)) * wheel_circumference;
+    double left_vel = (left_rpm / (60.0 * pole_pairs_ * gear_ratio_)) * wheel_circumference;
+    double right_vel = (-right_rpm / (60.0 * pole_pairs_ * gear_ratio_)) * wheel_circumference;
 
     // Calculate robot velocity
     double linear = (left_vel + right_vel) / 2.0;

@@ -7,7 +7,7 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
 
-  Wire.begin(21, 22);
+  Wire.begin(8, 9);
   Wire.setClock(100000);
 
   Serial.println("SGP30 Test");

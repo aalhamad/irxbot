@@ -29,6 +29,7 @@ private:
     double wheel_radius_;
     int max_rpm_;
     double gear_ratio_;
+    double pole_pairs_;
 
     // Serial
     int serial_fd_;

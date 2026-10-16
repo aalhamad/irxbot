@@ -17,8 +17,9 @@
 #include "sh2_SensorValue.h"
 #include "sh2_err.h"
 
-/* I2C address (ADDR pin = GND) */
-#define BNO085_I2C_ADDR     (0x4A << 1)   /* HAL uses 8-bit address */
+/* I2C addresses — ADDR pin LOW = 0x4A, ADDR pin HIGH = 0x4B */
+#define BNO085_I2C_ADDR_LOW  (0x4A << 1)
+#define BNO085_I2C_ADDR_HIGH (0x4B << 1)
 
 /* Report intervals in microseconds */
 #define BNO085_ROT_VECTOR_US    10000      /* 100 Hz */
