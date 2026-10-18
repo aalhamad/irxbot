@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "bno085.h"
 #include "robot_drive.h"
+#include "vl53l1x.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -60,6 +61,7 @@ static uint8_t  cmd_len           = 0;
 static int32_t  cmd_left          = 0;
 static int32_t  cmd_right         = 0;
 static uint32_t last_cmd_tick     = 0;
+static uint8_t  bumper_last       = 0xFF; /* force send on first loop */
 
 /* USER CODE END PV */
 
@@ -134,6 +136,14 @@ int main(void)
   else
       HAL_UART_Transmit(&huart2, (uint8_t*)"IMU_OK\r\n", 8, 100);
 
+  /* ToF */
+  {
+      uint8_t n = ToF_InitAll(&hi2c1);
+      char buf[32];
+      int  len = snprintf(buf, sizeof(buf), "TOF_OK %u/4\r\n", n);
+      HAL_UART_Transmit(&huart2, (uint8_t*)buf, len, 100);
+  }
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -147,6 +157,9 @@ int main(void)
 
       /* ── IMU ── */
       BNO085_Process();
+
+      /* ── ToF ── */
+      ToF_Process();
 
       /* ── UART RX: accumulate CMD <left> <right> ── */
       while (__HAL_UART_GET_FLAG(&huart2, UART_FLAG_RXNE))
@@ -212,6 +225,26 @@ int main(void)
                   imu->qw, imu->qx, imu->qy, imu->qz,
                   imu->ax, imu->ay, imu->az,
                   imu->gx, imu->gy, imu->gz);
+              HAL_UART_Transmit(&huart2, (uint8_t*)buf, n, 10);
+          }
+      }
+
+      /* ── Bumpers: send BMP on any change ── */
+      {
+          uint8_t bmp = 0;
+          if (HAL_GPIO_ReadPin(BUMPER_FL_GPIO_Port, BUMPER_FL_Pin) == GPIO_PIN_SET) bmp |= 1;
+          if (HAL_GPIO_ReadPin(BUMPER_FR_GPIO_Port, BUMPER_FR_Pin) == GPIO_PIN_SET) bmp |= 2;
+          if (HAL_GPIO_ReadPin(BUMPER_RL_GPIO_Port, BUMPER_RL_Pin) == GPIO_PIN_SET) bmp |= 4;
+          if (HAL_GPIO_ReadPin(BUMPER_RR_GPIO_Port, BUMPER_RR_Pin) == GPIO_PIN_SET) bmp |= 8;
+          if (bmp != bumper_last)
+          {
+              bumper_last = bmp;
+              char buf[24];
+              int n = snprintf(buf, sizeof(buf), "BMP %u %u %u %u\r\n",
+                  (bmp >> 0) & 1,
+                  (bmp >> 1) & 1,
+                  (bmp >> 2) & 1,
+                  (bmp >> 3) & 1);
               HAL_UART_Transmit(&huart2, (uint8_t*)buf, n, 10);
           }
       }

@@ -178,7 +178,7 @@ static uint8_t data_ready(uint16_t addr8)
 {
     uint8_t v = 0;
     if (rd8(addr8, REG_GPIO_TIO_HV_STATUS, &v) != HAL_OK) return 0xFF; /* comm error */
-    return (v & 0x01) ? 1 : 0;
+    return (v & 0x01) ? 0 : 1;  /* active-low: bit0=0 when interrupt asserted */
 }
 
 /* ── Per-sensor bring-up at its final address (mirrors ULD SensorInit) ─────── */

@@ -10,11 +10,11 @@
 
 	#include "vesc_can.h"
 
-	// Wheel IDs
-	#define VESC_FL  1  // Front Left
-	#define VESC_FR  2  // Front Right
-	#define VESC_RL  3  // Rear Left
-	#define VESC_RR  4  // Rear Right
+	// Wheel IDs — matched to physical VESC ID assignments
+	#define VESC_FR  1  // Front Right
+	#define VESC_FL  2  // Front Left
+	#define VESC_RR  3  // Rear Right
+	#define VESC_RL  4  // Rear Left
 
 	HAL_StatusTypeDef robot_set_rpm(int32_t left_rpm, int32_t right_rpm);
 

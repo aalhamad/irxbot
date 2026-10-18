@@ -14,7 +14,7 @@ HAL_StatusTypeDef robot_set_rpm(int32_t left_rpm, int32_t right_rpm)
     }
     HAL_Delay(2);
 
-    if (vesc_set_rpm(VESC_FR, -right_rpm) != HAL_OK) {
+    if (vesc_set_rpm(VESC_FR,  right_rpm) != HAL_OK) {
         HAL_UART_Transmit(&huart2, (uint8_t*)"ERR:VESC2\r\n", 11, 50);
         status = HAL_ERROR;
     }
@@ -26,7 +26,7 @@ HAL_StatusTypeDef robot_set_rpm(int32_t left_rpm, int32_t right_rpm)
     }
     HAL_Delay(2);
 
-    if (vesc_set_rpm(VESC_RR, -right_rpm) != HAL_OK) {
+    if (vesc_set_rpm(VESC_RR,  right_rpm) != HAL_OK) {
         HAL_UART_Transmit(&huart2, (uint8_t*)"ERR:VESC4\r\n", 11, 50);
         status = HAL_ERROR;
     }
