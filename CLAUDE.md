@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 IRXBot is a 4WD industrial robot with a three-layer compute architecture:
 
 - **Jetson Orin Nano** — ROS2 Humble, Nav2/SLAM, cameras, LiDAR, GNSS/UWB, audio
-- **STM32 NUCLEO-F446RE** — real-time motor control via CAN, safety logic, IMU/ToF sensors, bumpers, RC override
+- **STM32 NUCLEO-F446RE** — real-time motor control via CAN, safety logic, IMU/ToF sensors, bumpers, RC override, horn, contactor enable
 - **ESP32-S3** — environmental/air-quality sensors, power monitoring, WS2812B lighting, ST7789 LCD display
 
 ## Build & Flash
@@ -26,8 +26,9 @@ Deploy ELF from dev machine to Jetson then flash remotely:
 ./scripts/deploy.sh
 ```
 
-### ESP32 Firmware (`firmware/esp32/hw_test/`)
-Each subdirectory is a standalone Arduino sketch for hardware validation. Open in **Arduino IDE** and flash via USB.
+### ESP32 Firmware
+- **hw_test/** — standalone Arduino sketches for per-sensor hardware validation only. Not production code.
+- **Main firmware** (`firmware/esp32/irxbot_esp32/`) — **ESP-IDF + FreeRTOS** (not Arduino). One task per job: sensors, lighting, UART from STM32, telemetry to Jetson over USB serial.
 
 ### ROS2 Package (`ros2/`)
 ```bash
@@ -50,21 +51,41 @@ The ROS2 `irx_driver` node communicates with the STM32 over `/dev/ttyACM0`.
 
 | Direction | Format | Meaning |
 |---|---|---|
-| Jetson → STM32 | `CMD <left_rpm> <right_rpm>\n` | Set wheel RPM |
-| STM32 → Jetson | `IMU qw qx qy qz ax ay az gx gy gz\r\n` | BNO085 data @ 50 Hz |
-| STM32 → Jetson | `TOF <front> <rear> <left> <right>\r\n` | VL53L1X distances (mm) @ 10 Hz |
-| STM32 → Jetson | `BMP <bitmask>\r\n` | Bumper state (bits: FL=1, FR=2, RL=4, RR=8) |
-| STM32 → Jetson | `ODO <left_rpm> <right_rpm>\r\n` | Actual VESC feedback |
+| Jetson → STM32 | `CMD <left_rpm> <right_rpm>\n` | Set wheel ERPM |
+| Jetson → STM32 | `HORN <ms>\n` | Sound horn for ms (max 5000) |
+| STM32 → Jetson | `IMU qw qx qy qz ax ay az gx gy gz\r\n` | BNO085 data @ ~3 s (debug; tune for 50 Hz) |
+| STM32 → Jetson | `TOF FL:<mm> FR:<mm> L:<mm> R:<mm> REAR:<mm>\r\n` | VL53L1X distances @ 3 s (debug; tune for 10 Hz) |
+| STM32 → Jetson | `BMP <FL> <FR> <RL> <RR>\r\n` | Bumper state on change (1=pressed) |
+| STM32 → Jetson | `ODO <left_rpm> <right_rpm>\r\n` | Actual VESC ERPM feedback @ 10 s (debug; tune for production); both positive for forward motion — right side NOT negated |
+| STM32 → Jetson | `RC_ON\r\n` / `RC_OFF\r\n` | RC override state change |
+| STM32 → Jetson | `CAN_OK\r\n` / `ERR:CAN\r\n` | CAN init result on boot |
+| STM32 → Jetson | `IMU_OK\r\n` / `ERR:IMU\r\n` | IMU init result on boot |
+| STM32 → Jetson | `TOF_OK <n>/5\r\n` | ToF init result on boot |
+| STM32 → Jetson | `CONTACTOR_ON\r\n` | Contactor energized on boot |
 
 A 500 ms watchdog in the ROS2 node sends `CMD 0 0` if no `/cmd_vel` arrives.
 
+**CMD watchdog:** STM32 resends the last CMD every 200 ms to keep VESCs alive within their 1 s timeout. `last_cmd_tick = 0` disables the resend (used when RC override takes over).
+
+### STM32 → ESP32-S3 (USART3, PC10 TX / PC5 RX, 115200 8N1)
+
+| Format | Meaning |
+|---|---|
+| `LIGHT LEFT\n` | Left turn signal on |
+| `LIGHT RIGHT\n` | Right turn signal on |
+| `LIGHT HAZARD\n` | Both turn signals blink |
+| `LIGHT BRAKE\n` | Rear brake lights |
+| `LIGHT OFF\n` | All lights off |
+| `SPEED <rpm>\n` | Current wheel ERPM (for speed-dependent lighting) |
+| `BMP <bitmask>\n` | Bumper state (FL=1, FR=2, RL=4, RR=8) — proximity warning |
+
 ### CAN Bus (STM32 → 4× Flipsky 75100)
 - 500 kbps — prescaler=6, BS1=11TQ, BS2=2TQ on 84 MHz APB1
-- VESC IDs: FL=1, FR=2, RL=3, RR=4
+- VESC IDs: **FR=1, FL=2, RR=3, RL=4** (matches `robot_drive.h`)
 - `vesc_set_rpm(id, rpm)` / `vesc_get_rpm(id, &rpm)` in `Core/Inc/vesc_can.h`
-- `robot_set_rpm(left_rpm, right_rpm)` fans out to all four VESCs
-- Exactly **two** 120 Ω terminators, at the two physical ends of the bus. Most
-  transceiver breakouts carry an onboard one — count them before adding more.
+- `robot_set_rpm(left_rpm, right_rpm)` fans out to all four VESCs; right side is NOT negated (all motors face the same physical direction)
+- CAN status messages configured at **50 Hz** (Status 1–4) in VESC Tool → App Settings → General
+- Exactly **two** 120 Ω terminators, at the two physical ends of the bus. Most transceiver breakouts carry an onboard one — count them before adding more.
 - GND must run in the CAN cable alongside CANH/CANL. It is a three-wire bus.
 
 **Firmware target caveat:** the boards are Flipsky 75100 but ship flashed with the
@@ -73,6 +94,19 @@ the 75100 does not have. VESC Tool only offers `75_300_R2` because that is what 
 board reports. Consequence: current sensing and phase-voltage assumptions are
 slightly wrong, which shows up as unreliable FOC detection (flux linkage railing to
 exactly `100.000` mWb is the tell — a clamp, not a measurement).
+
+### RC Override (USART1, PA9 TX / PA10 RX, 115200 8N1)
+- Receiver: **FlySky FS-IA10B** bound to **FS-i6X** transmitter
+- Protocol: **iBUS** — 32-byte packets, interrupt-driven ring buffer (`ibus.c` / `ibus.h`)
+- Connect to the **iBUS** port on the receiver (not PWM, not SBUS)
+- Override active when **CH5 (index 4) > 1700**; RC_ON/RC_OFF sent on transition
+- **CH1 (index 0)** = steering, **CH2 (index 1)** = throttle; deadband ±30 around 1500
+- ERPM = `(thr ± str) × 6000 / 500`, capped at ±6000
+- RC commands sent at **20 Hz**; no command sent when both thr=0 and str=0 (VESCs coast on 1 s timeout)
+- Signal-loss timeout: 500 ms without valid packet → `valid = 0`
+- **RC_OFF** fires via signal-loss timeout (turn off transmitter → 500 ms → RC_OFF). Switch-based RC_OFF not implemented — the switch position does not reliably bring CH5 below 1700 on this transmitter.
+
+**Power-cycle note:** if only the VESCs are rebooted while the STM32 keeps running, the STM32 must also be reset (NRST button) — otherwise ToF I2C addresses desync and all sensors read 0.
 
 ### Drivetrain
 - Motor: **57BL9524** (LK57BL9524) — 24 V, 100 W, 3000 RPM rated, **4 poles** (2 pole pairs), hall sensors
@@ -136,23 +170,51 @@ indices 0 and 7 (states 000 and 111 are electrically impossible) and six distinc
 values between. VESC Tool 6.06 can report "Bad FOC Hall Detection Result Received"
 while returning a perfectly valid table — check the table itself, not the message.
 
-### ToF Sensor Init (I2C address conflict workaround)
-All four VL53L1X share the default I2C address. STM32 holds all XSHUT pins low, then enables them one at a time and reassigns addresses sequentially — no multiplexer needed. XSHUT pins: FRONT=PB0, REAR=PA8, LEFT=PC7, RIGHT=PB6.
+### IMU (BNO085)
+- I2C2: SCL=PB10, SDA=PC12 (separate bus from ToF)
+- Hardware reset pin: **PC8 (IMU_RESET)** — pulled HIGH by default; STM32 pulses LOW 10 ms then HIGH before `BNO085_Init()` on every boot
+- SH-2 library in `firmware/stm32/irx_drive/Core/lib/sh2/`
 
-### STM32 → ESP32-S3 (dedicated UART)
-Turn-signal and hazard commands are sent from STM32 to ESP32-S3 over a separate UART. ESP32-S3 reports sensor telemetry to Jetson over USB serial.
+### ToF Sensors (5× VL53L1X)
+- I2C1: SCL=PB8, SDA=PB9
+- All share default address 0x29 → STM32 holds all XSHUT LOW, enables one at a time and reassigns address sequentially
+- Boot: up to 5 retry attempts (200 ms apart); runtime drop recovery (re-init every 3 s, max 5 attempts)
+- If a sensor fails address assignment, XSHUT is pulled LOW to prevent bus collision
+
+| Index | Name constant | XSHUT pin | Assigned address |
+|---|---|---|---|
+| 0 | `TOF_RIGHT` | PB0 | 0x30 |
+| 1 | `TOF_LEFT` | PA8 | 0x31 |
+| 2 | `TOF_FRONT_LEFT` | PC7 | 0x32 |
+| 3 | `TOF_FRONT_RIGHT` | PB6 | 0x33 |
+| 4 | `TOF_REAR` | PC9 | 0x34 |
 
 ### Safety chain (hardware — no software in path)
 ```
-24V control → rocker/key → E-stop NC → contactor coil → GND
+24V control → rocker/key → E-stop NC → MOSFET board VIN+ → (PB12-controlled MOSFET) → OUT+ → A1 → coil → A2 → GND
 ```
 STM32 enable is a normally-off stage: MCU active = coil energized; IWDG reset / power loss = contactor drops. STM32 can refuse to energize but cannot hold the contactor closed against an open E-stop.
+
+**Contactor enable: PB12 (`CONTACTOR_EN`)** — GPIO Output, default LOW. Set HIGH after all peripherals initialise; sends `CONTACTOR_ON\r\n` on boot.
+
+**Contactor wiring (HORNAXYS XY-MOS MOSFET board):**
+- VIN+ → 24 V (after E-stop NC)
+- VIN− → GND
+- GND → GND
+- TRIG → STM32 PB12
+- OUT+ → Contactor coil A1 (+)
+- A2 (−) → GND directly
+- Flyback diode: cathode (stripe) → A1, anode (plain) → A2/GND
+
+**IWDG:** direct register access (no HAL module — not included in project). Prescaler /32, reload 1500 → ~1.5 s timeout at LSI ~32 kHz. Started after `IBus_Init()`, before entering the main loop. Kicked at the top of every loop iteration: `IWDG->KR = 0xAAAAU`.
 
 ## Key Source Locations
 
 | Path | Contents |
 |---|---|
-| `firmware/stm32/irx_drive/Core/Src/main.c` | STM32 main loop: CAN, UART, IMU, ToF, bumpers |
+| `firmware/stm32/irx_drive/Core/Src/main.c` | STM32 main loop: CAN, UART, IMU, ToF, bumpers, RC, horn |
+| `firmware/stm32/irx_drive/Core/Src/ibus.c` | iBUS RC receiver driver (interrupt-driven ring buffer) |
+| `firmware/stm32/irx_drive/Core/Inc/ibus.h` | iBUS API + channel/threshold defines |
 | `firmware/stm32/irx_drive/Core/Inc/vesc_can.h` | VESC CAN API |
 | `firmware/stm32/irx_drive/Core/Inc/robot_drive.h` | `robot_set_rpm()` |
 | `firmware/stm32/irx_drive/Core/Inc/bno085.h` | BNO085 IMU driver |

@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "bno085.h"
+#include "ibus.h"
 #include "robot_drive.h"
 #include "vl53l1x.h"
 #include <stdio.h>
@@ -49,11 +50,15 @@
 CAN_HandleTypeDef hcan1;
 
 I2C_HandleTypeDef hi2c1;
+I2C_HandleTypeDef hi2c2;
 
+UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
+UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
 static uint32_t last_imu_tick     = 0;
+static uint32_t last_tof_tick     = 0;
 static uint32_t last_odo_tick     = 0;
 static uint32_t last_err_tick[4]  = {0};
 static uint8_t  cmd_buf[32];
@@ -62,6 +67,10 @@ static int32_t  cmd_left          = 0;
 static int32_t  cmd_right         = 0;
 static uint32_t last_cmd_tick     = 0;
 static uint8_t  bumper_last       = 0xFF; /* force send on first loop */
+static uint8_t  tof_reinit_count  = 0;
+static uint32_t tof_reinit_tick   = 0;
+static uint32_t horn_off_tick     = 0;  /* 0 = horn inactive */
+static uint8_t  rc_override       = 0;
 
 /* USER CODE END PV */
 
@@ -71,6 +80,9 @@ static void MX_GPIO_Init(void);
 static void MX_CAN1_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_I2C1_Init(void);
+static void MX_I2C2_Init(void);
+static void MX_USART1_UART_Init(void);
+static void MX_USART3_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -112,6 +124,9 @@ int main(void)
   MX_CAN1_Init();
   MX_USART2_UART_Init();
   MX_I2C1_Init();
+  MX_I2C2_Init();
+  MX_USART1_UART_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_UART_Transmit(&huart2, (uint8_t*)"BOOT\r\n", 6, 100);
 
@@ -130,19 +145,42 @@ int main(void)
           HAL_UART_Transmit(&huart2, (uint8_t*)"CAN_OK\r\n", 8, 100);
   }
 
-  /* IMU */
-  if (BNO085_Init(&hi2c1) != HAL_OK)
+  /* IMU — hardware reset pulse so BNO085 boots clean on every MCU reset */
+  HAL_GPIO_WritePin(IMU_RESET_GPIO_Port, IMU_RESET_Pin, GPIO_PIN_RESET);
+  HAL_Delay(10);
+  HAL_GPIO_WritePin(IMU_RESET_GPIO_Port, IMU_RESET_Pin, GPIO_PIN_SET);
+  HAL_Delay(500);
+
+  if (BNO085_Init(&hi2c2) != HAL_OK)
       HAL_UART_Transmit(&huart2, (uint8_t*)"ERR:IMU\r\n", 9, 100);
   else
       HAL_UART_Transmit(&huart2, (uint8_t*)"IMU_OK\r\n", 8, 100);
 
-  /* ToF */
+  /* ToF — retry up to 3 times to handle sensors that are slow to boot */
   {
-      uint8_t n = ToF_InitAll(&hi2c1);
+      uint8_t n = 0;
+      for (int attempt = 0; attempt < 5 && n < TOF_COUNT; attempt++)
+      {
+          if (attempt > 0) HAL_Delay(200);
+          n = ToF_InitAll(&hi2c1);
+      }
       char buf[32];
-      int  len = snprintf(buf, sizeof(buf), "TOF_OK %u/4\r\n", n);
+      int  len = snprintf(buf, sizeof(buf), "TOF_OK %u/5\r\n", n);
       HAL_UART_Transmit(&huart2, (uint8_t*)buf, len, 100);
   }
+
+  /* RC receiver */
+  IBus_Init(&huart1);
+
+  /* IWDG — contactor drops automatically if MCU hangs > ~1.5 s */
+  IWDG->KR  = 0x5555U;   /* unlock PR/RLR */
+  IWDG->PR  = 3U;         /* prescaler /32 → 32 kHz/32 = 1 kHz tick */
+  IWDG->RLR = 1500U;      /* 1500 ticks ≈ 1.5 s */
+  IWDG->KR  = 0xCCCCU;   /* start */
+
+  /* Energise contactor */
+  HAL_GPIO_WritePin(CONTACTOR_EN_GPIO_Port, CONTACTOR_EN_Pin, GPIO_PIN_SET);
+  HAL_UART_Transmit(&huart2, (uint8_t*)"CONTACTOR_ON\r\n", 14, 50);
 
   /* USER CODE END 2 */
 
@@ -153,13 +191,72 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+      IWDG->KR = 0xAAAAU;   /* kick watchdog */
       uint32_t now = HAL_GetTick();
 
       /* ── IMU ── */
       BNO085_Process();
 
+      /* ── RC receiver ── */
+      IBus_Process();
+      {
+          IBus_Data_t *rc = IBus_Get();
+
+          uint8_t override_now = rc->valid && (rc->channel[IBUS_OVERRIDE_CH] > IBUS_OVERRIDE_THR);
+
+          if (override_now != rc_override)
+          {
+              rc_override = override_now;
+              if (!rc_override)
+              {
+                  robot_set_rpm(0, 0);
+                  cmd_left = cmd_right = 0;
+                  last_cmd_tick = 0;
+              }
+              HAL_UART_Transmit(&huart2,
+                  rc_override ? (uint8_t*)"RC_ON\r\n" : (uint8_t*)"RC_OFF\r\n",
+                  rc_override ? 7 : 8, 10);
+          }
+
+          if (rc_override)
+          {
+              /* CH2 (index 1) = throttle, CH1 (index 0) = steering */
+              int32_t thr = (int32_t)rc->channel[1] - 1500;  /* -500..+500 */
+              int32_t str = (int32_t)rc->channel[0] - 1500;
+
+              if (thr > -30 && thr < 30) thr = 0;
+              if (str > -30 && str < 30) str = 0;
+
+              static uint32_t rc_cmd_tick = 0;
+              if ((now - rc_cmd_tick) >= 50)
+              {
+                  rc_cmd_tick = now;
+                  if (thr != 0 || str != 0)
+                  {
+                      int32_t left_rpm  = (thr + str) * 6000 / 500;
+                      int32_t right_rpm = (thr - str) * 6000 / 500;
+                      robot_set_rpm(left_rpm, right_rpm);
+                  }
+              }
+          }
+      }
+
       /* ── ToF ── */
       ToF_Process();
+
+      /* ── ToF drop recovery: re-init if any sensor offline, max 5 attempts ── */
+      if (tof_reinit_count < 5 && (now - tof_reinit_tick) >= 3000)
+      {
+          uint8_t any_offline = 0;
+          for (int i = 0; i < TOF_COUNT; i++)
+              if (!ToF_Get(i)->online) { any_offline = 1; break; }
+          if (any_offline)
+          {
+              tof_reinit_tick = now;
+              tof_reinit_count++;
+              ToF_InitAll(&hi2c1);
+          }
+      }
 
       /* ── UART RX: accumulate CMD <left> <right> ── */
       while (__HAL_UART_GET_FLAG(&huart2, UART_FLAG_RXNE))
@@ -169,7 +266,19 @@ int main(void)
           {
               if (cmd_len == 0) continue;   /* ignore empty / duplicate CR+LF */
               cmd_buf[cmd_len] = '\0';
-              if (cmd_len >= 7 &&
+              if (cmd_len >= 6 &&
+                  cmd_buf[0]=='H' && cmd_buf[1]=='O' &&
+                  cmd_buf[2]=='R' && cmd_buf[3]=='N' && cmd_buf[4]==' ')
+              {
+                  uint32_t ms = (uint32_t)strtol((char*)cmd_buf + 5, NULL, 10);
+                  if (ms > 0 && ms <= 5000)
+                  {
+                      HAL_GPIO_WritePin(HORN_GPIO_Port, HORN_Pin, GPIO_PIN_SET);
+                      horn_off_tick = now + ms;
+                  }
+                  HAL_UART_Transmit(&huart2, (uint8_t*)"HORN_OK\r\n", 9, 50);
+              }
+              else if (cmd_len >= 7 &&
                   cmd_buf[0]=='C' && cmd_buf[1]=='M' &&
                   cmd_buf[2]=='D' && cmd_buf[3]==' ')
               {
@@ -202,6 +311,13 @@ int main(void)
           }
       }
 
+      /* ── Horn auto-off ── */
+      if (horn_off_tick > 0 && now >= horn_off_tick)
+      {
+          HAL_GPIO_WritePin(HORN_GPIO_Port, HORN_Pin, GPIO_PIN_RESET);
+          horn_off_tick = 0;
+      }
+
       /* ── CAN RX: update cached VESC feedback ── */
       vesc_process_rx();
 
@@ -212,8 +328,23 @@ int main(void)
           robot_set_rpm(cmd_left, cmd_right);
       }
 
+      /* ── ToF report @ 500 ms ── */
+      if ((now - last_tof_tick) >= 3000)
+      {
+          last_tof_tick = now;
+          char buf[80];
+          int n = snprintf(buf, sizeof(buf),
+              "TOF FL:%u FR:%u L:%u R:%u REAR:%u\r\n",
+              ToF_Get(TOF_FRONT_LEFT)->distance_mm,
+              ToF_Get(TOF_FRONT_RIGHT)->distance_mm,
+              ToF_Get(TOF_LEFT)->distance_mm,
+              ToF_Get(TOF_RIGHT)->distance_mm,
+              ToF_Get(TOF_REAR)->distance_mm);
+          HAL_UART_Transmit(&huart2, (uint8_t*)buf, n, 20);
+      }
+
       /* ── IMU report @ 10 s (debug rate) ── */
-      if ((now - last_imu_tick) >= 5000)
+      if ((now - last_imu_tick) >= 3000)
       {
           last_imu_tick = now;
           BNO085_Data_t *imu = BNO085_GetData();
@@ -246,6 +377,7 @@ int main(void)
                   (bmp >> 2) & 1,
                   (bmp >> 3) & 1);
               HAL_UART_Transmit(&huart2, (uint8_t*)buf, n, 10);
+              HAL_UART_Transmit(&huart3, (uint8_t*)buf, n, 10);
           }
       }
 
@@ -254,15 +386,17 @@ int main(void)
       {
           last_odo_tick = now;
 
-          /* FL = left reference, FR = right (negated — commanded inverse) */
           int32_t l_rpm = 0, r_rpm = 0;
           vesc_get_rpm(VESC_FL, &l_rpm);
           vesc_get_rpm(VESC_FR, &r_rpm);
-          r_rpm = -r_rpm;
 
           char buf[32];
           int n = snprintf(buf, sizeof(buf), "ODO %ld %ld\r\n", l_rpm, r_rpm);
           HAL_UART_Transmit(&huart2, (uint8_t*)buf, n, 10);
+
+          int32_t avg_rpm = (l_rpm + r_rpm) / 2;
+          int sn = snprintf(buf, sizeof(buf), "SPEED %ld\n", avg_rpm);
+          HAL_UART_Transmit(&huart3, (uint8_t*)buf, sn, 10);
 
           /* Report any VESC that has stopped responding (rate-limited to 1 per 2 s) */
           for (uint8_t id = 1; id <= 4; id++)
@@ -352,7 +486,7 @@ static void MX_CAN1_Init(void)
   hcan1.Init.TimeSeg1 = CAN_BS1_11TQ;
   hcan1.Init.TimeSeg2 = CAN_BS2_2TQ;
   hcan1.Init.TimeTriggeredMode = DISABLE;
-  hcan1.Init.AutoBusOff = DISABLE;
+  hcan1.Init.AutoBusOff = ENABLE;
   hcan1.Init.AutoWakeUp = DISABLE;
   hcan1.Init.AutoRetransmission = ENABLE;
   hcan1.Init.ReceiveFifoLocked = DISABLE;
@@ -376,7 +510,40 @@ static void MX_I2C1_Init(void)
 {
 
   /* USER CODE BEGIN I2C1_Init 0 */
+  /* I2C bus recovery: if SDA stuck low, clock SCL 9x to release the slave */
+  {
+      GPIO_InitTypeDef g = {0};
 
+      g.Pin   = GPIO_PIN_9;          /* SDA — read bus state */
+      g.Mode  = GPIO_MODE_INPUT;
+      g.Pull  = GPIO_PULLUP;
+      HAL_GPIO_Init(GPIOB, &g);
+
+      g.Pin   = GPIO_PIN_8;          /* SCL — drive manually */
+      g.Mode  = GPIO_MODE_OUTPUT_OD;
+      g.Pull  = GPIO_NOPULL;
+      g.Speed = GPIO_SPEED_FREQ_LOW;
+      HAL_GPIO_Init(GPIOB, &g);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
+
+      if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_9) == GPIO_PIN_RESET)
+      {
+          for (int i = 0; i < 9; i++)
+          {
+              HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
+              HAL_Delay(1);
+              HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
+              HAL_Delay(1);
+          }
+          /* STOP condition */
+          g.Pin  = GPIO_PIN_9;
+          g.Mode = GPIO_MODE_OUTPUT_OD;
+          g.Pull = GPIO_NOPULL;
+          HAL_GPIO_Init(GPIOB, &g);
+          HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+          HAL_Delay(1);
+      }
+  }
   /* USER CODE END I2C1_Init 0 */
 
   /* USER CODE BEGIN I2C1_Init 1 */
@@ -398,6 +565,73 @@ static void MX_I2C1_Init(void)
   /* USER CODE BEGIN I2C1_Init 2 */
 
   /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief I2C2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C2_Init(void)
+{
+
+  /* USER CODE BEGIN I2C2_Init 0 */
+
+  /* USER CODE END I2C2_Init 0 */
+
+  /* USER CODE BEGIN I2C2_Init 1 */
+
+  /* USER CODE END I2C2_Init 1 */
+  hi2c2.Instance = I2C2;
+  hi2c2.Init.ClockSpeed = 100000;
+  hi2c2.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  hi2c2.Init.OwnAddress1 = 0;
+  hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c2.Init.OwnAddress2 = 0;
+  hi2c2.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c2.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C2_Init 2 */
+
+  /* USER CODE END I2C2_Init 2 */
+
+}
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
 
 }
 
@@ -435,6 +669,39 @@ static void MX_USART2_UART_Init(void)
 }
 
 /**
+  * @brief USART3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART3_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART3_Init 0 */
+
+  /* USER CODE END USART3_Init 0 */
+
+  /* USER CODE BEGIN USART3_Init 1 */
+
+  /* USER CODE END USART3_Init 1 */
+  huart3.Instance = USART3;
+  huart3.Init.BaudRate = 115200;
+  huart3.Init.WordLength = UART_WORDLENGTH_8B;
+  huart3.Init.StopBits = UART_STOPBITS_1;
+  huart3.Init.Parity = UART_PARITY_NONE;
+  huart3.Init.Mode = UART_MODE_TX_RX;
+  huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart3.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART3_Init 2 */
+
+  /* USER CODE END USART3_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -456,10 +723,13 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOA, LD2_Pin|TOF_XSHUT_REAR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, TOF_XSHUT_FRONT_Pin|TOF_XSHUT_RIGHT_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, TOF_XSHUT_FRONT_Pin|CONTACTOR_EN_Pin|TOF_XSHUT_RIGHT_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(TOF_XSHUT_LEFT_GPIO_Port, TOF_XSHUT_LEFT_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, HORN_Pin|TOF_XSHUT_LEFT_Pin|TOF5_XSHUT_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(IMU_RESET_GPIO_Port, IMU_RESET_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -480,22 +750,22 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : TOF_XSHUT_FRONT_Pin TOF_XSHUT_RIGHT_Pin */
-  GPIO_InitStruct.Pin = TOF_XSHUT_FRONT_Pin|TOF_XSHUT_RIGHT_Pin;
+  /*Configure GPIO pins : TOF_XSHUT_FRONT_Pin CONTACTOR_EN_Pin TOF_XSHUT_RIGHT_Pin */
+  GPIO_InitStruct.Pin = TOF_XSHUT_FRONT_Pin|CONTACTOR_EN_Pin|TOF_XSHUT_RIGHT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : TOF_XSHUT_LEFT_Pin */
-  GPIO_InitStruct.Pin = TOF_XSHUT_LEFT_Pin;
+  /*Configure GPIO pins : HORN_Pin TOF_XSHUT_LEFT_Pin IMU_RESET_Pin TOF5_XSHUT_Pin */
+  GPIO_InitStruct.Pin = HORN_Pin|TOF_XSHUT_LEFT_Pin|IMU_RESET_Pin|TOF5_XSHUT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(TOF_XSHUT_LEFT_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
-
+  HAL_GPIO_WritePin(IMU_RESET_GPIO_Port, IMU_RESET_Pin, GPIO_PIN_SET);
   /* USER CODE END MX_GPIO_Init_2 */
 }
 

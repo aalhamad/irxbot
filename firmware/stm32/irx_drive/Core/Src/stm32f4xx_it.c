@@ -6,6 +6,7 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "ibus.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -212,5 +213,12 @@ void USART2_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
-
+extern UART_HandleTypeDef huart1;
+void USART1_IRQHandler(void)
+{
+    if (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_RXNE))
+        IBus_RxByte((uint8_t)(huart1.Instance->DR & 0xFF));
+    if (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_ORE))
+        __HAL_UART_CLEAR_OREFLAG(&huart1);
+}
 /* USER CODE END 1 */

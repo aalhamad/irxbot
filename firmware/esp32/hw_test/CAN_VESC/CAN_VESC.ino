@@ -37,8 +37,8 @@
 /* Bring-up one VESC at a time. The controller currently on the bus reports as
  * ID 2 (observed: ExtId 0x00000902), so command that one — not ID 1. Widen the
  * range only after each previous controller is proven. */
-#define VESC_FIRST_ID 2
-#define VESC_LAST_ID  2
+#define VESC_FIRST_ID 1
+#define VESC_LAST_ID  4
 
 /* RAW_DUMP 1 prints every frame seen on the bus (rate limited), not just
  * decoded STATUS packets. Invaluable when you don't yet know what's out there. */

@@ -75,8 +75,16 @@ void Error_Handler(void);
 #define LD2_GPIO_Port GPIOA
 #define TOF_XSHUT_FRONT_Pin GPIO_PIN_0
 #define TOF_XSHUT_FRONT_GPIO_Port GPIOB
+#define CONTACTOR_EN_Pin GPIO_PIN_12
+#define CONTACTOR_EN_GPIO_Port GPIOB
+#define HORN_Pin GPIO_PIN_6
+#define HORN_GPIO_Port GPIOC
 #define TOF_XSHUT_LEFT_Pin GPIO_PIN_7
 #define TOF_XSHUT_LEFT_GPIO_Port GPIOC
+#define IMU_RESET_Pin GPIO_PIN_8
+#define IMU_RESET_GPIO_Port GPIOC
+#define TOF5_XSHUT_Pin GPIO_PIN_9
+#define TOF5_XSHUT_GPIO_Port GPIOC
 #define TOF_XSHUT_REAR_Pin GPIO_PIN_8
 #define TOF_XSHUT_REAR_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13

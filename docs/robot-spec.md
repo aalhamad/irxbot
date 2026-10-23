@@ -39,9 +39,9 @@ Rev 2026-10-11 · Source of truth for hardware
 | E-Stop Auxiliary Contact | Status/feedback only (does not gate power) |
 | Bumper Switches | Collision detection |
 | BNO085 IMU | Chassis orientation / rollover (I2C1, UART-forwarded to Jetson) |
-| 4 × VL53L1X ToF | Close obstacle / cliff detection |
-| 4 × XSHUT GPIO connections | Sequential ToF init & address assignment |
-| RC Receiver (SBUS, 5V regulated supply) | Manual override |
+| 5 × VL53L1X ToF | Close obstacle / cliff detection |
+| 5 × XSHUT GPIO connections | Sequential ToF init & address assignment |
+| RC Receiver (FlySky FS-IA10B, iBUS protocol, 5V regulated supply) | Manual override; bound to FS-i6X transmitter |
 | Pan/Tilt Servos (×2, 6V regulated servo supply) | Laser aiming |
 | Laser Module (Class 2, <1 mW; MOSFET enable + hardware inhibit) | Object pointing |
 | Horn (MOSFET/relay + suppression + branch fuse) | Immediate safety warning |
@@ -89,7 +89,7 @@ Rev 2026-10-11 · Source of truth for hardware
 | UWB Tag | Jetson | External |
 | Bumper Switches | STM32 | External |
 
-**ToF init:** all 4 share default address → STM32 holds all in shutdown, enables one, reassigns address, repeats. No TCA9548A needed.
+**ToF init:** all 5 share default address 0x29 → STM32 holds all XSHUT LOW, enables one at a time, reassigns address sequentially (0x30–0x34). No TCA9548A needed.
 
 **External air-sampling assembly:** SPS30 (unobstructed inlet/outlet) + SGP30 & BME280 (ventilated protected chamber). Rain hood, insect mesh, splash protection; away from battery/VESC/converter/fan exhaust/motor heat.
 

@@ -25,6 +25,7 @@ static const xshut_t _xshut[TOF_COUNT] = {
     { TOF_XSHUT_REAR_GPIO_Port,  TOF_XSHUT_REAR_Pin  },
     { TOF_XSHUT_LEFT_GPIO_Port,  TOF_XSHUT_LEFT_Pin  },
     { TOF_XSHUT_RIGHT_GPIO_Port, TOF_XSHUT_RIGHT_Pin },
+    { TOF5_XSHUT_GPIO_Port,      TOF5_XSHUT_Pin      },
 };
 
 static I2C_HandleTypeDef *_hi2c = NULL;
@@ -178,7 +179,7 @@ static uint8_t data_ready(uint16_t addr8)
 {
     uint8_t v = 0;
     if (rd8(addr8, REG_GPIO_TIO_HV_STATUS, &v) != HAL_OK) return 0xFF; /* comm error */
-    return (v & 0x01) ? 0 : 1;  /* active-low: bit0=0 when interrupt asserted */
+    return (v & 0x01) ? 1 : 0;  /* active-high: bit0=1 when data ready */
 }
 
 /* ── Per-sensor bring-up at its final address (mirrors ULD SensorInit) ─────── */
@@ -264,7 +265,7 @@ uint8_t ToF_InitAll(I2C_HandleTypeDef *hi2c)
     /* All sensors into shutdown */
     for (int i = 0; i < TOF_COUNT; i++)
         HAL_GPIO_WritePin(_xshut[i].port, _xshut[i].pin, GPIO_PIN_RESET);
-    HAL_Delay(10);
+    HAL_Delay(50);
 
     uint8_t online = 0;
 
@@ -272,7 +273,7 @@ uint8_t ToF_InitAll(I2C_HandleTypeDef *hi2c)
     {
         /* Wake this one only (others still down or already re-addressed) */
         HAL_GPIO_WritePin(_xshut[i].port, _xshut[i].pin, GPIO_PIN_SET);
-        HAL_Delay(3);   /* t_boot ~1.2ms */
+        HAL_Delay(10);   /* t_boot ~1.2ms, 10ms margin */
 
         /* Warm reset case: sensor kept power through MCU reset and still
            holds its re-assigned address. Re-setup and move on. */
@@ -289,14 +290,18 @@ uint8_t ToF_InitAll(I2C_HandleTypeDef *hi2c)
         /* Cold boot case: sensor at factory address? */
         if (HAL_I2C_IsDeviceReady(_hi2c, VL53L1X_DEFAULT_ADDR, 2, 20) != HAL_OK)
         {
+            /* Nothing on this XSHUT line — pull it back low so it can't
+               interfere with subsequent sensors at factory address 0x29 */
+            HAL_GPIO_WritePin(_xshut[i].port, _xshut[i].pin, GPIO_PIN_RESET);
             _data[i].online = 0;
-            continue;   /* nobody home on this XSHUT line */
+            continue;
         }
 
         /* Move it to its final address */
         if (wr8(VL53L1X_DEFAULT_ADDR, REG_I2C_SLAVE_DEVICE_ADDRESS,
                 (uint8_t)(TOF_ADDR_BASE + i)) != HAL_OK)
         {
+            HAL_GPIO_WritePin(_xshut[i].port, _xshut[i].pin, GPIO_PIN_RESET);
             _data[i].online = 0;
             continue;
         }
@@ -310,6 +315,7 @@ uint8_t ToF_InitAll(I2C_HandleTypeDef *hi2c)
         }
         else
         {
+            HAL_GPIO_WritePin(_xshut[i].port, _xshut[i].pin, GPIO_PIN_RESET);
             _data[i].online = 0;
         }
     }
@@ -347,19 +353,6 @@ void ToF_Process(void)
         wr8(ADDR8(i), REG_SYSTEM_INTERRUPT_CLEAR, 0x01);
     }
 
-    /* TEMP: raw debug for front sensor, 1Hz — remove after bring-up */
-    static uint32_t dbg_t = 0;
-    if (_data[TOF_FRONT].online && (HAL_GetTick() - dbg_t) >= 1000)
-    {
-        dbg_t = HAL_GetTick();
-        uint8_t rdy = 0xEE, rs = 0xEE; uint16_t d = 0;
-        rd8 (ADDR8(TOF_FRONT), REG_GPIO_TIO_HV_STATUS, &rdy);
-        rd8 (ADDR8(TOF_FRONT), REG_RESULT_RANGE_STATUS, &rs);
-        rd16(ADDR8(TOF_FRONT), REG_RESULT_FINAL_CROSSTALK_CORRECTED_RANGE_MM_SD0, &d);
-        char b[48];
-        int l = snprintf(b, sizeof(b), "TOF_DBG rdy=%02X rs=%02X d=%u\r\n", rdy, rs, d);
-        HAL_UART_Transmit(&huart2, (uint8_t*)b, l, 20);
-    }
 }
 
 ToF_Data_t* ToF_Get(uint8_t idx)

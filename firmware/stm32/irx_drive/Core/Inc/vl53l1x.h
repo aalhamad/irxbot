@@ -11,16 +11,17 @@
 #include "stm32f4xx_hal.h"
 #include <stdint.h>
 
-#define TOF_COUNT            4
+#define TOF_COUNT            5
 
-/* Indices */
-#define TOF_FRONT            0
-#define TOF_REAR             1
-#define TOF_LEFT             2
-#define TOF_RIGHT            3
+/* Indices — ordered by XSHUT wiring */
+#define TOF_RIGHT            0   /* XSHUT PB0 → address 0x30 */
+#define TOF_LEFT             1   /* XSHUT PA8 → address 0x31 */
+#define TOF_FRONT_LEFT       2   /* XSHUT PC7 → address 0x32 */
+#define TOF_FRONT_RIGHT      3   /* XSHUT PB6 → address 0x33 */
+#define TOF_REAR             4   /* XSHUT PC9 → address 0x34 */
 
 /* Re-assigned 7-bit I2C addresses (shifted <<1 for HAL internally) */
-#define TOF_ADDR_BASE        0x30   /* front=0x30, rear=0x31, left=0x32, right=0x33 */
+#define TOF_ADDR_BASE        0x30
 
 typedef struct
 {
