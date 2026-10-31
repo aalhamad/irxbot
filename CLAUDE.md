@@ -30,6 +30,19 @@ Deploy ELF from dev machine to Jetson then flash remotely:
 - **hw_test/** — standalone Arduino sketches for per-sensor hardware validation only. Not production code.
 - **Main firmware** (`firmware/esp32/irxbot_esp32/`) — **ESP-IDF + FreeRTOS** (not Arduino). One task per job: sensors, lighting, UART from STM32, telemetry to Jetson over USB serial.
 
+ESP-IDF is installed at `~/apps/esp-idf`. Activate the environment before building:
+```bash
+. ~/apps/esp-idf/export.sh
+```
+
+Build and flash:
+```bash
+cd firmware/esp32/irxbot_esp32
+idf.py build
+idf.py -p /dev/ttyUSB0 flash
+idf.py -p /dev/ttyUSB0 monitor
+```
+
 ### ROS2 Package (`ros2/`)
 ```bash
 cd ros2
@@ -53,6 +66,7 @@ The ROS2 `irx_driver` node communicates with the STM32 over `/dev/ttyACM0`.
 |---|---|---|
 | Jetson → STM32 | `CMD <left_rpm> <right_rpm>\n` | Set wheel ERPM |
 | Jetson → STM32 | `HORN <ms>\n` | Sound horn for ms (max 5000) |
+| Jetson → STM32 | `LIGHT <target> <R> <G> <B> <mode>\n` | Forwarded to ESP32-S3 via USART3 |
 | STM32 → Jetson | `IMU qw qx qy qz ax ay az gx gy gz\r\n` | BNO085 data @ ~3 s (debug; tune for 50 Hz) |
 | STM32 → Jetson | `TOF FL:<mm> FR:<mm> L:<mm> R:<mm> REAR:<mm>\r\n` | VL53L1X distances @ 3 s (debug; tune for 10 Hz) |
 | STM32 → Jetson | `BMP <FL> <FR> <RL> <RR>\r\n` | Bumper state on change (1=pressed) |
@@ -69,13 +83,47 @@ A 500 ms watchdog in the ROS2 node sends `CMD 0 0` if no `/cmd_vel` arrives.
 
 ### STM32 → ESP32-S3 (USART3, PC10 TX / PC5 RX, 115200 8N1)
 
+Also forwarded from Jetson → STM32 → ESP32-S3 for voice/navigation states.
+
+#### LIGHT command
+
+```
+LIGHT <target> <R> <G> <B> <mode>\n
+```
+
+| Field | Values |
+|---|---|
+| `target` | `ALL`, `LEFT`, `RIGHT`, `FRONT`, `REAR`, `SIDE` |
+| `R G B` | 0–255 each |
+| `mode` | `SOLID`, `BLINK`, `PULSE` |
+
+**Target mapping:**
+
+| Target | Lights affected |
+|---|---|
+| `ALL` | All lights |
+| `LEFT` | Left side strip + left front amber + left rear red |
+| `RIGHT` | Right side strip + right front amber + right rear red |
+| `FRONT` | Both front ambers |
+| `REAR` | Both rear reds |
+| `SIDE` | Both WS2812B side strips |
+
+**Standard color conventions (not enforced by ESP32):**
+
+| Situation | Command |
+|---|---|
+| Left turn signal | `LIGHT LEFT 255 90 0 BLINK` |
+| Right turn signal | `LIGHT RIGHT 255 90 0 BLINK` |
+| Hazard (bumper hit, RC override) | `LIGHT ALL 255 0 0 BLINK` |
+| Brake / stop | `LIGHT REAR 255 0 0 SOLID` |
+| Robot listening (voice) | `LIGHT ALL 0 0 255 PULSE` |
+| Robot speaking | `LIGHT ALL 0 255 255 PULSE` |
+| All off | `LIGHT ALL 0 0 0 SOLID` |
+
+#### Other messages
+
 | Format | Meaning |
 |---|---|
-| `LIGHT LEFT\n` | Left turn signal on |
-| `LIGHT RIGHT\n` | Right turn signal on |
-| `LIGHT HAZARD\n` | Both turn signals blink |
-| `LIGHT BRAKE\n` | Rear brake lights |
-| `LIGHT OFF\n` | All lights off |
 | `SPEED <rpm>\n` | Current wheel ERPM (for speed-dependent lighting) |
 | `BMP <bitmask>\n` | Bumper state (FL=1, FR=2, RL=4, RR=8) — proximity warning |
 
@@ -189,6 +237,45 @@ while returning a perfectly valid table — check the table itself, not the mess
 | 3 | `TOF_FRONT_RIGHT` | PB6 | 0x33 |
 | 4 | `TOF_REAR` | PC9 | 0x34 |
 
+### ESP32-S3 (DevKitC-1 N16R8) Pin Assignments
+
+| GPIO | Signal | Notes |
+|---|---|---|
+| 35 | UART1 RX ← STM32 PC10 (USART3 TX) | 115200 8N1 |
+| 36 | UART1 TX → STM32 PC5 (USART3 RX) | 115200 8N1 |
+| 8 | I2C SDA | INA228, BME280, SGP30, SPS30, VEML7700 |
+| 9 | I2C SCL | |
+| 38 | WS2812B side strip LEFT (23 LEDs) | |
+| 39 | WS2812B side strip RIGHT (23 LEDs) | |
+| 4 | DS18B20 1-Wire | Both battery and DC-DC temp sensors on same bus |
+| 1 | MQ-2 ADC | ADC_11db attenuation (0–3.3 V), 3 min warmup |
+| 21 | Buzzer (MOSFET) | Active HIGH |
+| 10 | ST7789 CS (SPI) | |
+| 11 | ST7789 MOSI (SPI) | |
+| 12 | ST7789 SCK (SPI) | |
+| 41 | ST7789 DC | |
+| 5 | ST7789 RST | |
+| 19 | USB D− | Reserved — Jetson USB serial |
+| 20 | USB D+ | Reserved — Jetson USB serial |
+
+**I2C device addresses:** INA228=0x40, BME280=0x76 (or 0x77), SPS30=0x69
+
+| 15 | Front amber turn signal LEFT (MOSFET) | Digital |
+| 16 | Front amber turn signal RIGHT (MOSFET) | Digital |
+| 17 | Rear red turn signal LEFT (PWM) | analogWrite: TAIL=64, BRAKE=255 |
+| 18 | Rear red turn signal RIGHT (PWM) | analogWrite: TAIL=64, BRAKE=255 |
+| 14 | Spotlight (MOSFET) | Digital |
+
+**Blink rate:** 330 ms on / 330 ms off (~90 blinks/min)
+
+| 2 | 12V rail ADC (56k/10k divider, calibrated ratio 7.55) | ADC1_CH1, DB_12 attenuation |
+| 6 | 5V rail ADC (22k/10k divider, calibrated ratio 2.73) | ADC1_CH5, DB_12 attenuation |
+| 7 | 3.3V rail ADC (10k/10k divider, ratio 2.0) | ADC1_CH6, DB_12 attenuation |
+
+**TBD pins (not yet wired/documented):** IR illuminators, panel buttons, rear light
+
+**GPIO 26–32** — internal octal flash, do not use. **GPIO 33–37** — internal PSRAM (R8 variant), do not use. **GPIO 46** — strapping pin, must be LOW at boot.
+
 ### Safety chain (hardware — no software in path)
 ```
 24V control → rocker/key → E-stop NC → MOSFET board VIN+ → (PB12-controlled MOSFET) → OUT+ → A1 → coil → A2 → GND
@@ -222,6 +309,7 @@ STM32 enable is a normally-off stage: MCU active = coil energized; IWDG reset / 
 | `firmware/stm32/lib/sh2/` | Hillcrest SH-2 library for BNO085 |
 | `ros2/src/irx_driver/src/motor_driver_node.cpp` | ROS2 node: `/cmd_vel` → serial → STM32, publishes `/odom` + TF |
 | `firmware/esp32/hw_test/` | Per-sensor Arduino validation sketches |
+| `firmware/esp32/irxbot_esp32/main/` | ESP32-S3 main firmware (ESP-IDF + FreeRTOS) |
 | `docs/robot-spec.md` | Authoritative hardware component list |
 | `firmware/config/vesc/` | VESC motor config XML |
 

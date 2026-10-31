@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/CMakeFiles/bootloader"
+		},
+		{
+			"file" : "/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/CMakeFiles/bootloader.rule"
+		},
+		{
+			"file" : "/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/CMakeFiles/bootloader-complete.rule"
+		},
+		{
+			"file" : "/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule"
+		},
+		{
+			"file" : "/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule"
+		},
+		{
+			"file" : "/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule"
+		},
+		{
+			"file" : "/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule"
+		},
+		{
+			"file" : "/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule"
+		},
+		{
+			"file" : "/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule"
+		},
+		{
+			"file" : "/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"bootloader"
+		],
+		"name" : "bootloader"
+	}
+}

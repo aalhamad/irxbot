@@ -1,0 +1,2 @@
+/home/aalhamad/.espressif/tools/xtensa-esp-elf/esp-13.2.0_20240530/xtensa-esp-elf/bin/xtensa-esp32s3-elf-ar qc libespressif__ds18b20.a CMakeFiles/__idf_espressif__ds18b20.dir/src/ds18b20.c.obj
+/home/aalhamad/.espressif/tools/xtensa-esp-elf/esp-13.2.0_20240530/xtensa-esp-elf/bin/xtensa-esp32s3-elf-ranlib libespressif__ds18b20.a

@@ -1,6 +1,6 @@
 #include <Adafruit_NeoPixel.h>
 
-#define N 23
+#define N 22
 Adafruit_NeoPixel L(N, 38, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel R(N, 39, NEO_GRB + NEO_KHZ800);
 

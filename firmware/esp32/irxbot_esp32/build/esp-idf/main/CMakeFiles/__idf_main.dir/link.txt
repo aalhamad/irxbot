@@ -1,0 +1,2 @@
+/home/aalhamad/.espressif/tools/xtensa-esp-elf/esp-13.2.0_20240530/xtensa-esp-elf/bin/xtensa-esp32s3-elf-ar qc libmain.a CMakeFiles/__idf_main.dir/irxbot_esp32.c.obj CMakeFiles/__idf_main.dir/task_uart.c.obj CMakeFiles/__idf_main.dir/task_lighting.c.obj CMakeFiles/__idf_main.dir/task_sensors.c.obj CMakeFiles/__idf_main.dir/task_telemetry.c.obj
+/home/aalhamad/.espressif/tools/xtensa-esp-elf/esp-13.2.0_20240530/xtensa-esp-elf/bin/xtensa-esp32s3-elf-ranlib libmain.a

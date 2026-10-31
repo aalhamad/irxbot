@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/CMakeFiles/bootloader
+/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/CMakeFiles/bootloader.rule
+/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/CMakeFiles/bootloader-complete.rule
+/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule

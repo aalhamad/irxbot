@@ -347,7 +347,7 @@ void ToF_Process(void)
         rs &= 0x1F;
         /* ULD maps raw status: 9 = range valid */
         _data[i].status      = (rs == 9) ? 0 : rs;
-        _data[i].distance_mm = dist;
+        _data[i].distance_mm = (rs == 9) ? dist : 0;
 
         /* Clear interrupt to arm next sample */
         wr8(ADDR8(i), REG_SYSTEM_INTERRUPT_CLEAR, 0x01);

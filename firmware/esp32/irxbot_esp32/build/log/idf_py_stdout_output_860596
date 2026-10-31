@@ -1,0 +1,352 @@
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x28 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2810,len:0x1870
+load:0x403c8700,len:0x4
+load:0x403c8704,len:0xce8
+load:0x403cb700,len:0x2ed8
+entry 0x403c8918
+[0;32mI (27) boot: ESP-IDF v5.3.2 2nd stage bootloader[0m
+[0;32mI (27) boot: compile time Oct 24 2026 03:15:03[0m
+[0;32mI (27) boot: Multicore bootloader[0m
+[0;32mI (30) boot: chip revision: v0.2[0m
+[0;32mI (34) boot: efuse block revision: v1.4[0m
+[0;32mI (38) boot.esp32s3: Boot SPI Speed : 80MHz[0m
+[0;32mI (43) boot.esp32s3: SPI Mode       : DIO[0m
+[0;32mI (48) boot.esp32s3: SPI Flash Size : 16MB[0m
+[0;32mI (53) boot: Enabling RNG early entropy source...[0m
+[0;32mI (58) boot: Partition Table:[0m
+[0;32mI (62) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (69) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (76) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (84) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (91) boot: End of partition table[0m
+[0;32mI (95) esp_image: segment 0: paddr=00010020 vaddr=3c040020 size=11afch ( 72444) map[0m
+[0;32mI (117) esp_image: segment 1: paddr=00021b24 vaddr=3fc95500 size=02f50h ( 12112) load[0m
+[0;32mI (120) esp_image: segment 2: paddr=00024a7c vaddr=40374000 size=0b59ch ( 46492) load[0m
+[0;32mI (133) esp_image: segment 3: paddr=00030020 vaddr=42000020 size=332d4h (209620) map[0m
+[0;32mI (170) esp_image: segment 4: paddr=000632fc vaddr=4037f59c size=05f44h ( 24388) load[0m
+[0;32mI (176) esp_image: segment 5: paddr=00069248 vaddr=600fe100 size=00004h (     4) load[0m
+[0;32mI (183) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (183) boot: Disabling RNG early entropy source...[0m
+[0;32mI (199) cpu_start: Multicore app[0m
+[0;32mI (208) cpu_start: Pro cpu start user code[0m
+[0;32mI (208) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (208) app_init: Application information:[0m
+[0;32mI (211) app_init: Project name:     irxbot_esp32[0m
+[0;32mI (216) app_init: App version:      748f16f-dirty[0m
+[0;32mI (222) app_init: Compile time:     Oct 24 2026 03:15:21[0m
+[0;32mI (228) app_init: ELF file SHA256:  946376a8d...[0m
+[0;32mI (233) app_init: ESP-IDF:          v5.3.2[0m
+[0;32mI (238) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (243) efuse_init: Max chip rev:     v0.99 [0m
+[0;32mI (248) efuse_init: Chip rev:         v0.2[0m
+[0;32mI (252) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (260) heap_init: At 3FC98EA0 len 00050870 (322 KiB): RAM[0m
+[0;32mI (266) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM[0m
+[0;32mI (272) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM[0m
+[0;32mI (278) heap_init: At 600FE104 len 00001EE4 (7 KiB): RTCRAM[0m
+[0;32mI (285) spi_flash: detected chip: boya[0m
+[0;32mI (289) spi_flash: flash io: dio[0m
+[0;32mI (293) sleep: Configure to isolate all GPIO pins in sleep state[0m
+[0;32mI (300) sleep: Enable automatic switching of GPIO sleep configuration[0m
+[0;32mI (307) main_task: Started on CPU0[0m
+[0;32mI (337) main_task: Calling app_main()[0m
+[0;32mI (337) uart: started on UART1 rx=35 tx=36[0m
+[0;32mI (337) gpio: GPIO[14]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (347) gpio: GPIO[15]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (357) gpio: GPIO[16]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (367) gpio: GPIO[38]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (377) gpio: GPIO[39]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (387) lighting: started[0m
+[0;32mI (387) gpio: GPIO[8]| InputEn: 1| OutputEn: 1| OpenDrain: 1| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (397) gpio: GPIO[9]| InputEn: 1| OutputEn: 1| OpenDrain: 1| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (407) sensors: started[0m
+[0;32mI (407) main_task: Returned from app_main()[0m
+[0;32mI (417) gpio: GPIO[4]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (417) gpio: GPIO[4]| InputEn: 1| OutputEn: 1| OpenDrain: 1| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;33mW (867) sensors: INA ID try 1: ESP_ERR_INVALID_STATE[0m
+[0;32mI (917) sensors: INA ID try 2: OK 0x5449[0m
+[0;32mI (947) sensors: ina=1 bme=1 sgp=1 sps=1 veml=1 ds=1(3)[0m
+[0;32mI (947) sensors: MQ-2 init, warming up 3 min[0m
+ENV vbat=26.43 i=0.112 v12=12.01 v5=4.98 v33=3.22 t=0.0 h=0 p=0.0 tvoc=0 eco2=400 pm25=0.0 pm10=0.0 lux=79 tb=0.0 tr=0.0 tf=0.0 mq2=0.167 st=0 ok=0x15 err=0,0,0,0,0,0
+[0;32mI (6457) sensors: Vbat=26.43 I=0.107A | 12V=12.01 5V=4.98 3V3=3.22 | T=0.0C H=0% | TVOC=0 eCO2=400 | PM2.5=123.1 | Lux=79 | Tbatt=0.0 Trear=0.0 Tfront=0.0 | MQ2=0.167V st=0 | ok=0x1D err=0,0,0,0,0,0[0m
+ENV vbat=26.44 i=0.104 v12=12.02 v5=4.99 v33=3.23 t=0.0 h=0 p=0.0 tvoc=0 eco2=400 pm25=123.1 pm10=123.6 lux=74 tb=0.0 tr=0.0 tf=0.0 mq2=0.168 st=0 ok=0x1D err=0,0,0,0,0,0
+[0;32mI (12997) sensors: Vbat=26.43 I=0.101A | 12V=12.06 5V=5.00 3V3=3.23 | T=26.6C H=54% | TVOC=0 eCO2=400 | PM2.5=120.3 | Lux=73 | Tbatt=29.1 Trear=27.9 Tfront=25.0 | MQ2=0.170V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.44 i=0.106 v12=12.06 v5=4.99 v33=3.22 t=26.6 h=54 p=1012.7 tvoc=0 eco2=400 pm25=120.3 pm10=120.7 lux=113 tb=29.1 tr=27.9 tf=25.0 mq2=0.172 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (18517) sensors: Vbat=26.44 I=0.115A | 12V=12.00 5V=4.99 3V3=3.22 | T=26.6C H=54% | TVOC=0 eCO2=401 | PM2.5=118.2 | Lux=119 | Tbatt=29.1 Trear=27.9 Tfront=25.0 | MQ2=0.169V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.43 i=0.107 v12=12.02 v5=5.00 v33=3.23 t=26.6 h=54 p=1012.7 tvoc=5 eco2=405 pm25=118.2 pm10=118.9 lux=116 tb=29.1 tr=27.9 tf=25.0 mq2=0.170 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (25057) sensors: Vbat=26.43 I=0.105A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=10 eCO2=408 | PM2.5=117.1 | Lux=99 | Tbatt=29.1 Trear=27.9 Tfront=25.1 | MQ2=0.167V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.43 i=0.105 v12=12.02 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=10 eco2=408 pm25=117.1 pm10=117.9 lux=99 tb=29.1 tr=27.9 tf=25.1 mq2=0.167 st=0 ok=0x3F err=0,0,0,0,0,0
+ENV vbat=26.43 i=0.106 v12=12.05 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=5 eco2=406 pm25=117.1 pm10=117.9 lux=90 tb=29.1 tr=27.9 tf=25.1 mq2=0.171 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (30577) sensors: Vbat=26.43 I=0.113A | 12V=12.05 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=6 eCO2=405 | PM2.5=116.2 | Lux=90 | Tbatt=29.1 Trear=27.9 Tfront=25.1 | MQ2=0.171V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.44 i=0.102 v12=12.00 v5=5.00 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=0 eco2=401 pm25=116.2 pm10=117.2 lux=89 tb=29.1 tr=27.9 tf=25.1 mq2=0.169 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (37117) sensors: Vbat=26.43 I=0.106A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=6 eCO2=400 | PM2.5=114.8 | Lux=80 | Tbatt=29.1 Trear=27.9 Tfront=25.0 | MQ2=0.163V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.43 i=0.105 v12=12.05 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=10 eco2=414 pm25=114.8 pm10=115.9 lux=68 tb=29.1 tr=27.9 tf=25.0 mq2=0.170 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (42637) sensors: Vbat=26.43 I=0.113A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=1 eCO2=400 | PM2.5=113.7 | Lux=75 | Tbatt=29.1 Trear=27.9 Tfront=25.0 | MQ2=0.167V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.43 i=0.104 v12=12.03 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=4 eco2=407 pm25=113.7 pm10=114.7 lux=67 tb=29.1 tr=27.9 tf=25.0 mq2=0.169 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (49177) sensors: Vbat=26.43 I=0.107A | 12V=12.04 5V=5.00 3V3=3.23 | T=26.6C H=54% | TVOC=1 eCO2=404 | PM2.5=114.2 | Lux=86 | Tbatt=29.1 Trear=27.9 Tfront=25.1 | MQ2=0.169V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.43 i=0.104 v12=12.04 v5=5.00 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=0 eco2=400 pm25=114.2 pm10=115.1 lux=86 tb=29.1 tr=27.9 tf=25.1 mq2=0.169 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (54697) sensors: Vbat=26.44 I=0.104A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=0 eCO2=406 | PM2.5=113.4 | Lux=133 | Tbatt=29.1 Trear=27.9 Tfront=25.1 | MQ2=0.168V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.44 i=0.104 v12=12.03 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=0 eco2=406 pm25=113.4 pm10=114.2 lux=133 tb=29.1 tr=27.9 tf=25.1 mq2=0.168 st=0 ok=0x3F err=0,0,0,0,0,0
+ENV vbat=26.44 i=0.105 v12=12.00 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=8 eco2=409 pm25=111.6 pm10=112.2 lux=99 tb=29.1 tr=27.9 tf=25.1 mq2=0.168 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (61237) sensors: Vbat=26.44 I=0.105A | 12V=12.00 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=8 eCO2=409 | PM2.5=111.6 | Lux=99 | Tbatt=29.1 Trear=27.9 Tfront=25.1 | MQ2=0.168V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.44 i=0.113 v12=12.00 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=1 eco2=404 pm25=111.6 pm10=112.2 lux=88 tb=29.1 tr=27.9 tf=25.1 mq2=0.170 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (66757) sensors: Vbat=26.44 I=0.106A | 12V=12.01 5V=4.99 3V3=3.22 | T=26.6C H=54% | TVOC=7 eCO2=413 | PM2.5=110.9 | Lux=83 | Tbatt=29.1 Trear=27.9 Tfront=25.1 | MQ2=0.169V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.44 i=0.103 v12=12.05 v5=5.00 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=8 eco2=409 pm25=110.9 pm10=111.3 lux=81 tb=29.1 tr=27.9 tf=25.1 mq2=0.169 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (73297) sensors: Vbat=26.44 I=0.107A | 12V=12.04 5V=5.00 3V3=3.23 | T=26.6C H=54% | TVOC=4 eCO2=405 | PM2.5=110.2 | Lux=74 | Tbatt=29.1 Trear=27.9 Tfront=25.1 | MQ2=0.169V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.44 i=0.104 v12=12.04 v5=5.00 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=3 eco2=405 pm25=110.2 pm10=110.6 lux=77 tb=29.1 tr=27.9 tf=25.1 mq2=0.169 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (78817) sensors: Vbat=26.43 I=0.105A | 12V=12.05 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=8 eCO2=408 | PM2.5=109.4 | Lux=86 | Tbatt=29.1 Trear=27.9 Tfront=25.1 | MQ2=0.169V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.43 i=0.114 v12=12.02 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=4 eco2=411 pm25=109.4 pm10=109.8 lux=94 tb=29.1 tr=27.9 tf=25.1 mq2=0.171 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (85357) sensors: Vbat=26.43 I=0.115A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=2 eCO2=410 | PM2.5=108.5 | Lux=99 | Tbatt=29.1 Trear=27.9 Tfront=25.1 | MQ2=0.164V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.43 i=0.115 v12=12.03 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=2 eco2=410 pm25=108.5 pm10=109.0 lux=99 tb=29.1 tr=27.9 tf=25.1 mq2=0.164 st=0 ok=0x3F err=0,0,0,0,0,0
+ENV vbat=26.44 i=0.113 v12=12.03 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=5 eco2=403 pm25=108.5 pm10=109.0 lux=28 tb=29.1 tr=27.9 tf=25.1 mq2=0.175 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (90877) sensors: Vbat=26.43 I=0.106A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=4 eCO2=403 | PM2.5=165.4 | Lux=28 | Tbatt=29.1 Trear=27.9 Tfront=25.1 | MQ2=0.175V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.04 v5=4.99 v33=3.22 t=26.6 h=54 p=1012.8 tvoc=1 eco2=400 pm25=165.4 pm10=166.8 lux=78 tb=29.1 tr=27.9 tf=25.1 mq2=0.170 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (97417) sensors: Vbat=26.44 I=0.115A | 12V=12.00 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=8 eCO2=419 | PM2.5=1190.9 | Lux=106 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.169V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.43 i=0.105 v12=12.02 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=5 eco2=416 pm25=1190.9 pm10=1213.6 lux=35 tb=29.1 tr=28.0 tf=25.1 mq2=0.170 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (102937) sensors: Vbat=26.44 I=0.107A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=13 eCO2=491 | PM2.5=1179.4 | Lux=125 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.159V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.44 i=0.106 v12=11.97 v5=4.98 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=32 eco2=586 pm25=1179.4 pm10=1199.4 lux=108 tb=29.1 tr=28.0 tf=25.1 mq2=0.169 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (109477) sensors: Vbat=26.43 I=0.105A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=31 eCO2=591 | PM2.5=403.7 | Lux=106 | Tbatt=29.1 Trear=27.9 Tfront=25.1 | MQ2=0.168V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.43 i=0.105 v12=12.01 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.9 tvoc=31 eco2=591 pm25=403.7 pm10=412.4 lux=106 tb=29.1 tr=27.9 tf=25.1 mq2=0.168 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (114997) sensors: Vbat=26.43 I=0.114A | 12V=12.03 5V=5.02 3V3=3.23 | T=26.6C H=54% | TVOC=29 eCO2=530 | PM2.5=316.2 | Lux=90 | Tbatt=29.1 Trear=27.9 Tfront=25.1 | MQ2=0.169V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.43 i=0.114 v12=12.03 v5=5.02 v33=3.23 t=26.6 h=54 p=1012.9 tvoc=29 eco2=530 pm25=316.2 pm10=325.3 lux=90 tb=29.1 tr=27.9 tf=25.1 mq2=0.169 st=0 ok=0x3F err=0,0,0,0,0,0
+ENV vbat=26.44 i=0.105 v12=12.04 v5=4.99 v33=3.22 t=26.6 h=54 p=1012.9 tvoc=59 eco2=730 pm25=316.2 pm10=325.3 lux=85 tb=29.1 tr=27.9 tf=25.1 mq2=0.166 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (121537) sensors: Vbat=26.44 I=0.104A | 12V=12.07 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=56 eCO2=727 | PM2.5=311.4 | Lux=73 | Tbatt=29.1 Trear=27.9 Tfront=25.1 | MQ2=0.172V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.44 i=0.108 v12=12.02 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=96 eco2=852 pm25=311.4 pm10=320.9 lux=90 tb=29.1 tr=27.9 tf=25.1 mq2=0.171 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (127057) sensors: Vbat=26.44 I=0.114A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=96 eCO2=823 | PM2.5=348.0 | Lux=116 | Tbatt=29.1 Trear=27.9 Tfront=25.1 | MQ2=0.173V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.44 i=0.115 v12=12.03 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=99 eco2=807 pm25=348.0 pm10=357.2 lux=121 tb=29.1 tr=27.9 tf=25.1 mq2=0.175 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (133597) sensors: Vbat=26.44 I=0.105A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=97 eCO2=785 | PM2.5=330.7 | Lux=143 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.177V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.44 i=0.108 v12=12.04 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=95 eco2=772 pm25=330.7 pm10=339.3 lux=143 tb=29.1 tr=28.0 tf=25.1 mq2=0.177 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (139117) sensors: Vbat=26.44 I=0.114A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=84 eCO2=706 | PM2.5=705.0 | Lux=97 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.176V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.44 i=0.104 v12=12.01 v5=5.00 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=83 eco2=701 pm25=705.0 pm10=723.7 lux=101 tb=29.1 tr=28.0 tf=25.1 mq2=0.163 st=0 ok=0x3F err=0,0,0,0,0,0
+ENV vbat=26.44 i=0.103 v12=12.06 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.7 tvoc=85 eco2=766 pm25=917.2 pm10=941.6 lux=82 tb=29.1 tr=28.0 tf=25.1 mq2=0.175 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (145657) sensors: Vbat=26.44 I=0.103A | 12V=12.06 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=85 eCO2=766 | PM2.5=917.2 | Lux=82 | Tbatt=29.1 Trear=27.9 Tfront=25.1 | MQ2=0.175V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.43 i=0.106 v12=12.05 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.7 tvoc=124 eco2=954 pm25=917.2 pm10=941.6 lux=93 tb=29.1 tr=27.9 tf=25.1 mq2=0.178 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (151177) sensors: Vbat=26.43 I=0.107A | 12V=12.05 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=121 eCO2=903 | PM2.5=602.4 | Lux=93 | Tbatt=29.1 Trear=27.9 Tfront=25.1 | MQ2=0.178V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.43 i=0.106 v12=12.01 v5=4.95 v33=3.23 t=26.6 h=54 p=1012.7 tvoc=121 eco2=1006 pm25=602.4 pm10=616.2 lux=113 tb=29.1 tr=27.9 tf=25.1 mq2=0.175 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (157717) sensors: Vbat=26.44 I=0.105A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=124 eCO2=987 | PM2.5=467.1 | Lux=128 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.175V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.43 i=0.105 v12=12.04 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.9 tvoc=129 eco2=903 pm25=467.1 pm10=476.5 lux=106 tb=29.1 tr=28.0 tf=25.1 mq2=0.171 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (163237) sensors: Vbat=26.43 I=0.105A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=119 eCO2=894 | PM2.5=488.0 | Lux=101 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.173V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.43 i=0.111 v12=12.02 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.9 tvoc=125 eco2=888 pm25=488.0 pm10=496.6 lux=102 tb=29.1 tr=28.0 tf=25.1 mq2=0.177 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (169777) sensors: Vbat=26.43 I=0.105A | 12V=12.05 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=117 eCO2=852 | PM2.5=486.6 | Lux=85 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.165V st=0 | ok=0x3F err=0,0,0,0,0,0[0m
+ENV vbat=26.43 i=0.105 v12=12.05 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=117 eco2=852 pm25=486.6 pm10=493.6 lux=85 tb=29.1 tr=28.0 tf=25.1 mq2=0.165 st=0 ok=0x3F err=0,0,0,0,0,0
+[0;32mI (175277) sensors: Vbat=26.43 I=0.105A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=117 eCO2=832 | PM2.5=444.1 | Lux=149 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.174V st=0 | ok=0x3F err=0,0,1,0,0,0[0m
+ENV vbat=26.43 i=0.105 v12=12.02 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=117 eco2=832 pm25=444.1 pm10=449.9 lux=149 tb=29.1 tr=28.0 tf=25.1 mq2=0.174 st=0 ok=0x3F err=0,0,1,0,0,0
+ENV vbat=26.44 i=0.114 v12=12.05 v5=5.00 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=106 eco2=725 pm25=444.1 pm10=449.9 lux=106 tb=29.1 tr=28.0 tf=25.1 mq2=0.173 st=0 ok=0x3F err=0,0,1,0,0,0
+[0;32mI (181817) sensors: Vbat=26.43 I=0.109A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=98 eCO2=696 | PM2.5=395.5 | Lux=105 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.171V st=0 | ok=0x3F err=0,0,1,0,0,0[0m
+ENV vbat=26.44 i=0.111 v12=12.01 v5=4.98 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=79 eco2=644 pm25=395.5 pm10=400.0 lux=82 tb=29.1 tr=28.0 tf=25.1 mq2=0.172 st=0 ok=0x7F err=0,0,1,0,0,0
+[0;32mI (187337) sensors: Vbat=26.44 I=0.105A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=80 eCO2=662 | PM2.5=331.5 | Lux=68 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.176V st=0 | ok=0x7F err=0,0,1,0,0,0[0m
+ENV vbat=26.44 i=0.106 v12=12.04 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=67 eco2=623 pm25=331.5 pm10=335.4 lux=68 tb=29.1 tr=28.0 tf=25.1 mq2=0.175 st=0 ok=0x7F err=0,0,1,0,0,0
+[0;32mI (193877) sensors: Vbat=26.44 I=0.116A | 12V=12.03 5V=5.00 3V3=3.23 | T=26.6C H=53% | TVOC=67 eCO2=657 | PM2.5=295.6 | Lux=115 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.174V st=0 | ok=0x7F err=0,0,1,0,0,0[0m
+ENV vbat=26.43 i=0.108 v12=12.03 v5=5.00 v33=3.23 t=26.6 h=53 p=1012.9 tvoc=71 eco2=673 pm25=295.6 pm10=298.9 lux=115 tb=29.1 tr=28.0 tf=25.1 mq2=0.174 st=0 ok=0x7F err=0,0,1,0,0,0
+[0;32mI (199397) sensors: Vbat=26.44 I=0.104A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.6C H=53% | TVOC=68 eCO2=671 | PM2.5=281.4 | Lux=105 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.173V st=0 | ok=0x7F err=0,0,1,0,0,0[0m
+ENV vbat=26.44 i=0.104 v12=12.03 v5=4.99 v33=3.23 t=26.6 h=53 p=1012.9 tvoc=68 eco2=671 pm25=281.4 pm10=284.5 lux=105 tb=29.1 tr=28.0 tf=25.1 mq2=0.173 st=0 ok=0x7F err=0,0,1,0,0,0
+ENV vbat=26.44 i=0.111 v12=12.02 v5=4.99 v33=3.23 t=26.6 h=53 p=1012.8 tvoc=80 eco2=720 pm25=271.4 pm10=274.4 lux=94 tb=29.1 tr=28.0 tf=25.1 mq2=0.174 st=0 ok=0x7F err=0,0,1,0,0,0
+[0;32mI (205937) sensors: Vbat=26.44 I=0.111A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.6C H=53% | TVOC=80 eCO2=720 | PM2.5=271.4 | Lux=94 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.174V st=0 | ok=0x7F err=0,0,1,0,0,0[0m
+ENV vbat=26.43 i=0.104 v12=12.01 v5=4.99 v33=3.23 t=26.6 h=53 p=1012.8 tvoc=80 eco2=708 pm25=271.4 pm10=274.4 lux=80 tb=29.1 tr=28.0 tf=25.1 mq2=0.174 st=0 ok=0x7F err=0,0,1,0,0,0
+[0;32mI (211457) sensors: Vbat=26.44 I=0.115A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.6C H=53% | TVOC=82 eCO2=697 | PM2.5=267.4 | Lux=80 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.174V st=0 | ok=0x7F err=0,0,1,0,0,0[0m
+ENV vbat=26.44 i=0.102 v12=12.01 v5=4.99 v33=3.22 t=26.6 h=53 p=1012.8 tvoc=86 eco2=700 pm25=267.4 pm10=270.6 lux=90 tb=29.1 tr=28.0 tf=25.1 mq2=0.174 st=0 ok=0x7F err=0,0,1,0,0,0
+[0;32mI (217997) sensors: Vbat=26.44 I=0.105A | 12V=12.05 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=75 eCO2=711 | PM2.5=266.5 | Lux=115 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.172V st=0 | ok=0x7F err=0,0,1,0,0,0[0m
+ENV vbat=26.44 i=0.112 v12=12.01 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=88 eco2=747 pm25=266.5 pm10=269.2 lux=105 tb=29.1 tr=28.0 tf=25.1 mq2=0.175 st=0 ok=0x7F err=0,0,1,0,0,0
+[0;32mI (223517) sensors: Vbat=26.44 I=0.113A | 12V=12.01 5V=4.99 3V3=3.22 | T=26.6C H=54% | TVOC=92 eCO2=749 | PM2.5=277.2 | Lux=105 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.172V st=0 | ok=0x7F err=0,0,1,0,0,0[0m
+ENV vbat=26.44 i=0.106 v12=12.02 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=88 eco2=748 pm25=277.2 pm10=278.6 lux=105 tb=29.1 tr=28.0 tf=25.1 mq2=0.177 st=0 ok=0x7F err=0,0,1,0,0,0
+[0;32mI (230057) sensors: Vbat=26.44 I=0.106A | 12V=12.04 5V=4.98 3V3=3.22 | T=26.6C H=54% | TVOC=94 eCO2=745 | PM2.5=284.5 | Lux=96 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.175V st=0 | ok=0x7F err=0,0,1,0,0,0[0m
+ENV vbat=26.44 i=0.106 v12=12.04 v5=4.98 v33=3.22 t=26.6 h=54 p=1012.7 tvoc=94 eco2=745 pm25=284.5 pm10=285.0 lux=96 tb=29.1 tr=28.0 tf=25.1 mq2=0.175 st=0 ok=0x7F err=0,0,1,0,0,0
+ENV vbat=26.44 i=0.107 v12=12.01 v5=4.99 v33=3.22 t=26.6 h=54 p=1012.7 tvoc=90 eco2=707 pm25=284.5 pm10=285.0 lux=73 tb=29.1 tr=28.0 tf=25.1 mq2=0.176 st=0 ok=0x7F err=0,0,1,0,0,0
+[0;32mI (235577) sensors: Vbat=26.44 I=0.108A | 12V=12.01 5V=4.99 3V3=3.22 | T=26.6C H=54% | TVOC=85 eCO2=710 | PM2.5=298.3 | Lux=73 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.176V st=0 | ok=0x7F err=0,0,1,0,0,0[0m
+ENV vbat=26.43 i=0.105 v12=12.01 v5=4.99 v33=3.22 t=26.6 h=54 p=1012.7 tvoc=84 eco2=702 pm25=298.3 pm10=299.3 lux=82 tb=29.1 tr=28.0 tf=25.1 mq2=0.178 st=0 ok=0x7F err=0,0,1,0,0,0
+[0;32mI (242117) sensors: Vbat=26.44 I=0.105A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=79 eCO2=693 | PM2.5=309.6 | Lux=112 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.177V st=0 | ok=0x7F err=0,0,1,0,0,0[0m
+ENV vbat=26.43 i=0.109 v12=11.92 v5=5.00 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=84 eco2=712 pm25=309.6 pm10=310.0 lux=106 tb=29.1 tr=28.0 tf=25.1 mq2=0.178 st=0 ok=0x7F err=0,0,1,0,0,0
+[0;32mI (247637) sensors: Vbat=26.44 I=0.105A | 12V=12.05 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=82 eCO2=710 | PM2.5=326.4 | Lux=105 | Tbatt=29.1 Trear=28.0 Tfront=25.1 | MQ2=0.173V st=0 | ok=0x7F err=0,0,1,0,0,0[0m
+ENV vbat=26.44 i=0.107 v12=12.03 v5=5.00 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=83 eco2=733 pm25=326.4 pm10=326.9 lux=105 tb=29.1 tr=28.0 tf=25.1 mq2=0.174 st=0 ok=0x7F err=0,0,1,0,0,0
+[0;32mI (254177) sensors: Vbat=26.44 I=0.104A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=89 eCO2=721 | PM2.5=343.5 | Lux=98 | Tbatt=29.1 Trear=28.1 Tfront=25.1 | MQ2=0.176V st=0 | ok=0x7F err=0,0,1,0,0,0[0m
+ENV vbat=26.44 i=0.107 v12=12.03 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=81 eco2=675 pm25=343.5 pm10=344.6 lux=98 tb=29.1 tr=28.1 tf=25.1 mq2=0.176 st=0 ok=0x7F err=0,0,1,0,0,0
+[0;32mI (259697) sensors: Vbat=26.43 I=0.105A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=79 eCO2=673 | PM2.5=352.7 | Lux=67 | Tbatt=29.1 Trear=28.1 Tfront=25.1 | MQ2=0.175V st=0 | ok=0x7F err=0,0,1,0,0,0[0m
+ENV vbat=26.43 i=0.105 v12=12.02 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=79 eco2=673 pm25=352.7 pm10=353.8 lux=67 tb=29.1 tr=28.1 tf=25.1 mq2=0.175 st=0 ok=0x7F err=0,0,1,0,0,0
+ENV vbat=26.44 i=0.107 v12=12.05 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=74 eco2=659 pm25=352.3 pm10=354.0 lux=90 tb=29.1 tr=28.1 tf=25.1 mq2=0.174 st=0 ok=0x7F err=0,0,1,0,0,0
+[0;32mI (266237) sensors: Vbat=26.44 I=0.107A | 12V=12.05 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=74 eCO2=659 | PM2.5=352.3 | Lux=90 | Tbatt=29.1 Trear=28.0 Tfront=25.2 | MQ2=0.174V st=0 | ok=0x7F err=0,0,1,0,0,0[0m
+ENV vbat=26.44 i=0.115 v12=12.02 v5=5.00 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=68 eco2=652 pm25=352.3 pm10=354.0 lux=104 tb=29.1 tr=28.0 tf=25.2 mq2=0.174 st=0 ok=0x7F err=0,0,2,0,0,0
+[0;32mI (271737) sensors: Vbat=26.44 I=0.105A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=68 eCO2=655 | PM2.5=339.9 | Lux=97 | Tbatt=29.1 Trear=28.0 Tfront=25.2 | MQ2=0.173V st=0 | ok=0x7F err=0,0,2,0,0,0[0m
+ENV vbat=26.44 i=0.104 v12=12.02 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=73 eco2=662 pm25=339.9 pm10=341.8 lux=95 tb=29.1 tr=28.0 tf=25.2 mq2=0.174 st=0 ok=0x7F err=0,0,2,0,0,0
+[0;32mI (278277) sensors: Vbat=26.44 I=0.113A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=65 eCO2=612 | PM2.5=331.0 | Lux=88 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.177V st=0 | ok=0x7F err=0,0,2,0,0,0[0m
+ENV vbat=26.43 i=0.105 v12=12.02 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=60 eco2=615 pm25=331.0 pm10=332.7 lux=119 tb=29.1 tr=28.1 tf=25.2 mq2=0.177 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (283777) sensors: Vbat=26.43 I=0.105A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=62 eCO2=623 | PM2.5=305.8 | Lux=140 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.173V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.115 v12=12.05 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=63 eco2=622 pm25=305.8 pm10=307.4 lux=141 tb=29.1 tr=28.1 tf=25.2 mq2=0.178 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (290317) sensors: Vbat=26.44 I=0.115A | 12V=12.00 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=55 eCO2=604 | PM2.5=287.8 | Lux=105 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.170V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.115 v12=12.00 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.7 tvoc=55 eco2=604 pm25=287.8 pm10=288.8 lux=105 tb=29.1 tr=28.1 tf=25.2 mq2=0.170 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.44 i=0.112 v12=12.04 v5=4.99 v33=3.22 t=26.6 h=54 p=1012.7 tvoc=48 eco2=580 pm25=287.8 pm10=288.8 lux=80 tb=29.1 tr=28.1 tf=25.2 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (295837) sensors: Vbat=26.43 I=0.108A | 12V=12.04 5V=4.99 3V3=3.22 | T=26.6C H=54% | TVOC=49 eCO2=575 | PM2.5=274.4 | Lux=80 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.03 v5=4.99 v33=3.23 t=26.6 h=54 p=1012.7 tvoc=47 eco2=587 pm25=274.4 pm10=275.3 lux=69 tb=29.1 tr=28.1 tf=25.2 mq2=0.174 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (302377) sensors: Vbat=26.44 I=0.111A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=50 eCO2=580 | PM2.5=269.0 | Lux=80 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.106 v12=12.03 v5=4.99 v33=3.22 t=26.6 h=54 p=1012.8 tvoc=42 eco2=576 pm25=269.0 pm10=269.7 lux=124 tb=29.1 tr=28.1 tf=25.2 mq2=0.175 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (307897) sensors: Vbat=26.44 I=0.110A | 12V=12.05 5V=4.99 3V3=3.23 | T=26.6C H=54% | TVOC=40 eCO2=570 | PM2.5=260.4 | Lux=142 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.176V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.07 v5=4.98 v33=3.23 t=26.6 h=54 p=1012.8 tvoc=34 eco2=554 pm25=260.4 pm10=261.4 lux=143 tb=29.1 tr=28.1 tf=25.2 mq2=0.174 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (314437) sensors: Vbat=26.44 I=0.105A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.6C H=53% | TVOC=35 eCO2=562 | PM2.5=255.3 | Lux=105 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.175V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.03 v5=4.99 v33=3.23 t=26.6 h=53 p=1012.7 tvoc=35 eco2=562 pm25=255.3 pm10=255.6 lux=105 tb=29.1 tr=28.1 tf=25.2 mq2=0.175 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (319957) sensors: Vbat=26.43 I=0.115A | 12V=12.09 5V=4.98 3V3=3.22 | T=26.6C H=53% | TVOC=39 eCO2=562 | PM2.5=249.3 | Lux=80 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.115 v12=12.09 v5=4.98 v33=3.22 t=26.6 h=53 p=1012.7 tvoc=39 eco2=562 pm25=249.3 pm10=249.4 lux=80 tb=29.1 tr=28.1 tf=25.2 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.44 i=0.104 v12=12.04 v5=4.99 v33=3.23 t=26.6 h=53 p=1012.7 tvoc=35 eco2=566 pm25=249.3 pm10=249.4 lux=70 tb=29.1 tr=28.1 tf=25.2 mq2=0.177 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (326497) sensors: Vbat=26.44 I=0.105A | 12V=12.13 5V=5.00 3V3=3.22 | T=26.6C H=53% | TVOC=40 eCO2=571 | PM2.5=246.1 | Lux=78 | Tbatt=29.2 Trear=28.1 Tfront=25.2 | MQ2=0.174V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.105 v12=12.03 v5=4.99 v33=3.23 t=26.6 h=53 p=1012.9 tvoc=33 eco2=556 pm25=246.1 pm10=246.1 lux=121 tb=29.2 tr=28.1 tf=25.2 mq2=0.170 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (332017) sensors: Vbat=26.43 I=0.110A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.6C H=53% | TVOC=35 eCO2=553 | PM2.5=241.4 | Lux=137 | Tbatt=29.2 Trear=28.1 Tfront=25.2 | MQ2=0.173V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.116 v12=12.06 v5=4.99 v33=3.23 t=26.6 h=53 p=1012.9 tvoc=36 eco2=553 pm25=241.4 pm10=241.8 lux=106 tb=29.2 tr=28.1 tf=25.2 mq2=0.174 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (338557) sensors: Vbat=26.44 I=0.106A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.6C H=53% | TVOC=36 eCO2=555 | PM2.5=240.4 | Lux=105 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.175V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.01 v5=4.99 v33=3.23 t=26.6 h=53 p=1012.7 tvoc=29 eco2=547 pm25=240.4 pm10=240.9 lux=105 tb=29.1 tr=28.1 tf=25.2 mq2=0.175 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (344077) sensors: Vbat=26.43 I=0.112A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.6C H=53% | TVOC=33 eCO2=562 | PM2.5=240.0 | Lux=78 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.169V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.104 v12=12.01 v5=4.99 v33=3.23 t=26.6 h=53 p=1012.7 tvoc=34 eco2=566 pm25=240.0 pm10=240.6 lux=81 tb=29.1 tr=28.1 tf=25.2 mq2=0.170 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.44 i=0.108 v12=12.03 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=47 eco2=562 pm25=237.7 pm10=238.2 lux=75 tb=29.1 tr=28.1 tf=25.2 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (350617) sensors: Vbat=26.44 I=0.108A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=47 eCO2=562 | PM2.5=237.7 | Lux=75 | Tbatt=29.2 Trear=28.1 Tfront=25.2 | MQ2=0.173V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.104 v12=12.01 v5=4.99 v33=3.22 t=26.5 h=53 p=1012.8 tvoc=26 eco2=543 pm25=237.7 pm10=238.2 lux=139 tb=29.2 tr=28.1 tf=25.2 mq2=0.174 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (356137) sensors: Vbat=26.44 I=0.104A | 12V=12.01 5V=4.99 3V3=3.22 | T=26.5C H=53% | TVOC=25 eCO2=539 | PM2.5=235.9 | Lux=139 | Tbatt=29.2 Trear=28.1 Tfront=25.2 | MQ2=0.174V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.03 v5=4.98 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=30 eco2=542 pm25=235.9 pm10=236.2 lux=106 tb=29.2 tr=28.1 tf=25.2 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (362677) sensors: Vbat=26.44 I=0.105A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=33 eCO2=524 | PM2.5=233.7 | Lux=105 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.174V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.04 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=30 eco2=535 pm25=233.7 pm10=233.8 lux=88 tb=29.1 tr=28.1 tf=25.2 mq2=0.164 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (368197) sensors: Vbat=26.43 I=0.106A | 12V=12.05 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=26 eCO2=530 | PM2.5=231.7 | Lux=82 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.171V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.115 v12=12.03 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=27 eco2=533 pm25=231.7 pm10=232.0 lux=84 tb=29.1 tr=28.1 tf=25.2 mq2=0.170 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (374737) sensors: Vbat=26.43 I=0.107A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=25 eCO2=534 | PM2.5=230.4 | Lux=69 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.173V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.107 v12=12.03 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=25 eco2=534 pm25=230.4 pm10=230.6 lux=69 tb=29.1 tr=28.1 tf=25.2 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (380257) sensors: Vbat=26.44 I=0.105A | 12V=11.99 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=29 eCO2=531 | PM2.5=228.9 | Lux=119 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.173V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=11.99 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=29 eco2=531 pm25=228.9 pm10=229.1 lux=119 tb=29.1 tr=28.1 tf=25.2 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.44 i=0.113 v12=12.04 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=25 eco2=526 pm25=228.9 pm10=229.1 lux=126 tb=29.1 tr=28.1 tf=25.2 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (386797) sensors: Vbat=26.43 I=0.113A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=25 eCO2=524 | PM2.5=227.8 | Lux=146 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.173V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.02 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=34 eco2=518 pm25=227.8 pm10=228.0 lux=104 tb=29.1 tr=28.1 tf=25.2 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (392317) sensors: Vbat=26.43 I=0.107A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=24 eCO2=512 | PM2.5=219.9 | Lux=97 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.174V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.107 v12=11.81 v5=5.00 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=28 eco2=520 pm25=219.9 pm10=220.3 lux=101 tb=29.1 tr=28.1 tf=25.2 mq2=0.170 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (398857) sensors: Vbat=26.44 I=0.115A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.5C H=54% | TVOC=20 eCO2=518 | PM2.5=214.4 | Lux=84 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.175V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.106 v12=12.03 v5=4.99 v33=3.23 t=26.5 h=54 p=1012.7 tvoc=24 eco2=508 pm25=214.4 pm10=214.6 lux=84 tb=29.1 tr=28.1 tf=25.2 mq2=0.175 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (404377) sensors: Vbat=26.43 I=0.108A | 12V=12.18 5V=5.00 3V3=3.23 | T=26.5C H=54% | TVOC=18 eCO2=480 | PM2.5=208.5 | Lux=84 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.170V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.108 v12=12.18 v5=5.00 v33=3.23 t=26.5 h=54 p=1012.7 tvoc=18 eco2=480 pm25=208.5 pm10=208.9 lux=84 tb=29.1 tr=28.1 tf=25.2 mq2=0.170 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.44 i=0.104 v12=12.14 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=10 eco2=486 pm25=205.6 pm10=205.9 lux=115 tb=29.1 tr=28.1 tf=25.2 mq2=0.174 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (410917) sensors: Vbat=26.44 I=0.104A | 12V=12.14 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=10 eCO2=486 | PM2.5=205.6 | Lux=115 | Tbatt=29.1 Trear=28.0 Tfront=25.2 | MQ2=0.174V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.107 v12=12.07 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=19 eco2=489 pm25=205.6 pm10=205.9 lux=105 tb=29.1 tr=28.0 tf=25.2 mq2=0.178 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (416437) sensors: Vbat=26.44 I=0.112A | 12V=12.07 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=18 eCO2=497 | PM2.5=202.6 | Lux=105 | Tbatt=29.1 Trear=28.0 Tfront=25.2 | MQ2=0.178V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.106 v12=12.04 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=17 eco2=489 pm25=202.6 pm10=202.9 lux=104 tb=29.1 tr=28.0 tf=25.2 mq2=0.174 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (422977) sensors: Vbat=26.44 I=0.105A | 12V=12.03 5V=5.00 3V3=3.21 | T=26.5C H=53% | TVOC=17 eCO2=486 | PM2.5=200.9 | Lux=97 | Tbatt=29.1 Trear=28.0 Tfront=25.2 | MQ2=0.171V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.115 v12=12.03 v5=5.00 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=19 eco2=494 pm25=200.9 pm10=201.0 lux=70 tb=29.1 tr=28.0 tf=25.2 mq2=0.175 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (428497) sensors: Vbat=26.44 I=0.112A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=10 eCO2=459 | PM2.5=200.1 | Lux=76 | Tbatt=29.1 Trear=28.0 Tfront=25.2 | MQ2=0.174V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.106 v12=12.03 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=5 eco2=460 pm25=200.1 pm10=200.7 lux=68 tb=29.1 tr=28.0 tf=25.2 mq2=0.174 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (435037) sensors: Vbat=26.43 I=0.103A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=8 eCO2=464 | PM2.5=199.8 | Lux=112 | Tbatt=29.1 Trear=28.0 Tfront=25.2 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.103 v12=12.01 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.7 tvoc=8 eco2=464 pm25=199.8 pm10=200.3 lux=112 tb=29.1 tr=28.0 tf=25.2 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.44 i=0.105 v12=12.04 v5=5.00 v33=3.22 t=26.5 h=53 p=1012.7 tvoc=0 eco2=449 pm25=199.8 pm10=200.3 lux=105 tb=29.1 tr=28.0 tf=25.2 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (440557) sensors: Vbat=26.43 I=0.113A | 12V=12.04 5V=5.00 3V3=3.22 | T=26.5C H=53% | TVOC=4 eCO2=461 | PM2.5=196.4 | Lux=105 | Tbatt=29.1 Trear=28.0 Tfront=25.2 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.104 v12=12.01 v5=4.95 v33=3.23 t=26.5 h=53 p=1012.7 tvoc=0 eco2=448 pm25=196.4 pm10=196.8 lux=105 tb=29.1 tr=28.0 tf=25.2 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (447097) sensors: Vbat=26.44 I=0.105A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=3 eCO2=467 | PM2.5=194.3 | Lux=102 | Tbatt=29.1 Trear=28.0 Tfront=25.2 | MQ2=0.174V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.108 v12=12.02 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.7 tvoc=5 eco2=455 pm25=194.3 pm10=194.4 lux=79 tb=29.1 tr=28.0 tf=25.2 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (452617) sensors: Vbat=26.43 I=0.105A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=5 eCO2=453 | PM2.5=193.3 | Lux=70 | Tbatt=29.1 Trear=28.0 Tfront=25.2 | MQ2=0.174V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.106 v12=12.01 v5=5.00 v33=3.23 t=26.5 h=53 p=1012.7 tvoc=0 eco2=440 pm25=193.3 pm10=193.9 lux=73 tb=29.1 tr=28.0 tf=25.2 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (459157) sensors: Vbat=26.44 I=0.104A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=0 eCO2=447 | PM2.5=191.3 | Lux=84 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.171V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.106 v12=12.04 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=4 eco2=448 pm25=191.3 pm10=191.9 lux=84 tb=29.1 tr=28.1 tf=25.2 mq2=0.171 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (464677) sensors: Vbat=26.43 I=0.106A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=7 eCO2=452 | PM2.5=187.6 | Lux=143 | Tbatt=29.1 Trear=28.1 Tfront=25.2 | MQ2=0.173V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.106 v12=12.01 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=7 eco2=452 pm25=187.6 pm10=187.9 lux=143 tb=29.1 tr=28.1 tf=25.2 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.44 i=0.106 v12=12.03 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=1 eco2=444 pm25=185.9 pm10=186.3 lux=106 tb=29.1 tr=28.1 tf=25.2 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (471217) sensors: Vbat=26.44 I=0.106A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=1 eCO2=444 | PM2.5=185.9 | Lux=106 | Tbatt=29.1 Trear=28.0 Tfront=25.2 | MQ2=0.173V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.114 v12=12.05 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=4 eco2=441 pm25=185.9 pm10=186.3 lux=93 tb=29.1 tr=28.0 tf=25.2 mq2=0.176 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (476737) sensors: Vbat=26.44 I=0.103A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=4 eCO2=442 | PM2.5=184.7 | Lux=86 | Tbatt=29.1 Trear=28.0 Tfront=25.2 | MQ2=0.173V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.02 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=1 eco2=439 pm25=184.7 pm10=185.4 lux=84 tb=29.1 tr=28.0 tf=25.2 mq2=0.176 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (483277) sensors: Vbat=26.44 I=0.113A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=6 eCO2=436 | PM2.5=184.4 | Lux=72 | Tbatt=29.1 Trear=28.0 Tfront=25.3 | MQ2=0.174V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.04 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.7 tvoc=5 eco2=446 pm25=184.4 pm10=185.2 lux=112 tb=29.1 tr=28.0 tf=25.3 mq2=0.174 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (488797) sensors: Vbat=26.44 I=0.105A | 12V=11.92 5V=4.98 3V3=3.23 | T=26.5C H=53% | TVOC=5 eCO2=441 | PM2.5=184.3 | Lux=122 | Tbatt=29.1 Trear=28.0 Tfront=25.3 | MQ2=0.176V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.114 v12=12.03 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.7 tvoc=11 eco2=446 pm25=184.3 pm10=184.6 lux=116 tb=29.1 tr=28.0 tf=25.3 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (495337) sensors: Vbat=26.44 I=0.115A | 12V=12.05 5V=5.00 3V3=3.23 | T=26.5C H=53% | TVOC=5 eCO2=443 | PM2.5=183.8 | Lux=141 | Tbatt=29.1 Trear=28.0 Tfront=25.2 | MQ2=0.174V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.115 v12=12.05 v5=5.00 v33=3.23 t=26.5 h=53 p=1012.7 tvoc=5 eco2=443 pm25=183.8 pm10=184.0 lux=141 tb=29.1 tr=28.0 tf=25.2 mq2=0.174 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.44 i=0.104 v12=12.03 v5=4.98 v33=3.23 t=26.5 h=53 p=1012.7 tvoc=8 eco2=427 pm25=183.8 pm10=184.0 lux=102 tb=29.1 tr=28.0 tf=25.2 mq2=0.174 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (500857) sensors: Vbat=26.43 I=0.108A | 12V=12.03 5V=4.98 3V3=3.23 | T=26.5C H=53% | TVOC=3 eCO2=411 | PM2.5=183.3 | Lux=102 | Tbatt=29.1 Trear=28.0 Tfront=25.2 | MQ2=0.174V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.03 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.7 tvoc=0 eco2=412 pm25=183.3 pm10=183.6 lux=100 tb=29.1 tr=28.0 tf=25.2 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (507397) sensors: Vbat=26.43 I=0.108A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=0 eCO2=410 | PM2.5=180.7 | Lux=92 | Tbatt=29.1 Trear=28.0 Tfront=25.3 | MQ2=0.173V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.03 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.7 tvoc=0 eco2=413 pm25=180.7 pm10=180.8 lux=69 tb=29.1 tr=28.0 tf=25.3 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (512917) sensors: Vbat=26.44 I=0.111A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=9 eCO2=411 | PM2.5=175.9 | Lux=77 | Tbatt=29.1 Trear=28.0 Tfront=25.3 | MQ2=0.171V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.114 v12=12.03 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.7 tvoc=7 eco2=430 pm25=175.9 pm10=175.9 lux=66 tb=29.1 tr=28.0 tf=25.3 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (519457) sensors: Vbat=26.43 I=0.105A | 12V=12.03 5V=4.98 3V3=3.23 | T=26.5C H=54% | TVOC=11 eCO2=423 | PM2.5=173.9 | Lux=96 | Tbatt=29.1 Trear=28.0 Tfront=25.3 | MQ2=0.176V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.105 v12=12.03 v5=4.98 v33=3.23 t=26.5 h=54 p=1012.8 tvoc=11 eco2=423 pm25=173.9 pm10=173.9 lux=96 tb=29.1 tr=28.0 tf=25.3 mq2=0.176 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (524977) sensors: Vbat=26.44 I=0.113A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.5C H=54% | TVOC=7 eCO2=408 | PM2.5=172.7 | Lux=106 | Tbatt=29.1 Trear=28.0 Tfront=25.3 | MQ2=0.171V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.113 v12=12.03 v5=4.99 v33=3.23 t=26.5 h=54 p=1012.8 tvoc=7 eco2=408 pm25=172.7 pm10=173.3 lux=106 tb=29.1 tr=28.0 tf=25.3 mq2=0.171 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.44 i=0.106 v12=11.96 v5=4.99 v33=3.23 t=26.5 h=54 p=1012.8 tvoc=13 eco2=419 pm25=172.7 pm10=173.3 lux=105 tb=29.1 tr=28.0 tf=25.3 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (531517) sensors: Vbat=26.44 I=0.104A | 12V=12.01 5V=5.00 3V3=3.23 | T=26.5C H=54% | TVOC=3 eCO2=402 | PM2.5=170.0 | Lux=105 | Tbatt=29.1 Trear=28.1 Tfront=25.3 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.01 v5=4.98 v33=3.23 t=26.5 h=54 p=1012.8 tvoc=5 eco2=400 pm25=170.0 pm10=170.6 lux=82 tb=29.1 tr=28.1 tf=25.3 mq2=0.170 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (537037) sensors: Vbat=26.44 I=0.105A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.5C H=54% | TVOC=3 eCO2=400 | PM2.5=166.9 | Lux=73 | Tbatt=29.1 Trear=28.1 Tfront=25.3 | MQ2=0.173V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.115 v12=12.02 v5=4.99 v33=3.23 t=26.5 h=54 p=1012.8 tvoc=2 eco2=407 pm25=166.9 pm10=167.9 lux=68 tb=29.1 tr=28.1 tf=25.3 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (543577) sensors: Vbat=26.44 I=0.105A | 12V=12.04 5V=4.99 3V3=3.22 | T=26.5C H=53% | TVOC=2 eCO2=400 | PM2.5=166.1 | Lux=77 | Tbatt=29.1 Trear=28.0 Tfront=25.3 | MQ2=0.174V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.107 v12=12.04 v5=4.99 v33=3.22 t=26.5 h=53 p=1012.8 tvoc=0 eco2=400 pm25=166.1 pm10=167.4 lux=77 tb=29.1 tr=28.0 tf=25.3 mq2=0.174 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (549097) sensors: Vbat=26.44 I=0.105A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=7 eCO2=400 | PM2.5=165.5 | Lux=138 | Tbatt=29.1 Trear=28.0 Tfront=25.3 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.05 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=4 eco2=400 pm25=165.5 pm10=166.1 lux=134 tb=29.1 tr=28.0 tf=25.3 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.44 i=0.103 v12=12.03 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=0 eco2=400 pm25=165.1 pm10=165.2 lux=106 tb=29.1 tr=28.0 tf=25.3 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (555637) sensors: Vbat=26.44 I=0.103A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=0 eCO2=400 | PM2.5=165.1 | Lux=106 | Tbatt=29.1 Trear=28.0 Tfront=25.3 | MQ2=0.173V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.04 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=9 eco2=400 pm25=165.1 pm10=165.2 lux=90 tb=29.1 tr=28.0 tf=25.3 mq2=0.170 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (561157) sensors: Vbat=26.43 I=0.103A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=4 eCO2=400 | PM2.5=163.0 | Lux=90 | Tbatt=29.1 Trear=28.0 Tfront=25.3 | MQ2=0.170V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.107 v12=12.05 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=0 eco2=400 pm25=163.0 pm10=163.0 lux=87 tb=29.1 tr=28.0 tf=25.3 mq2=0.175 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (567697) sensors: Vbat=26.44 I=0.105A | 12V=12.06 5V=5.00 3V3=3.23 | T=26.5C H=53% | TVOC=1 eCO2=400 | PM2.5=162.1 | Lux=81 | Tbatt=29.1 Trear=28.0 Tfront=25.3 | MQ2=0.171V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.106 v12=12.03 v5=4.98 v33=3.22 t=26.5 h=53 p=1012.7 tvoc=0 eco2=400 pm25=162.1 pm10=162.2 lux=76 tb=29.1 tr=28.0 tf=25.3 mq2=0.169 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (573217) sensors: Vbat=26.44 I=0.103A | 12V=12.01 5V=4.96 3V3=3.23 | T=26.5C H=53% | TVOC=2 eCO2=400 | PM2.5=160.5 | Lux=91 | Tbatt=29.1 Trear=28.0 Tfront=25.3 | MQ2=0.171V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.115 v12=12.05 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.7 tvoc=0 eco2=400 pm25=160.5 pm10=160.7 lux=82 tb=29.1 tr=28.0 tf=25.3 mq2=0.159 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (579757) sensors: Vbat=26.43 I=0.113A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.4C H=53% | TVOC=3 eCO2=400 | PM2.5=158.9 | Lux=115 | Tbatt=29.0 Trear=28.0 Tfront=25.3 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.113 v12=12.03 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=3 eco2=400 pm25=158.9 pm10=159.2 lux=115 tb=29.0 tr=28.0 tf=25.3 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (585277) sensors: Vbat=26.43 I=0.107A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.4C H=53% | TVOC=0 eCO2=400 | PM2.5=157.9 | Lux=105 | Tbatt=29.0 Trear=28.0 Tfront=25.3 | MQ2=0.175V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.107 v12=12.04 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=0 eco2=400 pm25=157.9 pm10=158.2 lux=105 tb=29.0 tr=28.0 tf=25.3 mq2=0.175 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.44 i=0.105 v12=12.04 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=2 eco2=400 pm25=157.9 pm10=158.2 lux=105 tb=29.0 tr=28.0 tf=25.3 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (591817) sensors: Vbat=26.44 I=0.114A | 12V=12.04 5V=4.99 3V3=3.22 | T=26.4C H=53% | TVOC=4 eCO2=400 | PM2.5=155.6 | Lux=103 | Tbatt=29.1 Trear=28.0 Tfront=25.4 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.106 v12=12.02 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=0 eco2=400 pm25=155.6 pm10=156.2 lux=81 tb=29.1 tr=28.0 tf=25.4 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (597337) sensors: Vbat=26.44 I=0.105A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.4C H=53% | TVOC=3 eCO2=400 | PM2.5=153.9 | Lux=72 | Tbatt=29.1 Trear=28.0 Tfront=25.4 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.115 v12=12.05 v5=5.00 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=11 eco2=400 pm25=153.9 pm10=154.7 lux=73 tb=29.1 tr=28.0 tf=25.4 mq2=0.174 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (603877) sensors: Vbat=26.43 I=0.105A | 12V=12.05 5V=4.99 3V3=3.23 | T=26.4C H=53% | TVOC=7 eCO2=400 | PM2.5=152.3 | Lux=78 | Tbatt=29.1 Trear=28.0 Tfront=25.3 | MQ2=0.176V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.115 v12=12.05 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.7 tvoc=7 eco2=400 pm25=152.3 pm10=152.8 lux=78 tb=29.1 tr=28.0 tf=25.3 mq2=0.176 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (609397) sensors: Vbat=26.44 I=0.114A | 12V=12.04 5V=4.99 3V3=3.22 | T=26.4C H=53% | TVOC=4 eCO2=400 | PM2.5=150.9 | Lux=138 | Tbatt=29.1 Trear=28.0 Tfront=25.3 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.114 v12=12.04 v5=4.99 v33=3.22 t=26.4 h=53 p=1012.7 tvoc=4 eco2=400 pm25=150.9 pm10=151.4 lux=138 tb=29.1 tr=28.0 tf=25.3 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.44 i=0.103 v12=12.05 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=2 eco2=400 pm25=149.6 pm10=150.1 lux=105 tb=29.1 tr=28.0 tf=25.3 mq2=0.175 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (615937) sensors: Vbat=26.44 I=0.103A | 12V=12.05 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=2 eCO2=400 | PM2.5=149.6 | Lux=105 | Tbatt=29.0 Trear=28.0 Tfront=25.3 | MQ2=0.175V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.04 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=2 eco2=400 pm25=149.6 pm10=150.1 lux=81 tb=29.0 tr=28.0 tf=25.3 mq2=0.175 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (621457) sensors: Vbat=26.44 I=0.113A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.5C H=53% | TVOC=4 eCO2=400 | PM2.5=147.9 | Lux=81 | Tbatt=29.0 Trear=28.0 Tfront=25.3 | MQ2=0.175V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.115 v12=12.02 v5=4.99 v33=3.23 t=26.5 h=53 p=1012.8 tvoc=6 eco2=400 pm25=147.9 pm10=148.7 lux=79 tb=29.0 tr=28.0 tf=25.3 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (627997) sensors: Vbat=26.44 I=0.106A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.4C H=53% | TVOC=7 eCO2=400 | PM2.5=146.2 | Lux=71 | Tbatt=29.0 Trear=28.0 Tfront=25.3 | MQ2=0.170V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.113 v12=12.01 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=5 eco2=400 pm25=146.2 pm10=147.2 lux=112 tb=29.0 tr=28.0 tf=25.3 mq2=0.175 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (633517) sensors: Vbat=26.44 I=0.115A | 12V=11.99 5V=4.99 3V3=3.22 | T=26.4C H=53% | TVOC=3 eCO2=400 | PM2.5=146.6 | Lux=118 | Tbatt=29.0 Trear=28.0 Tfront=25.3 | MQ2=0.173V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.104 v12=12.05 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=11 eco2=400 pm25=146.6 pm10=147.7 lux=95 tb=29.0 tr=28.0 tf=25.3 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (640057) sensors: Vbat=26.43 I=0.105A | 12V=12.01 5V=5.00 3V3=3.23 | T=26.4C H=53% | TVOC=0 eCO2=400 | PM2.5=144.9 | Lux=123 | Tbatt=29.0 Trear=28.0 Tfront=25.4 | MQ2=0.173V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.105 v12=12.01 v5=5.00 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=0 eco2=400 pm25=144.9 pm10=145.8 lux=123 tb=29.0 tr=28.0 tf=25.4 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.44 i=0.106 v12=12.01 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=0 eco2=400 pm25=144.9 pm10=145.8 lux=105 tb=29.0 tr=28.0 tf=25.4 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (645577) sensors: Vbat=26.44 I=0.104A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.4C H=53% | TVOC=2 eCO2=400 | PM2.5=143.6 | Lux=105 | Tbatt=29.0 Trear=28.0 Tfront=25.4 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.104 v12=12.01 v5=5.00 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=0 eco2=400 pm25=143.6 pm10=144.1 lux=105 tb=29.0 tr=28.0 tf=25.4 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (652117) sensors: Vbat=26.44 I=0.104A | 12V=12.02 5V=4.98 3V3=3.23 | T=26.4C H=53% | TVOC=2 eCO2=400 | PM2.5=143.6 | Lux=99 | Tbatt=29.0 Trear=28.0 Tfront=25.4 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.112 v12=12.02 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.7 tvoc=0 eco2=400 pm25=143.6 pm10=144.1 lux=72 tb=29.0 tr=28.0 tf=25.4 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (657637) sensors: Vbat=26.44 I=0.106A | 12V=12.12 5V=5.00 3V3=3.23 | T=26.4C H=53% | TVOC=7 eCO2=400 | PM2.5=143.0 | Lux=69 | Tbatt=29.0 Trear=28.0 Tfront=25.4 | MQ2=0.171V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.04 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.7 tvoc=8 eco2=400 pm25=143.0 pm10=143.8 lux=67 tb=29.0 tr=28.0 tf=25.4 mq2=0.174 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (664177) sensors: Vbat=26.44 I=0.106A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.4C H=53% | TVOC=2 eCO2=400 | PM2.5=142.8 | Lux=94 | Tbatt=29.0 Trear=28.0 Tfront=25.4 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.104 v12=12.01 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=3 eco2=400 pm25=142.8 pm10=143.8 lux=94 tb=29.0 tr=28.0 tf=25.4 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (669697) sensors: Vbat=26.44 I=0.104A | 12V=12.05 5V=4.99 3V3=3.23 | T=26.4C H=53% | TVOC=4 eCO2=400 | PM2.5=143.2 | Lux=106 | Tbatt=29.0 Trear=28.0 Tfront=25.4 | MQ2=0.175V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.104 v12=12.05 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=4 eco2=400 pm25=143.2 pm10=144.1 lux=106 tb=29.0 tr=28.0 tf=25.4 mq2=0.175 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.43 i=0.115 v12=12.02 v5=4.99 v33=3.22 t=26.4 h=53 p=1012.8 tvoc=0 eco2=400 pm25=144.8 pm10=145.6 lux=105 tb=29.0 tr=28.0 tf=25.4 mq2=0.173 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (676237) sensors: Vbat=26.43 I=0.115A | 12V=12.02 5V=4.99 3V3=3.22 | T=26.4C H=53% | TVOC=0 eCO2=400 | PM2.5=144.8 | Lux=105 | Tbatt=29.0 Trear=28.0 Tfront=25.4 | MQ2=0.173V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.04 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.7 tvoc=2 eco2=400 pm25=144.8 pm10=145.6 lux=89 tb=29.0 tr=28.0 tf=25.4 mq2=0.171 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (681757) sensors: Vbat=26.43 I=0.106A | 12V=12.06 5V=5.00 3V3=3.23 | T=26.4C H=53% | TVOC=4 eCO2=400 | PM2.5=144.2 | Lux=80 | Tbatt=29.0 Trear=28.0 Tfront=25.4 | MQ2=0.174V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.04 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.7 tvoc=0 eco2=400 pm25=144.2 pm10=145.0 lux=78 tb=29.0 tr=28.0 tf=25.4 mq2=0.170 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (688297) sensors: Vbat=26.44 I=0.114A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.4C H=53% | TVOC=0 eCO2=400 | PM2.5=143.5 | Lux=69 | Tbatt=29.0 Trear=28.0 Tfront=25.4 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.104 v12=12.04 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.7 tvoc=5 eco2=400 pm25=143.5 pm10=144.1 lux=112 tb=29.0 tr=28.0 tf=25.4 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (693817) sensors: Vbat=26.44 I=0.106A | 12V=12.02 5V=5.00 3V3=3.23 | T=26.4C H=53% | TVOC=7 eCO2=400 | PM2.5=141.8 | Lux=120 | Tbatt=29.0 Trear=28.0 Tfront=25.4 | MQ2=0.173V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.112 v12=12.04 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.7 tvoc=10 eco2=400 pm25=141.8 pm10=142.6 lux=116 tb=29.0 tr=28.0 tf=25.4 mq2=0.164 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (700357) sensors: Vbat=26.44 I=0.107A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.4C H=53% | TVOC=3 eCO2=400 | PM2.5=138.9 | Lux=137 | Tbatt=28.9 Trear=28.0 Tfront=25.4 | MQ2=0.158V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.107 v12=12.03 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.7 tvoc=3 eco2=400 pm25=138.9 pm10=140.0 lux=137 tb=28.9 tr=28.0 tf=25.4 mq2=0.158 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.44 i=0.107 v12=12.05 v5=5.00 v33=3.23 t=26.4 h=53 p=1012.7 tvoc=0 eco2=400 pm25=138.9 pm10=140.0 lux=105 tb=28.9 tr=28.0 tf=25.4 mq2=0.174 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (705877) sensors: Vbat=26.44 I=0.113A | 12V=12.05 5V=5.00 3V3=3.23 | T=26.4C H=53% | TVOC=2 eCO2=400 | PM2.5=137.5 | Lux=105 | Tbatt=28.9 Trear=28.0 Tfront=25.4 | MQ2=0.174V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.104 v12=12.00 v5=4.99 v33=3.22 t=26.4 h=53 p=1012.7 tvoc=4 eco2=400 pm25=137.5 pm10=138.9 lux=103 tb=28.9 tr=28.0 tf=25.4 mq2=0.175 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (712417) sensors: Vbat=26.44 I=0.105A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.4C H=53% | TVOC=5 eCO2=400 | PM2.5=135.3 | Lux=94 | Tbatt=28.9 Trear=28.0 Tfront=25.4 | MQ2=0.171V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.114 v12=12.05 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=9 eco2=400 pm25=135.3 pm10=136.6 lux=70 tb=28.9 tr=28.0 tf=25.4 mq2=0.171 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (717937) sensors: Vbat=26.43 I=0.113A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.4C H=53% | TVOC=4 eCO2=400 | PM2.5=133.5 | Lux=75 | Tbatt=28.9 Trear=28.0 Tfront=25.4 | MQ2=0.174V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.112 v12=12.03 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=1 eco2=400 pm25=133.5 pm10=134.3 lux=66 tb=28.9 tr=28.0 tf=25.4 mq2=0.170 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (724477) sensors: Vbat=26.44 I=0.105A | 12V=12.05 5V=4.99 3V3=3.23 | T=26.4C H=53% | TVOC=5 eCO2=400 | PM2.5=132.4 | Lux=91 | Tbatt=28.9 Trear=28.0 Tfront=25.4 | MQ2=0.170V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.105 v12=12.05 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.7 tvoc=5 eco2=400 pm25=132.4 pm10=133.0 lux=91 tb=28.9 tr=28.0 tf=25.4 mq2=0.170 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (729997) sensors: Vbat=26.44 I=0.106A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.4C H=53% | TVOC=6 eCO2=400 | PM2.5=132.2 | Lux=105 | Tbatt=28.9 Trear=28.0 Tfront=25.4 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.106 v12=12.03 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.7 tvoc=6 eco2=400 pm25=132.2 pm10=132.7 lux=105 tb=28.9 tr=28.0 tf=25.4 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.44 i=0.105 v12=12.04 v5=5.00 v33=3.23 t=26.4 h=53 p=1012.7 tvoc=8 eco2=400 pm25=132.2 pm10=132.7 lux=105 tb=28.9 tr=28.0 tf=25.4 mq2=0.171 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (736537) sensors: Vbat=26.44 I=0.104A | 12V=12.04 5V=4.99 3V3=3.22 | T=26.4C H=53% | TVOC=6 eCO2=400 | PM2.5=132.9 | Lux=105 | Tbatt=28.9 Trear=28.0 Tfront=25.4 | MQ2=0.166V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.106 v12=12.01 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=4 eco2=400 pm25=132.9 pm10=133.4 lux=89 tb=28.9 tr=28.0 tf=25.4 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (742057) sensors: Vbat=26.43 I=0.104A | 12V=12.07 5V=4.98 3V3=3.23 | T=26.4C H=53% | TVOC=9 eCO2=400 | PM2.5=131.7 | Lux=79 | Tbatt=28.9 Trear=28.0 Tfront=25.4 | MQ2=0.172V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.108 v12=12.01 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=9 eco2=400 pm25=131.7 pm10=132.4 lux=71 tb=28.9 tr=28.0 tf=25.4 mq2=0.172 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (748597) sensors: Vbat=26.44 I=0.104A | 12V=12.00 5V=4.99 3V3=3.23 | T=26.4C H=53% | TVOC=5 eCO2=400 | PM2.5=129.9 | Lux=69 | Tbatt=28.9 Trear=27.9 Tfront=25.4 | MQ2=0.175V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.44 i=0.107 v12=12.00 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.7 tvoc=9 eco2=400 pm25=129.9 pm10=130.8 lux=69 tb=28.9 tr=27.9 tf=25.4 mq2=0.175 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (754117) sensors: Vbat=26.44 I=0.105A | 12V=12.05 5V=4.99 3V3=3.22 | T=26.4C H=53% | TVOC=4 eCO2=400 | PM2.5=128.8 | Lux=124 | Tbatt=28.9 Trear=27.9 Tfront=25.4 | MQ2=0.171V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.107 v12=12.01 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.7 tvoc=0 eco2=400 pm25=128.8 pm10=129.8 lux=118 tb=28.9 tr=27.9 tf=25.4 mq2=0.171 st=0 ok=0x7F err=0,0,3,0,0,0
+ENV vbat=26.44 i=0.105 v12=12.01 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=3 eco2=400 pm25=126.4 pm10=127.5 lux=128 tb=28.9 tr=27.9 tf=25.4 mq2=0.176 st=0 ok=0x7F err=0,0,3,0,0,0
+[0;32mI (760657) sensors: Vbat=26.44 I=0.105A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.4C H=53% | TVOC=3 eCO2=400 | PM2.5=126.4 | Lux=128 | Tbatt=28.9 Trear=28.0 Tfront=25.4 | MQ2=0.176V st=0 | ok=0x7F err=0,0,3,0,0,0[0m
+ENV vbat=26.43 i=0.115 v12=12.03 v5=4.99 v33=3.23 t=26.4 h=53 p=1012.8 tvoc=0 eco2=400 pm25=126.4 pm10=127.5 lux=99 tb=28.9 tr=28.0 tf=25.4 mq2=0.176 st=0 ok=0x7F err=0,0,3,0,0,0

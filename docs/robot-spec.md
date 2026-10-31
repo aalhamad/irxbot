@@ -99,7 +99,7 @@ Rev 2026-10-11 · Source of truth for hardware
 
 | Component | MCU | Driver |
 |---|---|---|
-| Front Spotlight | ESP32-S3 | MOSFET + branch fuse |
+| Spotlight (GPIO 14) | ESP32-S3 | MOSFET + branch fuse |
 | Rear Light | ESP32-S3 | MOSFET + branch fuse |
 | Left Side Light | ESP32-S3 | MOSFET + branch fuse |
 | Right Side Light | ESP32-S3 | MOSFET + branch fuse |

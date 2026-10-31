@@ -1,0 +1,18 @@
+/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/main/task_sensors.c: In function 'init_ds18b20':
+/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/main/task_sensors.c:379:13: error: implicit declaration of function 'ds18b20_new_device'; did you mean 'ds18b20_del_device'? [-Werror=implicit-function-declaration]
+  379 |         if (ds18b20_new_device(&dev, &ds_cfg, &_ds[_ds_count]) == ESP_OK)
+      |             ^~~~~~~~~~~~~~~~~~
+      |             ds18b20_del_device
+/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/main/task_sensors.c: In function 'init_mq2':
+/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/main/task_sensors.c:421:9: warning: 'ADC_ATTEN_DB_11' is deprecated [-Wdeprecated-declarations]
+  421 |         .atten    = ADC_ATTEN_DB_11,
+      |         ^
+In file included from /home/aalhamad/apps/esp-idf/components/esp_adc/include/esp_adc/adc_oneshot.h:12,
+                 from /home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/main/task_sensors.c:4:
+/home/aalhamad/apps/esp-idf/components/hal/include/hal/adc_types.h:51:5: note: declared here
+   51 |     ADC_ATTEN_DB_11 __attribute__((deprecated)) = ADC_ATTEN_DB_12,  ///<This is deprecated, it behaves the same as `ADC_ATTEN_DB_12`
+      |     ^~~~~~~~~~~~~~~
+cc1: some warnings being treated as errors
+make[2]: *** [esp-idf/main/CMakeFiles/__idf_main.dir/build.make:118: esp-idf/main/CMakeFiles/__idf_main.dir/task_sensors.c.obj] Error 1
+make[1]: *** [CMakeFiles/Makefile2:5878: esp-idf/main/CMakeFiles/__idf_main.dir/all] Error 2
+make: *** [Makefile:136: all] Error 2

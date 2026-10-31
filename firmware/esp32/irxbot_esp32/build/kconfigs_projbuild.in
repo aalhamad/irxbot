@@ -1,0 +1,6 @@
+source "/home/aalhamad/apps/esp-idf/components/bootloader/Kconfig.projbuild"
+source "/home/aalhamad/apps/esp-idf/components/esp_app_format/Kconfig.projbuild"
+source "/home/aalhamad/apps/esp-idf/components/esp_rom/Kconfig.projbuild"
+source "/home/aalhamad/apps/esp-idf/components/esptool_py/Kconfig.projbuild"
+source "/home/aalhamad/apps/esp-idf/components/partition_table/Kconfig.projbuild"
+source "/home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/managed_components/espressif__ds18b20/Kconfig.projbuild"

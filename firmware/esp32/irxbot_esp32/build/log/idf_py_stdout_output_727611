@@ -1,0 +1,180 @@
+-- Building ESP-IDF components for target esp32s3
+NOTICE: Manifest files have changed, solving dependencies.
+........NOTICE: Updating lock file at /home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/dependencies.lock
+NOTICE: Processing 4 dependencies:
+NOTICE: [1/4] espressif/ds18b20 (0.4.0)
+NOTICE: [2/4] espressif/led_strip (3.1.1)
+NOTICE: [3/4] espressif/onewire_bus (1.1.2)
+NOTICE: [4/4] idf (5.3.2)
+NOTICE: The following Kconfig variables were used in "if" clauses, but not supported by your ESP-IDF version 5.3.2. Ignoring these if-clauses:
+    DS18B20_SENSOR_HUB, introduced by espressif/sensor_hub, defined in (unknown)
+
+-- Project sdkconfig file /home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/sdkconfig
+-- Compiler supported targets: xtensa-esp-elf
+-- App "irxbot_esp32" version: 748f16f-dirty
+-- Adding linker script /home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/esp-idf/esp_system/ld/memory.ld
+-- Adding linker script /home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/esp-idf/esp_system/ld/sections.ld.in
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.ld
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.api.ld
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.bt_funcs.ld
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.libgcc.ld
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.wdt.ld
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.version.ld
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.newlib.ld
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/soc/esp32s3/ld/esp32s3.peripherals.ld
+-- Components: app_trace app_update bootloader bootloader_support bt cmock console cxx driver efuse esp-tls esp_adc esp_app_format esp_bootloader_format esp_coex esp_common esp_driver_ana_cmpr esp_driver_cam esp_driver_dac esp_driver_gpio esp_driver_gptimer esp_driver_i2c esp_driver_i2s esp_driver_isp esp_driver_jpeg esp_driver_ledc esp_driver_mcpwm esp_driver_parlio esp_driver_pcnt esp_driver_ppa esp_driver_rmt esp_driver_sdio esp_driver_sdm esp_driver_sdmmc esp_driver_sdspi esp_driver_spi esp_driver_touch_sens esp_driver_tsens esp_driver_uart esp_driver_usb_serial_jtag esp_eth esp_event esp_gdbstub esp_hid esp_http_client esp_http_server esp_https_ota esp_https_server esp_hw_support esp_lcd esp_local_ctrl esp_mm esp_netif esp_netif_stack esp_partition esp_phy esp_pm esp_psram esp_ringbuf esp_rom esp_system esp_timer esp_vfs_console esp_wifi espcoredump espressif__ds18b20 espressif__led_strip espressif__onewire_bus esptool_py fatfs freertos hal heap http_parser idf_test ieee802154 json log lwip main mbedtls mqtt newlib nvs_flash nvs_sec_provider openthread partition_table perfmon protobuf-c protocomm pthread sdmmc soc spi_flash spiffs tcp_transport touch_element ulp unity usb vfs wear_levelling wifi_provisioning wpa_supplicant xtensa
+-- Component paths: /home/aalhamad/apps/esp-idf/components/app_trace /home/aalhamad/apps/esp-idf/components/app_update /home/aalhamad/apps/esp-idf/components/bootloader /home/aalhamad/apps/esp-idf/components/bootloader_support /home/aalhamad/apps/esp-idf/components/bt /home/aalhamad/apps/esp-idf/components/cmock /home/aalhamad/apps/esp-idf/components/console /home/aalhamad/apps/esp-idf/components/cxx /home/aalhamad/apps/esp-idf/components/driver /home/aalhamad/apps/esp-idf/components/efuse /home/aalhamad/apps/esp-idf/components/esp-tls /home/aalhamad/apps/esp-idf/components/esp_adc /home/aalhamad/apps/esp-idf/components/esp_app_format /home/aalhamad/apps/esp-idf/components/esp_bootloader_format /home/aalhamad/apps/esp-idf/components/esp_coex /home/aalhamad/apps/esp-idf/components/esp_common /home/aalhamad/apps/esp-idf/components/esp_driver_ana_cmpr /home/aalhamad/apps/esp-idf/components/esp_driver_cam /home/aalhamad/apps/esp-idf/components/esp_driver_dac /home/aalhamad/apps/esp-idf/components/esp_driver_gpio /home/aalhamad/apps/esp-idf/components/esp_driver_gptimer /home/aalhamad/apps/esp-idf/components/esp_driver_i2c /home/aalhamad/apps/esp-idf/components/esp_driver_i2s /home/aalhamad/apps/esp-idf/components/esp_driver_isp /home/aalhamad/apps/esp-idf/components/esp_driver_jpeg /home/aalhamad/apps/esp-idf/components/esp_driver_ledc /home/aalhamad/apps/esp-idf/components/esp_driver_mcpwm /home/aalhamad/apps/esp-idf/components/esp_driver_parlio /home/aalhamad/apps/esp-idf/components/esp_driver_pcnt /home/aalhamad/apps/esp-idf/components/esp_driver_ppa /home/aalhamad/apps/esp-idf/components/esp_driver_rmt /home/aalhamad/apps/esp-idf/components/esp_driver_sdio /home/aalhamad/apps/esp-idf/components/esp_driver_sdm /home/aalhamad/apps/esp-idf/components/esp_driver_sdmmc /home/aalhamad/apps/esp-idf/components/esp_driver_sdspi /home/aalhamad/apps/esp-idf/components/esp_driver_spi /home/aalhamad/apps/esp-idf/components/esp_driver_touch_sens /home/aalhamad/apps/esp-idf/components/esp_driver_tsens /home/aalhamad/apps/esp-idf/components/esp_driver_uart /home/aalhamad/apps/esp-idf/components/esp_driver_usb_serial_jtag /home/aalhamad/apps/esp-idf/components/esp_eth /home/aalhamad/apps/esp-idf/components/esp_event /home/aalhamad/apps/esp-idf/components/esp_gdbstub /home/aalhamad/apps/esp-idf/components/esp_hid /home/aalhamad/apps/esp-idf/components/esp_http_client /home/aalhamad/apps/esp-idf/components/esp_http_server /home/aalhamad/apps/esp-idf/components/esp_https_ota /home/aalhamad/apps/esp-idf/components/esp_https_server /home/aalhamad/apps/esp-idf/components/esp_hw_support /home/aalhamad/apps/esp-idf/components/esp_lcd /home/aalhamad/apps/esp-idf/components/esp_local_ctrl /home/aalhamad/apps/esp-idf/components/esp_mm /home/aalhamad/apps/esp-idf/components/esp_netif /home/aalhamad/apps/esp-idf/components/esp_netif_stack /home/aalhamad/apps/esp-idf/components/esp_partition /home/aalhamad/apps/esp-idf/components/esp_phy /home/aalhamad/apps/esp-idf/components/esp_pm /home/aalhamad/apps/esp-idf/components/esp_psram /home/aalhamad/apps/esp-idf/components/esp_ringbuf /home/aalhamad/apps/esp-idf/components/esp_rom /home/aalhamad/apps/esp-idf/components/esp_system /home/aalhamad/apps/esp-idf/components/esp_timer /home/aalhamad/apps/esp-idf/components/esp_vfs_console /home/aalhamad/apps/esp-idf/components/esp_wifi /home/aalhamad/apps/esp-idf/components/espcoredump /home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/managed_components/espressif__ds18b20 /home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/managed_components/espressif__led_strip /home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/managed_components/espressif__onewire_bus /home/aalhamad/apps/esp-idf/components/esptool_py /home/aalhamad/apps/esp-idf/components/fatfs /home/aalhamad/apps/esp-idf/components/freertos /home/aalhamad/apps/esp-idf/components/hal /home/aalhamad/apps/esp-idf/components/heap /home/aalhamad/apps/esp-idf/components/http_parser /home/aalhamad/apps/esp-idf/components/idf_test /home/aalhamad/apps/esp-idf/components/ieee802154 /home/aalhamad/apps/esp-idf/components/json /home/aalhamad/apps/esp-idf/components/log /home/aalhamad/apps/esp-idf/components/lwip /home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/main /home/aalhamad/apps/esp-idf/components/mbedtls /home/aalhamad/apps/esp-idf/components/mqtt /home/aalhamad/apps/esp-idf/components/newlib /home/aalhamad/apps/esp-idf/components/nvs_flash /home/aalhamad/apps/esp-idf/components/nvs_sec_provider /home/aalhamad/apps/esp-idf/components/openthread /home/aalhamad/apps/esp-idf/components/partition_table /home/aalhamad/apps/esp-idf/components/perfmon /home/aalhamad/apps/esp-idf/components/protobuf-c /home/aalhamad/apps/esp-idf/components/protocomm /home/aalhamad/apps/esp-idf/components/pthread /home/aalhamad/apps/esp-idf/components/sdmmc /home/aalhamad/apps/esp-idf/components/soc /home/aalhamad/apps/esp-idf/components/spi_flash /home/aalhamad/apps/esp-idf/components/spiffs /home/aalhamad/apps/esp-idf/components/tcp_transport /home/aalhamad/apps/esp-idf/components/touch_element /home/aalhamad/apps/esp-idf/components/ulp /home/aalhamad/apps/esp-idf/components/unity /home/aalhamad/apps/esp-idf/components/usb /home/aalhamad/apps/esp-idf/components/vfs /home/aalhamad/apps/esp-idf/components/wear_levelling /home/aalhamad/apps/esp-idf/components/wifi_provisioning /home/aalhamad/apps/esp-idf/components/wpa_supplicant /home/aalhamad/apps/esp-idf/components/xtensa
+-- Configuring done (10.7s)
+-- Generating done (0.4s)
+-- Build files have been written to: /home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build
+[  0%] Built target memory.ld
+[  0%] Built target sections.ld.in
+[  0%] Built target partition_table_bin
+[  0%] Built target custom_bundle
+[  0%] Built target _project_elf_src
+[  0%] Performing build step for 'bootloader'
+[  0%] Built target __idf_esp_https_ota
+[  1%] Built target __idf_esp_http_server
+[  1%] Built target __idf_esp_http_client
+[  2%] Built target __idf_tcp_transport
+[  3%] Built target __idf_esp_gdbstub
+[  3%] Built target __idf_esp_eth
+[  5%] Built target __idf_esp_adc
+[  5%] Built target __idf_esp-tls
+[  6%] Built target __idf_http_parser
+[  7%] Built target __idf_esp_wifi
+[  7%] Built target __idf_esp_coex
+[ 15%] Built target __idf_wpa_supplicant
+[ 16%] Built target __idf_esp_netif
+[ 25%] Built target __idf_lwip
+[ 25%] Built target __idf_vfs
+[ 25%] Built target __idf_esp_vfs_console
+[ 25%] Built target __idf_esp_phy
+-- Building ESP-IDF components for target esp32s3
+[ 26%] Built target __idf_driver
+[ 27%] Built target __idf_esp_driver_usb_serial_jtag
+[ 27%] Built target __idf_esp_driver_ledc
+[ 27%] Built target __idf_esp_driver_i2c
+[ 28%] Built target __idf_esp_driver_sdm
+[ 28%] Built target __idf_esp_driver_tsens
+[ 28%] Built target __idf_esp_driver_rmt
+[ 28%] Built target __idf_esp_driver_sdspi
+[ 28%] Built target __idf_esp_driver_sdmmc
+[ 28%] Built target __idf_sdmmc
+[ 29%] Built target __idf_esp_driver_i2s
+[ 30%] Built target __idf_esp_driver_mcpwm
+[ 31%] Built target __idf_esp_driver_spi
+[ 31%] Built target __idf_esp_driver_pcnt
+[ 33%] Built target __idf_nvs_flash
+[ 33%] Built target __idf_esp_event
+[ 33%] Built target __idf_esp_driver_uart
+[ 33%] Built target __idf_esp_ringbuf
+[ 34%] Built target __idf_esp_driver_gptimer
+[ 34%] Built target __idf_esp_timer
+[ 35%] Built target __idf_cxx
+[ 36%] Built target __idf_pthread
+[ 37%] Built target __idf_newlib
+[ 38%] Built target __idf_freertos
+[ 43%] Built target __idf_esp_hw_support
+[ 46%] Built target __idf_soc
+[ 46%] Built target __idf_heap
+[ 46%] Built target __idf_log
+[ 52%] Built target __idf_hal
+[ 53%] Built target __idf_esp_rom
+[ 54%] Built target __idf_esp_common
+[ 58%] Built target __idf_esp_system
+[ 60%] Built target __idf_spi_flash
+[ 60%] Built target __idf_esp_mm
+[ 62%] Built target __idf_bootloader_support
+[ 63%] Built target __idf_efuse
+[ 64%] Built target __idf_esp_partition
+[ 64%] Built target __idf_app_update
+-- Project sdkconfig file /home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/sdkconfig
+[ 64%] Built target __idf_esp_bootloader_format
+[ 64%] Built target __idf_esp_app_format
+[ 66%] Built target mbedtls
+[ 67%] Built target mbedx509
+-- Compiler supported targets: xtensa-esp-elf
+[ 77%] Built target mbedcrypto
+[ 77%] Built target p256m
+[ 77%] Built target everest
+[ 77%] Built target __idf_mbedtls
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/soc/esp32s3/ld/esp32s3.peripherals.ld
+-- Bootloader project name: "bootloader" version: 1
+[ 78%] Built target __idf_esp_pm
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.ld
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.api.ld
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.bt_funcs.ld
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.libgcc.ld
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.wdt.ld
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.version.ld
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.newlib.ld
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/bootloader/subproject/main/ld/esp32s3/bootloader.ld
+-- Adding linker script /home/aalhamad/apps/esp-idf/components/bootloader/subproject/main/ld/esp32s3/bootloader.rom.ld
+[ 78%] Built target __idf_esp_driver_gpio
+-- Components: bootloader bootloader_support efuse esp_app_format esp_bootloader_format esp_common esp_hw_support esp_rom esp_system esptool_py freertos hal log main micro-ecc newlib partition_table soc spi_flash xtensa
+-- Component paths: /home/aalhamad/apps/esp-idf/components/bootloader /home/aalhamad/apps/esp-idf/components/bootloader_support /home/aalhamad/apps/esp-idf/components/efuse /home/aalhamad/apps/esp-idf/components/esp_app_format /home/aalhamad/apps/esp-idf/components/esp_bootloader_format /home/aalhamad/apps/esp-idf/components/esp_common /home/aalhamad/apps/esp-idf/components/esp_hw_support /home/aalhamad/apps/esp-idf/components/esp_rom /home/aalhamad/apps/esp-idf/components/esp_system /home/aalhamad/apps/esp-idf/components/esptool_py /home/aalhamad/apps/esp-idf/components/freertos /home/aalhamad/apps/esp-idf/components/hal /home/aalhamad/apps/esp-idf/components/log /home/aalhamad/apps/esp-idf/components/bootloader/subproject/main /home/aalhamad/apps/esp-idf/components/bootloader/subproject/components/micro-ecc /home/aalhamad/apps/esp-idf/components/newlib /home/aalhamad/apps/esp-idf/components/partition_table /home/aalhamad/apps/esp-idf/components/soc /home/aalhamad/apps/esp-idf/components/spi_flash /home/aalhamad/apps/esp-idf/components/xtensa
+[ 79%] Built target __idf_xtensa
+-- Configuring done (1.9s)
+[ 79%] Built target __idf_espressif__led_strip
+[ 80%] Built target __idf_esp_hid
+[ 80%] Built target __idf_esp_driver_cam
+[ 80%] Built target __idf_esp_https_server
+[ 80%] Built target __idf_app_trace
+[ 82%] Built target __idf_console
+[ 84%] Built target __idf_unity
+[ 83%] Built target __idf_protobuf-c
+[ 85%] Built target __idf_esp_lcd
+[ 85%] Built target __idf_perfmon
+[ 86%] Built target __idf_espcoredump
+[ 86%] Built target __idf_json
+[ 86%] Built target __idf_nvs_sec_provider
+[ 87%] Built target __idf_spiffs
+[ 89%] Built target __idf_mqtt
+[ 89%] Built target __idf_wear_levelling
+[ 90%] Built target __idf_touch_element
+[ 90%] Built target __idf_usb
+[ 90%] Building C object esp-idf/espressif__onewire_bus/CMakeFiles/__idf_espressif__onewire_bus.dir/src/onewire_bus_api.c.obj
+[ 90%] Building C object esp-idf/espressif__onewire_bus/CMakeFiles/__idf_espressif__onewire_bus.dir/src/onewire_device.c.obj
+[ 91%] Building C object esp-idf/espressif__onewire_bus/CMakeFiles/__idf_espressif__onewire_bus.dir/src/onewire_bus_impl_uart.c.obj
+[ 91%] Built target __idf_cmock
+[ 91%] Building C object esp-idf/espressif__onewire_bus/CMakeFiles/__idf_espressif__onewire_bus.dir/src/onewire_crc.c.obj
+[ 91%] Building C object esp-idf/espressif__onewire_bus/CMakeFiles/__idf_espressif__onewire_bus.dir/src/onewire_bus_impl_rmt.c.obj
+[ 92%] Built target __idf_protocomm
+[ 93%] Built target __idf_fatfs
+-- Generating done (0.1s)
+[ 94%] Built target __idf_wifi_provisioning
+-- Build files have been written to: /home/aalhamad/Code/irxbot/firmware/esp32/irxbot_esp32/build/bootloader
+[ 95%] Built target __idf_esp_local_ctrl
+[  3%] Built target __idf_log
+[  4%] Built target _project_elf_src
+[ 13%] Built target __idf_esp_rom
+[ 15%] Built target __idf_esp_common
+[ 25%] Built target __idf_esp_hw_support
+[ 95%] Linking C static library libespressif__onewire_bus.a
+[ 27%] Built target __idf_esp_system
+[ 36%] Built target __idf_efuse
+[ 95%] Built target __idf_espressif__onewire_bus
+[ 95%] Building C object esp-idf/espressif__ds18b20/CMakeFiles/__idf_espressif__ds18b20.dir/src/ds18b20.c.obj
+[ 56%] Built target __idf_bootloader_support
+[ 57%] Built target __idf_esp_bootloader_format
+[ 59%] Built target __idf_spi_flash
+[ 65%] Built target __idf_hal
+[ 96%] Linking C static library libespressif__ds18b20.a
+[ 67%] Built target __idf_micro-ecc
+[ 96%] Built target __idf_espressif__ds18b20
+[ 91%] Built target __idf_soc
+[ 96%] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/task_lighting.c.obj
+[ 96%] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/irxbot_esp32.c.obj
+[ 97%] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/task_sensors.c.obj
+[ 97%] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/task_uart.c.obj
+[ 94%] Built target __idf_xtensa
+[ 96%] Built target __idf_main
+[ 98%] Built target bootloader.elf
+[100%] Built target gen_project_binary
+Bootloader binary size 0x5490 bytes. 0x2b70 bytes (34%) free.
+[100%] Built target bootloader_check_size
+[100%] Built target app
+[ 98%] No install step for 'bootloader'
+[ 98%] Completed 'bootloader'
+[ 98%] Built target bootloader

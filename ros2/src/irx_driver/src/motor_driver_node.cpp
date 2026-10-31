@@ -115,7 +115,7 @@ void MotorDriver::read_odometry()
     // Convert ERPM to wheel velocity (m/s)
     double wheel_circumference = 2.0 * M_PI * wheel_radius_;
     double left_vel = (left_rpm / (60.0 * pole_pairs_ * gear_ratio_)) * wheel_circumference;
-    double right_vel = (-right_rpm / (60.0 * pole_pairs_ * gear_ratio_)) * wheel_circumference;
+    double right_vel = (right_rpm / (60.0 * pole_pairs_ * gear_ratio_)) * wheel_circumference;
 
     // Calculate robot velocity
     double linear = (left_vel + right_vel) / 2.0;

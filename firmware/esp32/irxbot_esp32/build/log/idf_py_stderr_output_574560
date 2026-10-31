@@ -1,0 +1,5 @@
+--- esp-idf-monitor 1.10.0 on /dev/ttyACM1 115200
+--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H
+--- ERROR: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+--- Waiting for the device to reconnect..................................................................................................................................................
+

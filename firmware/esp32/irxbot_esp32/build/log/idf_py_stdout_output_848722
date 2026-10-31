@@ -1,0 +1,570 @@
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2810,len:0x1870
+load:0x403c8700,len:0x4
+load:0x403c8704,len:0xce8
+load:0x403cb700,len:0x2ed8
+entry 0x403c8918
+[0;32mI (27) boot: ESP-IDF v5.3.2 2nd stage bootloader[0m
+[0;32mI (27) boot: compile time Oct 24 2026 03:15:03[0m
+[0;32mI (27) boot: Multicore bootloader[0m
+[0;32mI (30) boot: chip revision: v0.2[0m
+[0;32mI (34) boot: efuse block revision: v1.4[0m
+[0;32mI (38) boot.esp32s3: Boot SPI Speed : 80MHz[0m
+[0;32mI (43) boot.esp32s3: SPI Mode       : DIO[0m
+[0;32mI (48) boot.esp32s3: SPI Flash Size : 16MB[0m
+[0;32mI (53) boot: Enabling RNG early entropy source...[0m
+[0;32mI (58) boot: Partition Table:[0m
+[0;32mI (62) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (69) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (76) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (84) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (91) boot: End of partition table[0m
+[0;32mI (95) esp_image: segment 0: paddr=00010020 vaddr=3c040020 size=11afch ( 72444) map[0m
+[0;32mI (117) esp_image: segment 1: paddr=00021b24 vaddr=3fc95500 size=02f50h ( 12112) load[0m
+[0;32mI (119) esp_image: segment 2: paddr=00024a7c vaddr=40374000 size=0b59ch ( 46492) load[0m
+[0;32mI (133) esp_image: segment 3: paddr=00030020 vaddr=42000020 size=3330ch (209676) map[0m
+[0;32mI (170) esp_image: segment 4: paddr=00063334 vaddr=4037f59c size=05f44h ( 24388) load[0m
+[0;32mI (176) esp_image: segment 5: paddr=00069280 vaddr=600fe100 size=00004h (     4) load[0m
+[0;32mI (183) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (183) boot: Disabling RNG early entropy source...[0m
+[0;32mI (199) cpu_start: Multicore app[0m
+[0;32mI (208) cpu_start: Pro cpu start user code[0m
+[0;32mI (208) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (208) app_init: Application information:[0m
+[0;32mI (211) app_init: Project name:     irxbot_esp32[0m
+[0;32mI (216) app_init: App version:      748f16f-dirty[0m
+[0;32mI (222) app_init: Compile time:     Oct 24 2026 03:15:21[0m
+[0;32mI (228) app_init: ELF file SHA256:  1a20e32a2...[0m
+[0;32mI (233) app_init: ESP-IDF:          v5.3.2[0m
+[0;32mI (238) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (243) efuse_init: Max chip rev:     v0.99 [0m
+[0;32mI (248) efuse_init: Chip rev:         v0.2[0m
+[0;32mI (252) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (260) heap_init: At 3FC98EA0 len 00050870 (322 KiB): RAM[0m
+[0;32mI (266) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM[0m
+[0;32mI (272) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM[0m
+[0;32mI (278) heap_init: At 600FE104 len 00001EE4 (7 KiB): RTCRAM[0m
+[0;32mI (285) spi_flash: detected chip: boya[0m
+[0;32mI (289) spi_flash: flash io: dio[0m
+[0;32mI (293) sleep: Configure to isolate all GPIO pins in sleep state[0m
+[0;32mI (299) sleep: Enable automatic switching of GPIO sleep configuration[0m
+[0;32mI (307) main_task: Started on CPU0[0m
+[0;32mI (337) main_task: Calling app_main()[0m
+[0;32mI (337) uart: started on UART1 rx=35 tx=36[0m
+[0;32mI (337) gpio: GPIO[14]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (347) gpio: GPIO[15]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (357) gpio: GPIO[16]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (367) gpio: GPIO[38]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (377) gpio: GPIO[39]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (387) lighting: started[0m
+[0;32mI (387) gpio: GPIO[8]| InputEn: 1| OutputEn: 1| OpenDrain: 1| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (397) gpio: GPIO[9]| InputEn: 1| OutputEn: 1| OpenDrain: 1| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (407) sensors: started[0m
+[0;32mI (407) main_task: Returned from app_main()[0m
+[0;32mI (417) gpio: GPIO[4]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (417) gpio: GPIO[4]| InputEn: 1| OutputEn: 1| OpenDrain: 1| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;33mW (867) sensors: INA ID try 1: ESP_ERR_INVALID_STATE[0m
+[0;32mI (917) sensors: INA ID try 2: OK 0x5449[0m
+[0;32mI (947) sensors: ina=1 bme=1 sgp=1 sps=1 veml=1 ds=1(3)[0m
+[0;32mI (947) sensors: MQ-2 init, warming up 3 min[0m
+ENV vbat=26.44 i=0.105 v12=12.02 v5=4.98 v33=3.23 t=0.0 h=0 p=0.0 tvoc=0 eco2=400 pm25=0.0 pm10=0.0 lux=297 tb=0.0 tr=0.0 tf=0.0 mq2=0.165 st=0 ok=0x15 err=0,0,0,0,0,0
+[0;32mI (6347) sensors: Vbat=26.44 I=0.105A | 12V=12.02 5V=4.98 3V3=3.23 | T=0.0C H=0% | TVOC=0 eCO2=400 | PM2.5=182.4 | Lux=297 | Tbatt=0.0 Trear=0.0 Tfront=0.0 | MQ2=0.165V st=0 | ok=0x1D err=1,0,0,0,0,0[0m
+[0;33mW (8527) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.105 v12=12.02 v5=4.98 v33=3.22 t=0.0 h=0 p=0.0 tvoc=0 eco2=400 pm25=182.4 pm10=183.3 lux=111 tb=0.0 tr=0.0 tf=0.0 mq2=0.163 st=0 ok=0x1C err=4,0,0,0,0,0
+[0;32mI (12727) sensors: Vbat=26.44 I=0.105A | 12V=12.03 5V=4.99 3V3=3.22 | T=26.0C H=54% | TVOC=0 eCO2=400 | PM2.5=183.2 | Lux=111 | Tbatt=27.9 Trear=26.6 Tfront=23.9 | MQ2=0.156V st=0 | ok=0x3E err=6,0,0,0,1,0[0m
+ENV vbat=26.44 i=0.105 v12=11.98 v5=4.98 v33=3.23 t=26.0 h=54 p=1012.9 tvoc=0 eco2=400 pm25=183.2 pm10=184.2 lux=143 tb=27.9 tr=26.6 tf=23.9 mq2=0.164 st=0 ok=0x3E err=8,0,0,0,1,0
+[0;33mW (18087) sensors: INA recovered[0m
+[0;32mI (18107) sensors: Vbat=26.44 I=0.112A | 12V=12.00 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=0 eCO2=400 | PM2.5=183.1 | Lux=150 | Tbatt=27.9 Trear=26.6 Tfront=23.9 | MQ2=0.155V st=0 | ok=0x3F err=10,0,0,0,1,0[0m
+ENV vbat=26.44 i=0.105 v12=12.01 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=7 eco2=404 pm25=183.1 pm10=184.2 lux=139 tb=27.9 tr=26.6 tf=23.9 mq2=0.164 st=0 ok=0x3F err=11,0,0,0,1,0
+[0;33mW (22467) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (24507) sensors: Vbat=26.44 I=0.105A | 12V=12.00 5V=4.98 3V3=3.22 | T=25.9C H=54% | TVOC=0 eCO2=414 | PM2.5=179.8 | Lux=164 | Tbatt=27.9 Trear=26.6 Tfront=23.9 | MQ2=0.161V st=0 | ok=0x3E err=14,0,0,0,1,0[0m
+ENV vbat=26.44 i=0.105 v12=12.00 v5=4.98 v33=3.22 t=25.9 h=54 p=1012.8 tvoc=2 eco2=404 pm25=179.8 pm10=180.7 lux=164 tb=27.9 tr=26.6 tf=23.9 mq2=0.161 st=0 ok=0x3E err=14,0,0,0,1,0
+[0;32mI (29877) sensors: Vbat=26.44 I=0.105A | 12V=12.01 5V=4.99 3V3=3.22 | T=25.9C H=54% | TVOC=0 eCO2=400 | PM2.5=176.0 | Lux=151 | Tbatt=27.9 Trear=26.6 Tfront=23.9 | MQ2=0.167V st=0 | ok=0x3E err=19,0,0,0,1,0[0m
+ENV vbat=26.44 i=0.105 v12=12.01 v5=4.99 v33=3.22 t=25.9 h=54 p=1012.8 tvoc=3 eco2=405 pm25=176.0 pm10=176.9 lux=151 tb=27.9 tr=26.6 tf=23.9 mq2=0.167 st=0 ok=0x3E err=19,0,0,0,1,0
+[0;33mW (32067) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.105 v12=11.94 v5=4.99 v33=3.22 t=25.9 h=54 p=1012.8 tvoc=2 eco2=408 pm25=176.0 pm10=176.9 lux=135 tb=27.9 tr=26.6 tf=23.9 mq2=0.165 st=0 ok=0x3F err=22,0,0,0,2,0
+[0;32mI (36277) sensors: Vbat=26.44 I=0.105A | 12V=11.94 5V=4.99 3V3=3.22 | T=26.0C H=54% | TVOC=4 eCO2=400 | PM2.5=173.4 | Lux=135 | Tbatt=27.9 Trear=26.6 Tfront=23.9 | MQ2=0.165V st=0 | ok=0x3F err=22,0,0,0,2,0[0m
+[0;33mW (37287) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.105 v12=11.99 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=9 eco2=412 pm25=173.4 pm10=174.2 lux=139 tb=27.9 tr=26.6 tf=23.9 mq2=0.162 st=0 ok=0x3E err=25,0,0,0,2,0
+[0;32mI (41647) sensors: Vbat=26.44 I=0.105A | 12V=12.03 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=8 eCO2=414 | PM2.5=172.0 | Lux=151 | Tbatt=27.9 Trear=26.6 Tfront=23.9 | MQ2=0.162V st=0 | ok=0x3E err=27,0,0,0,2,0[0m
+ENV vbat=26.44 i=0.105 v12=12.02 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=7 eco2=406 pm25=172.0 pm10=172.6 lux=141 tb=27.9 tr=26.6 tf=23.9 mq2=0.165 st=0 ok=0x3E err=30,0,0,0,2,0
+[0;33mW (46007) sensors: INA recovered[0m
+[0;32mI (48057) sensors: Vbat=26.44 I=0.103A | 12V=11.98 5V=4.99 3V3=3.22 | T=26.0C H=54% | TVOC=8 eCO2=412 | PM2.5=170.5 | Lux=142 | Tbatt=27.9 Trear=26.6 Tfront=23.9 | MQ2=0.164V st=0 | ok=0x3F err=30,0,0,0,2,0[0m
+ENV vbat=26.44 i=0.112 v12=12.04 v5=4.99 v33=3.23 t=26.0 h=54 p=1012.9 tvoc=9 eco2=407 pm25=170.5 pm10=171.0 lux=145 tb=27.9 tr=26.6 tf=23.9 mq2=0.166 st=0 ok=0x3F err=30,0,0,0,2,0
+[0;33mW (53417) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (53437) sensors: Vbat=26.44 I=0.112A | 12V=11.98 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=8 eCO2=404 | PM2.5=170.5 | Lux=145 | Tbatt=27.9 Trear=26.6 Tfront=23.9 | MQ2=0.162V st=0 | ok=0x3E err=33,0,0,0,3,0[0m
+ENV vbat=26.44 i=0.112 v12=12.02 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=0 eco2=403 pm25=170.5 pm10=171.0 lux=1759 tb=27.9 tr=26.6 tf=23.9 mq2=0.167 st=0 ok=0x3E err=34,0,0,0,3,0
+[0;32mI (59827) sensors: Vbat=26.44 I=0.112A | 12V=12.01 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=5 eCO2=406 | PM2.5=169.2 | Lux=1102 | Tbatt=28.0 Trear=26.6 Tfront=23.9 | MQ2=0.166V st=0 | ok=0x3E err=38,0,0,0,3,0[0m
+ENV vbat=26.44 i=0.112 v12=12.01 v5=4.98 v33=3.22 t=26.0 h=54 p=1013.0 tvoc=5 eco2=400 pm25=169.2 pm10=169.6 lux=1102 tb=28.0 tr=26.6 tf=23.9 mq2=0.166 st=0 ok=0x3E err=38,0,0,0,3,0
+[0;33mW (63007) sensors: INA recovered[0m
+[0;32mI (65217) sensors: Vbat=26.44 I=0.104A | 12V=12.03 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=7 eCO2=408 | PM2.5=166.5 | Lux=938 | Tbatt=28.0 Trear=26.6 Tfront=23.9 | MQ2=0.154V st=0 | ok=0x3F err=40,0,0,0,4,0[0m
+ENV vbat=26.44 i=0.104 v12=12.03 v5=4.98 v33=3.22 t=26.0 h=54 p=1013.0 tvoc=7 eco2=408 pm25=166.5 pm10=167.0 lux=938 tb=28.0 tr=26.6 tf=23.9 mq2=0.154 st=0 ok=0x3F err=40,0,0,0,4,0
+[0;33mW (69567) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.114 v12=12.02 v5=4.98 v33=3.22 t=26.0 h=54 p=1013.0 tvoc=11 eco2=414 pm25=166.5 pm10=167.0 lux=1195 tb=28.0 tr=26.6 tf=23.9 mq2=0.157 st=0 ok=0x3E err=43,0,0,0,5,0
+[0;32mI (71607) sensors: Vbat=26.44 I=0.114A | 12V=12.01 5V=4.98 3V3=3.23 | T=26.0C H=54% | TVOC=0 eCO2=402 | PM2.5=164.2 | Lux=1468 | Tbatt=28.0 Trear=26.6 Tfront=23.9 | MQ2=0.167V st=0 | ok=0x3E err=44,0,0,0,5,0[0m
+ENV vbat=26.44 i=0.114 v12=11.97 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=5 eco2=414 pm25=164.2 pm10=165.1 lux=1468 tb=28.0 tr=26.6 tf=23.9 mq2=0.167 st=0 ok=0x3E err=47,0,0,0,6,0
+[0;33mW (76957) sensors: INA recovered[0m
+[0;32mI (76977) sensors: Vbat=26.44 I=0.106A | 12V=11.96 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=6 eCO2=408 | PM2.5=162.6 | Lux=1147 | Tbatt=28.0 Trear=26.6 Tfront=23.9 | MQ2=0.170V st=0 | ok=0x3F err=48,0,0,0,6,0[0m
+ENV vbat=26.44 i=0.105 v12=12.02 v5=4.99 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=5 eco2=400 pm25=162.6 pm10=163.4 lux=934 tb=28.0 tr=26.6 tf=23.9 mq2=0.166 st=0 ok=0x3F err=48,0,0,0,6,0
+[0;32mI (83387) sensors: Vbat=26.44 I=0.105A | 12V=12.01 5V=4.99 3V3=3.22 | T=26.0C H=54% | TVOC=0 eCO2=400 | PM2.5=161.4 | Lux=934 | Tbatt=28.0 Trear=26.6 Tfront=23.9 | MQ2=0.165V st=0 | ok=0x3F err=50,0,0,0,7,0[0m
+[0;33mW (84397) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.105 v12=12.01 v5=4.99 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=7 eco2=413 pm25=161.4 pm10=162.2 lux=934 tb=28.0 tr=26.6 tf=23.9 mq2=0.165 st=0 ok=0x3E err=52,0,0,0,7,0
+[0;32mI (88747) sensors: Vbat=26.44 I=0.105A | 12V=11.99 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=9 eCO2=405 | PM2.5=158.9 | Lux=184 | Tbatt=28.0 Trear=26.6 Tfront=23.9 | MQ2=0.165V st=0 | ok=0x3E err=55,0,0,0,8,0[0m
+ENV vbat=26.44 i=0.105 v12=12.02 v5=4.99 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=11 eco2=416 pm25=158.9 pm10=159.7 lux=1965 tb=28.0 tr=26.6 tf=23.9 mq2=0.165 st=0 ok=0x3E err=56,0,0,0,8,0
+[0;33mW (93107) sensors: INA recovered[0m
+[0;32mI (95157) sensors: Vbat=26.44 I=0.105A | 12V=11.99 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=6 eCO2=415 | PM2.5=157.5 | Lux=1527 | Tbatt=28.0 Trear=26.6 Tfront=23.9 | MQ2=0.168V st=0 | ok=0x3F err=58,0,0,0,8,0[0m
+ENV vbat=26.44 i=0.105 v12=11.99 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=6 eco2=415 pm25=157.5 pm10=158.3 lux=1527 tb=28.0 tr=26.6 tf=23.9 mq2=0.168 st=0 ok=0x3F err=58,0,0,0,8,0
+ENV vbat=26.44 i=0.115 v12=12.00 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=1 eco2=412 pm25=157.5 pm10=158.3 lux=1331 tb=28.0 tr=26.6 tf=23.9 mq2=0.166 st=0 ok=0x3F err=60,0,0,0,9,0
+[0;33mW (100517) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (100537) sensors: Vbat=26.44 I=0.115A | 12V=12.00 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=1 eCO2=412 | PM2.5=157.3 | Lux=1331 | Tbatt=28.0 Trear=26.6 Tfront=23.9 | MQ2=0.166V st=0 | ok=0x3E err=61,0,0,0,9,0[0m
+ENV vbat=26.44 i=0.115 v12=12.01 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=3 eco2=407 pm25=157.3 pm10=157.9 lux=2144 tb=28.0 tr=26.6 tf=23.9 mq2=0.165 st=0 ok=0x3E err=65,0,0,0,10,0
+[0;32mI (106917) sensors: Vbat=26.44 I=0.115A | 12V=12.04 5V=4.99 3V3=3.22 | T=26.0C H=54% | TVOC=4 eCO2=400 | PM2.5=155.9 | Lux=945 | Tbatt=28.1 Trear=26.7 Tfront=24.0 | MQ2=0.167V st=0 | ok=0x3E err=66,0,0,0,10,0[0m
+[0;33mW (110097) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.106 v12=12.02 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=2 eco2=410 pm25=155.9 pm10=156.5 lux=945 tb=28.1 tr=26.7 tf=24.0 mq2=0.166 st=0 ok=0x3F err=68,0,0,0,11,0
+[0;32mI (112297) sensors: Vbat=26.44 I=0.104A | 12V=12.02 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=3 eCO2=400 | PM2.5=153.9 | Lux=1104 | Tbatt=28.1 Trear=26.7 Tfront=24.0 | MQ2=0.168V st=0 | ok=0x3F err=69,0,0,0,11,0[0m
+[0;33mW (114477) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.104 v12=12.00 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=1 eco2=405 pm25=153.9 pm10=154.5 lux=1255 tb=28.1 tr=26.7 tf=24.0 mq2=0.164 st=0 ok=0x3E err=71,0,0,0,11,0
+[0;32mI (118677) sensors: Vbat=26.44 I=0.104A | 12V=12.01 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=0 eCO2=400 | PM2.5=153.6 | Lux=1660 | Tbatt=28.1 Trear=26.6 Tfront=24.0 | MQ2=0.162V st=0 | ok=0x3E err=74,0,0,0,12,0[0m
+ENV vbat=26.44 i=0.104 v12=12.01 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.8 tvoc=3 eco2=402 pm25=153.6 pm10=154.3 lux=1660 tb=28.1 tr=26.6 tf=24.0 mq2=0.162 st=0 ok=0x3E err=75,0,0,0,12,0
+[0;33mW (124027) sensors: INA recovered[0m
+[0;32mI (124047) sensors: Vbat=26.44 I=0.113A | 12V=12.03 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=6 eCO2=406 | PM2.5=151.4 | Lux=147 | Tbatt=28.1 Trear=26.6 Tfront=24.0 | MQ2=0.165V st=0 | ok=0x3F err=78,0,0,0,13,0[0m
+ENV vbat=26.44 i=0.106 v12=12.01 v5=4.99 v33=3.22 t=26.0 h=54 p=1012.8 tvoc=0 eco2=400 pm25=151.4 pm10=151.7 lux=947 tb=28.1 tr=26.6 tf=24.0 mq2=0.163 st=0 ok=0x3F err=78,0,0,0,13,0
+[0;33mW (129417) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.106 v12=12.01 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=2 eco2=404 pm25=151.8 pm10=152.1 lux=1526 tb=28.1 tr=26.6 tf=24.0 mq2=0.164 st=0 ok=0x3E err=81,0,0,0,13,0
+[0;32mI (130457) sensors: Vbat=26.44 I=0.106A | 12V=12.01 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=2 eCO2=404 | PM2.5=151.8 | Lux=1526 | Tbatt=28.1 Trear=26.7 Tfront=24.0 | MQ2=0.164V st=0 | ok=0x3E err=81,0,0,0,13,0[0m
+ENV vbat=26.44 i=0.106 v12=12.02 v5=4.99 v33=3.23 t=26.0 h=54 p=1012.9 tvoc=5 eco2=407 pm25=151.8 pm10=152.1 lux=1377 tb=28.1 tr=26.7 tf=24.0 mq2=0.169 st=0 ok=0x3E err=85,0,0,0,14,0
+[0;32mI (135817) sensors: Vbat=26.44 I=0.106A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.0C H=54% | TVOC=5 eCO2=407 | PM2.5=150.5 | Lux=1377 | Tbatt=28.1 Trear=26.7 Tfront=24.0 | MQ2=0.169V st=0 | ok=0x3E err=86,0,0,0,14,0[0m
+[0;33mW (138007) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.115 v12=11.99 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=9 eco2=403 pm25=150.5 pm10=151.1 lux=1865 tb=28.1 tr=26.7 tf=24.0 mq2=0.163 st=0 ok=0x3F err=87,0,0,0,14,0
+[0;32mI (142247) sensors: Vbat=26.44 I=0.108A | 12V=12.00 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=6 eCO2=402 | PM2.5=148.4 | Lux=1104 | Tbatt=28.1 Trear=26.7 Tfront=24.0 | MQ2=0.166V st=0 | ok=0x3F err=87,0,0,0,14,0[0m
+ENV vbat=26.44 i=0.108 v12=11.99 v5=4.99 v33=3.22 t=26.0 h=54 p=1012.8 tvoc=8 eco2=403 pm25=148.4 pm10=149.2 lux=1712 tb=28.1 tr=26.7 tf=24.0 mq2=0.166 st=0 ok=0x3F err=89,0,0,0,14,0
+[0;33mW (145427) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (147617) sensors: Vbat=26.44 I=0.108A | 12V=12.01 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=4 eCO2=407 | PM2.5=146.5 | Lux=2122 | Tbatt=28.1 Trear=26.7 Tfront=24.0 | MQ2=0.166V st=0 | ok=0x3E err=92,0,0,0,14,0[0m
+ENV vbat=26.44 i=0.108 v12=12.02 v5=4.99 v33=3.23 t=26.0 h=54 p=1012.8 tvoc=3 eco2=403 pm25=146.5 pm10=147.4 lux=2093 tb=28.1 tr=26.7 tf=24.0 mq2=0.155 st=0 ok=0x3E err=94,0,0,0,14,0
+[0;33mW (151977) sensors: INA recovered[0m
+[0;32mI (154027) sensors: Vbat=26.44 I=0.107A | 12V=12.01 5V=4.98 3V3=3.23 | T=26.0C H=54% | TVOC=1 eCO2=405 | PM2.5=144.5 | Lux=947 | Tbatt=28.1 Trear=26.7 Tfront=24.0 | MQ2=0.162V st=0 | ok=0x3F err=95,0,0,0,14,0[0m
+ENV vbat=26.44 i=0.104 v12=12.01 v5=4.98 v33=3.23 t=26.0 h=54 p=1012.9 tvoc=8 eco2=411 pm25=144.5 pm10=145.3 lux=947 tb=28.1 tr=26.7 tf=24.0 mq2=0.162 st=0 ok=0x3F err=95,0,0,0,14,0
+[0;32mI (159437) sensors: Vbat=26.44 I=0.105A | 12V=12.03 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=6 eCO2=411 | PM2.5=144.7 | Lux=1567 | Tbatt=28.1 Trear=26.7 Tfront=24.0 | MQ2=0.166V st=0 | ok=0x3F err=96,0,0,0,14,0[0m
+ENV vbat=26.44 i=0.105 v12=12.03 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=7 eco2=405 pm25=144.7 pm10=145.6 lux=1567 tb=28.1 tr=26.7 tf=24.0 mq2=0.166 st=0 ok=0x3F err=96,0,0,0,14,0
+[0;33mW (161617) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.105 v12=12.02 v5=4.97 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=2 eco2=408 pm25=144.6 pm10=145.6 lux=1092 tb=28.1 tr=26.7 tf=24.0 mq2=0.166 st=0 ok=0x3E err=101,0,0,0,14,0
+[0;32mI (165827) sensors: Vbat=26.44 I=0.105A | 12V=12.02 5V=4.97 3V3=3.22 | T=26.0C H=54% | TVOC=2 eCO2=408 | PM2.5=144.6 | Lux=1092 | Tbatt=28.1 Trear=26.7 Tfront=24.0 | MQ2=0.166V st=0 | ok=0x3E err=101,0,0,0,14,0[0m
+[0;33mW (169007) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.113 v12=12.00 v5=4.99 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=7 eco2=405 pm25=144.6 pm10=145.6 lux=935 tb=28.1 tr=26.7 tf=24.0 mq2=0.164 st=0 ok=0x3F err=103,0,0,0,15,0
+[0;32mI (171217) sensors: Vbat=26.44 I=0.107A | 12V=12.00 5V=4.99 3V3=3.22 | T=26.0C H=54% | TVOC=0 eCO2=403 | PM2.5=144.4 | Lux=935 | Tbatt=28.1 Trear=26.7 Tfront=24.0 | MQ2=0.164V st=0 | ok=0x3F err=103,0,0,0,15,0[0m
+ENV vbat=26.44 i=0.114 v12=12.02 v5=4.99 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=0 eco2=404 pm25=144.4 pm10=145.7 lux=2083 tb=28.1 tr=26.7 tf=24.0 mq2=0.166 st=0 ok=0x3F err=105,0,0,0,15,0
+[0;33mW (175577) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (177617) sensors: Vbat=26.44 I=0.114A | 12V=12.01 5V=4.99 3V3=3.22 | T=26.0C H=54% | TVOC=12 eCO2=415 | PM2.5=144.7 | Lux=1340 | Tbatt=28.1 Trear=26.8 Tfront=24.1 | MQ2=0.164V st=0 | ok=0x3E err=107,0,0,0,15,0[0m
+ENV vbat=26.44 i=0.114 v12=12.03 v5=4.99 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=7 eco2=410 pm25=144.7 pm10=145.9 lux=1340 tb=28.1 tr=26.8 tf=24.1 mq2=0.165 st=0 ok=0x3E err=109,0,0,0,16,0
+[0;33mW (182957) sensors: INA recovered[0m
+[0;32mI (182977) sensors: Vbat=26.44 I=0.113A | 12V=11.98 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=14 eCO2=417 | PM2.5=143.3 | Lux=1340 | Tbatt=28.1 Trear=26.8 Tfront=24.1 | MQ2=0.165V st=0 | ok=0x7F err=111,0,0,0,17,0[0m
+ENV vbat=26.44 i=0.108 v12=11.98 v5=4.99 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=12 eco2=415 pm25=143.3 pm10=144.5 lux=1370 tb=28.1 tr=26.8 tf=24.1 mq2=0.158 st=0 ok=0x7F err=111,0,0,0,17,0
+[0;32mI (189397) sensors: Vbat=26.44 I=0.115A | 12V=12.03 5V=4.99 3V3=3.22 | T=26.0C H=54% | TVOC=8 eCO2=412 | PM2.5=141.2 | Lux=2071 | Tbatt=28.1 Trear=26.8 Tfront=24.1 | MQ2=0.165V st=0 | ok=0x7F err=113,0,0,0,17,0[0m
+ENV vbat=26.44 i=0.115 v12=12.03 v5=4.99 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=12 eco2=400 pm25=141.2 pm10=142.7 lux=2071 tb=28.1 tr=26.8 tf=24.1 mq2=0.165 st=0 ok=0x7F err=113,0,0,0,17,0
+[0;33mW (190407) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (194767) sensors: Vbat=26.44 I=0.115A | 12V=11.92 5V=5.00 3V3=3.22 | T=26.0C H=54% | TVOC=9 eCO2=408 | PM2.5=139.3 | Lux=2129 | Tbatt=28.1 Trear=26.8 Tfront=24.1 | MQ2=0.167V st=0 | ok=0x7E err=118,0,0,0,18,0[0m
+ENV vbat=26.44 i=0.115 v12=11.92 v5=5.00 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=11 eco2=410 pm25=139.3 pm10=140.7 lux=2129 tb=28.1 tr=26.8 tf=24.1 mq2=0.167 st=0 ok=0x7E err=118,0,0,0,18,0
+[0;33mW (196957) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.105 v12=11.90 v5=4.97 v33=3.22 t=26.0 h=54 p=1012.8 tvoc=13 eco2=409 pm25=138.5 pm10=139.4 lux=932 tb=28.1 tr=26.8 tf=24.1 mq2=0.164 st=0 ok=0x7F err=119,0,0,0,18,0
+[0;32mI (201197) sensors: Vbat=26.44 I=0.105A | 12V=11.90 5V=4.97 3V3=3.22 | T=26.0C H=54% | TVOC=8 eCO2=401 | PM2.5=138.5 | Lux=932 | Tbatt=28.1 Trear=26.8 Tfront=24.0 | MQ2=0.164V st=0 | ok=0x7F err=119,0,0,0,18,0[0m
+ENV vbat=26.44 i=0.105 v12=12.04 v5=4.99 v33=3.23 t=26.0 h=54 p=1012.8 tvoc=3 eco2=404 pm25=138.5 pm10=139.4 lux=1160 tb=28.1 tr=26.8 tf=24.0 mq2=0.167 st=0 ok=0x7F err=121,0,0,0,19,0
+[0;33mW (206557) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (206577) sensors: Vbat=26.44 I=0.105A | 12V=12.01 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=13 eCO2=413 | PM2.5=138.6 | Lux=1160 | Tbatt=28.1 Trear=26.8 Tfront=24.0 | MQ2=0.160V st=0 | ok=0x7E err=122,0,0,0,19,0[0m
+ENV vbat=26.44 i=0.105 v12=12.00 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.8 tvoc=11 eco2=411 pm25=138.6 pm10=139.3 lux=1964 tb=28.1 tr=26.8 tf=24.0 mq2=0.162 st=0 ok=0x7E err=125,0,0,0,20,0
+[0;32mI (212957) sensors: Vbat=26.44 I=0.105A | 12V=12.00 5V=4.99 3V3=3.22 | T=26.0C H=54% | TVOC=3 eCO2=410 | PM2.5=137.9 | Lux=1599 | Tbatt=28.1 Trear=26.8 Tfront=24.0 | MQ2=0.167V st=0 | ok=0x7E err=127,0,0,0,20,0[0m
+[0;33mW (213977) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.106 v12=12.06 v5=4.98 v33=3.23 t=26.0 h=54 p=1012.9 tvoc=2 eco2=411 pm25=137.9 pm10=138.6 lux=941 tb=28.1 tr=26.8 tf=24.0 mq2=0.165 st=0 ok=0x7F err=127,0,0,0,20,0
+[0;32mI (218367) sensors: Vbat=26.44 I=0.114A | 12V=12.01 5V=4.99 3V3=3.22 | T=26.0C H=54% | TVOC=4 eCO2=409 | PM2.5=136.8 | Lux=1179 | Tbatt=28.1 Trear=26.8 Tfront=24.0 | MQ2=0.168V st=0 | ok=0x7F err=128,0,0,0,20,0[0m
+ENV vbat=26.44 i=0.114 v12=12.01 v5=4.99 v33=3.22 t=26.0 h=54 p=1012.9 tvoc=0 eco2=403 pm25=136.8 pm10=137.4 lux=1793 tb=28.1 tr=26.8 tf=24.0 mq2=0.166 st=0 ok=0x7F err=129,0,0,0,20,0
+[0;33mW (220547) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (224747) sensors: Vbat=26.44 I=0.114A | 12V=12.01 5V=4.98 3V3=3.22 | T=26.0C H=54% | TVOC=0 eCO2=404 | PM2.5=136.8 | Lux=2048 | Tbatt=28.2 Trear=26.8 Tfront=24.1 | MQ2=0.166V st=0 | ok=0x7E err=133,0,0,0,21,0[0m
+ENV vbat=26.44 i=0.114 v12=12.01 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.8 tvoc=2 eco2=400 pm25=136.8 pm10=137.5 lux=2048 tb=28.2 tr=26.8 tf=24.1 mq2=0.166 st=0 ok=0x7E err=133,0,0,0,21,0
+[0;33mW (228917) sensors: VEML lost: 3 failed reads in a row[0m
+[0;33mW (230087) sensors: INA recovered[0m
+[0;32mI (230107) sensors: Vbat=26.44 I=0.106A | 12V=12.01 5V=4.98 3V3=3.23 | T=26.0C H=54% | TVOC=3 eCO2=415 | PM2.5=134.8 | Lux=2048 | Tbatt=28.2 Trear=26.8 Tfront=24.1 | MQ2=0.163V st=0 | ok=0x6F err=137,0,0,0,23,0[0m
+ENV vbat=26.44 i=0.106 v12=12.01 v5=4.98 v33=3.23 t=26.0 h=54 p=1012.8 tvoc=3 eco2=415 pm25=134.8 pm10=135.4 lux=2048 tb=28.2 tr=26.8 tf=24.1 mq2=0.163 st=0 ok=0x6F err=137,0,0,0,23,0
+[0;33mW (231137) sensors: VEML recovered[0m
+[0;33mW (234467) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.112 v12=11.99 v5=4.98 v33=3.22 t=26.0 h=54 p=1012.8 tvoc=8 eco2=410 pm25=134.8 pm10=135.4 lux=2061 tb=28.2 tr=26.8 tf=24.1 mq2=0.164 st=0 ok=0x7E err=140,0,0,0,23,0
+[0;32mI (236507) sensors: Vbat=26.44 I=0.112A | 12V=12.04 5V=4.98 3V3=3.23 | T=26.1C H=54% | TVOC=10 eCO2=409 | PM2.5=133.2 | Lux=2154 | Tbatt=28.2 Trear=26.8 Tfront=24.1 | MQ2=0.164V st=0 | ok=0x7E err=141,0,0,0,23,0[0m
+ENV vbat=26.44 i=0.112 v12=12.02 v5=4.98 v33=3.22 t=26.1 h=54 p=1012.8 tvoc=7 eco2=400 pm25=133.2 pm10=133.4 lux=2154 tb=28.2 tr=26.8 tf=24.1 mq2=0.166 st=0 ok=0x7E err=144,0,0,0,24,0
+[0;32mI (241867) sensors: Vbat=26.44 I=0.112A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.1C H=54% | TVOC=10 eCO2=415 | PM2.5=132.3 | Lux=1697 | Tbatt=28.2 Trear=26.8 Tfront=24.1 | MQ2=0.168V st=0 | ok=0x7E err=146,0,0,0,24,0[0m
+[0;33mW (244057) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.104 v12=12.03 v5=4.98 v33=3.23 t=26.1 h=54 p=1012.8 tvoc=11 eco2=400 pm25=132.3 pm10=132.8 lux=1735 tb=28.2 tr=26.8 tf=24.1 mq2=0.167 st=0 ok=0x7F err=147,0,0,0,24,0
+[0;32mI (248267) sensors: Vbat=26.44 I=0.104A | 12V=12.03 5V=4.98 3V3=3.22 | T=26.1C H=54% | TVOC=12 eCO2=405 | PM2.5=131.6 | Lux=1735 | Tbatt=28.2 Trear=26.8 Tfront=24.1 | MQ2=0.167V st=0 | ok=0x7F err=149,0,0,0,25,0[0m
+[0;33mW (249277) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.104 v12=12.03 v5=4.98 v33=3.22 t=26.1 h=54 p=1012.8 tvoc=10 eco2=413 pm25=131.6 pm10=132.4 lux=162 tb=28.2 tr=26.8 tf=24.1 mq2=0.167 st=0 ok=0x7E err=151,0,0,0,25,0
+[0;32mI (253627) sensors: Vbat=26.44 I=0.104A | 12V=12.03 5V=4.98 3V3=3.22 | T=26.1C H=54% | TVOC=3 eCO2=403 | PM2.5=129.7 | Lux=162 | Tbatt=28.2 Trear=26.8 Tfront=24.1 | MQ2=0.165V st=0 | ok=0x7E err=154,0,0,0,26,0[0m
+ENV vbat=26.44 i=0.104 v12=12.02 v5=4.99 v33=3.22 t=26.1 h=54 p=1012.8 tvoc=4 eco2=407 pm25=129.7 pm10=130.5 lux=872 tb=28.2 tr=26.8 tf=24.1 mq2=0.164 st=0 ok=0x7E err=155,0,0,0,26,0
+[0;33mW (257977) sensors: INA recovered[0m
+[0;32mI (260027) sensors: Vbat=26.44 I=0.104A | 12V=12.03 5V=4.99 3V3=3.22 | T=26.1C H=54% | TVOC=14 eCO2=416 | PM2.5=128.5 | Lux=948 | Tbatt=28.2 Trear=26.8 Tfront=24.1 | MQ2=0.167V st=0 | ok=0x7F err=157,0,0,0,27,0[0m
+ENV vbat=26.44 i=0.104 v12=12.03 v5=4.99 v33=3.22 t=26.1 h=54 p=1012.9 tvoc=14 eco2=416 pm25=128.5 pm10=129.3 lux=948 tb=28.2 tr=26.8 tf=24.1 mq2=0.167 st=0 ok=0x7F err=157,0,0,0,27,0
+ENV vbat=26.44 i=0.105 v12=12.01 v5=4.98 v33=3.23 t=26.1 h=54 p=1012.9 tvoc=9 eco2=406 pm25=128.5 pm10=129.3 lux=1575 tb=28.2 tr=26.8 tf=24.1 mq2=0.166 st=0 ok=0x7F err=158,0,0,0,27,0
+[0;32mI (265427) sensors: Vbat=26.44 I=0.105A | 12V=12.01 5V=4.98 3V3=3.23 | T=26.1C H=54% | TVOC=9 eCO2=406 | PM2.5=127.0 | Lux=1575 | Tbatt=28.2 Trear=26.8 Tfront=24.1 | MQ2=0.166V st=0 | ok=0x7F err=159,0,0,0,27,0[0m
+[0;33mW (266437) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.105 v12=12.01 v5=4.99 v33=3.23 t=26.1 h=54 p=1012.9 tvoc=4 eco2=400 pm25=127.0 pm10=127.4 lux=2141 tb=28.2 tr=26.8 tf=24.1 mq2=0.171 st=0 ok=0x7E err=163,0,0,0,28,0
+[0;32mI (271807) sensors: Vbat=26.44 I=0.105A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.1C H=54% | TVOC=2 eCO2=400 | PM2.5=125.3 | Lux=1223 | Tbatt=28.2 Trear=26.8 Tfront=24.1 | MQ2=0.166V st=0 | ok=0x7E err=164,0,0,0,28,0[0m
+[0;33mW (274997) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.103 v12=12.02 v5=4.99 v33=3.23 t=26.1 h=54 p=1012.9 tvoc=3 eco2=407 pm25=125.3 pm10=125.7 lux=2156 tb=28.2 tr=26.8 tf=24.1 mq2=0.167 st=0 ok=0x7F err=166,0,0,0,28,0
+[0;32mI (277207) sensors: Vbat=26.44 I=0.107A | 12V=12.01 5V=4.99 3V3=3.22 | T=26.1C H=54% | TVOC=4 eCO2=400 | PM2.5=125.7 | Lux=967 | Tbatt=28.2 Trear=26.8 Tfront=24.1 | MQ2=0.167V st=0 | ok=0x7F err=166,0,0,0,28,0[0m
+ENV vbat=26.44 i=0.106 v12=12.03 v5=4.99 v33=3.22 t=26.1 h=54 p=1012.9 tvoc=0 eco2=400 pm25=125.7 pm10=126.3 lux=1146 tb=28.2 tr=26.8 tf=24.1 mq2=0.166 st=0 ok=0x7F err=168,0,0,0,29,0
+[0;33mW (281557) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (283597) sensors: Vbat=26.44 I=0.106A | 12V=12.06 5V=4.98 3V3=3.22 | T=26.1C H=54% | TVOC=0 eCO2=400 | PM2.5=125.8 | Lux=1424 | Tbatt=28.2 Trear=26.9 Tfront=24.1 | MQ2=0.171V st=0 | ok=0x7E err=170,0,0,0,29,0[0m
+ENV vbat=26.44 i=0.106 v12=12.06 v5=4.98 v33=3.22 t=26.1 h=54 p=1012.9 tvoc=3 eco2=413 pm25=125.8 pm10=126.4 lux=1424 tb=28.2 tr=26.9 tf=24.1 mq2=0.171 st=0 ok=0x7E err=171,0,0,0,29,0
+[0;32mI (288957) sensors: Vbat=26.44 I=0.106A | 12V=12.00 5V=4.99 3V3=3.22 | T=26.1C H=54% | TVOC=5 eCO2=406 | PM2.5=125.9 | Lux=946 | Tbatt=28.2 Trear=26.9 Tfront=24.1 | MQ2=0.166V st=0 | ok=0x7E err=175,0,0,0,30,0[0m
+[0;33mW (289977) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.115 v12=12.01 v5=4.99 v33=3.22 t=26.1 h=54 p=1012.9 tvoc=0 eco2=400 pm25=125.9 pm10=126.6 lux=1794 tb=28.2 tr=26.9 tf=24.1 mq2=0.166 st=0 ok=0x7F err=175,0,0,0,30,0
+[0;32mI (295377) sensors: Vbat=26.44 I=0.113A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.1C H=54% | TVOC=0 eCO2=402 | PM2.5=124.8 | Lux=2046 | Tbatt=28.2 Trear=26.8 Tfront=24.1 | MQ2=0.167V st=0 | ok=0x7F err=177,0,0,0,30,0[0m
+ENV vbat=26.44 i=0.113 v12=12.02 v5=4.99 v33=3.23 t=26.1 h=54 p=1012.9 tvoc=0 eco2=402 pm25=124.8 pm10=125.5 lux=2046 tb=28.2 tr=26.8 tf=24.1 mq2=0.167 st=0 ok=0x7F err=177,0,0,0,30,0
+[0;33mW (296387) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.113 v12=12.02 v5=4.99 v33=3.23 t=26.1 h=54 p=1012.9 tvoc=5 eco2=410 pm25=124.8 pm10=125.5 lux=2138 tb=28.2 tr=26.8 tf=24.1 mq2=0.154 st=0 ok=0x7E err=181,0,0,0,31,0
+[0;32mI (300737) sensors: Vbat=26.44 I=0.113A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.1C H=54% | TVOC=5 eCO2=410 | PM2.5=122.8 | Lux=2138 | Tbatt=28.2 Trear=26.8 Tfront=24.1 | MQ2=0.154V st=0 | ok=0x7E err=182,0,0,0,31,0[0m
+[0;33mW (305097) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.105 v12=12.02 v5=4.99 v33=3.23 t=26.1 h=54 p=1012.9 tvoc=2 eco2=408 pm25=122.8 pm10=123.6 lux=906 tb=28.2 tr=26.8 tf=24.1 mq2=0.166 st=0 ok=0x7F err=185,0,0,0,31,0
+[0;32mI (307147) sensors: Vbat=26.44 I=0.104A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.1C H=54% | TVOC=8 eCO2=415 | PM2.5=121.6 | Lux=1228 | Tbatt=28.2 Trear=26.9 Tfront=24.1 | MQ2=0.165V st=0 | ok=0x7F err=185,0,0,0,31,0[0m
+ENV vbat=26.44 i=0.115 v12=12.01 v5=4.99 v33=3.23 t=26.1 h=54 p=1012.9 tvoc=0 eco2=403 pm25=121.6 pm10=122.3 lux=1369 tb=28.2 tr=26.9 tf=24.1 mq2=0.162 st=0 ok=0x7F err=186,0,0,0,31,0
+[0;33mW (312517) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (312537) sensors: Vbat=26.44 I=0.115A | 12V=12.01 5V=4.99 3V3=3.22 | T=26.1C H=54% | TVOC=0 eCO2=400 | PM2.5=120.7 | Lux=1303 | Tbatt=28.2 Trear=26.9 Tfront=24.1 | MQ2=0.165V st=0 | ok=0x7E err=188,0,0,0,31,0[0m
+ENV vbat=26.44 i=0.115 v12=12.00 v5=4.99 v33=3.22 t=26.1 h=54 p=1012.9 tvoc=11 eco2=416 pm25=120.7 pm10=121.1 lux=1677 tb=28.2 tr=26.9 tf=24.1 mq2=0.157 st=0 ok=0x7E err=190,0,0,0,31,0
+[0;32mI (318917) sensors: Vbat=26.44 I=0.115A | 12V=12.02 5V=4.98 3V3=3.22 | T=26.1C H=54% | TVOC=9 eCO2=407 | PM2.5=121.1 | Lux=1020 | Tbatt=28.2 Trear=26.9 Tfront=24.1 | MQ2=0.166V st=0 | ok=0x7E err=193,0,0,0,32,0[0m
+ENV vbat=26.44 i=0.115 v12=12.02 v5=4.98 v33=3.22 t=26.1 h=54 p=1012.9 tvoc=16 eco2=412 pm25=121.1 pm10=121.9 lux=1020 tb=28.2 tr=26.9 tf=24.1 mq2=0.166 st=0 ok=0x7E err=194,0,0,0,32,0
+[0;33mW (322107) sensors: INA recovered[0m
+[0;32mI (324307) sensors: Vbat=26.44 I=0.105A | 12V=12.00 5V=4.99 3V3=3.22 | T=26.1C H=54% | TVOC=6 eCO2=404 | PM2.5=120.2 | Lux=1378 | Tbatt=28.2 Trear=26.9 Tfront=24.1 | MQ2=0.164V st=0 | ok=0x7F err=196,0,0,0,32,0[0m
+ENV vbat=26.44 i=0.105 v12=12.00 v5=4.99 v33=3.22 t=26.1 h=54 p=1012.9 tvoc=9 eco2=406 pm25=120.2 pm10=120.5 lux=1688 tb=28.2 tr=26.9 tf=24.1 mq2=0.164 st=0 ok=0x7F err=197,0,0,0,32,0
+[0;33mW (326487) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.105 v12=12.01 v5=4.98 v33=3.23 t=26.1 h=54 p=1012.8 tvoc=0 eco2=402 pm25=120.2 pm10=120.5 lux=1288 tb=28.2 tr=26.9 tf=24.1 mq2=0.164 st=0 ok=0x7E err=201,0,0,1,33,0
+[0;32mI (330667) sensors: Vbat=26.44 I=0.105A | 12V=12.01 5V=4.98 3V3=3.23 | T=26.1C H=54% | TVOC=0 eCO2=402 | PM2.5=120.2 | Lux=1288 | Tbatt=28.2 Trear=26.9 Tfront=24.1 | MQ2=0.164V st=0 | ok=0x7E err=201,0,0,1,33,0[0m
+[0;33mW (334837) sensors: VEML lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.105 v12=12.00 v5=4.99 v33=3.23 t=26.1 h=54 p=1012.8 tvoc=4 eco2=400 pm25=120.2 pm10=120.5 lux=1288 tb=28.2 tr=26.9 tf=24.1 mq2=0.168 st=0 ok=0x6E err=205,0,0,1,35,0
+[0;33mW (336007) sensors: INA recovered[0m
+[0;32mI (336027) sensors: Vbat=26.44 I=0.104A | 12V=12.00 5V=4.99 3V3=3.23 | T=26.1C H=54% | TVOC=0 eCO2=400 | PM2.5=118.0 | Lux=1288 | Tbatt=28.2 Trear=26.9 Tfront=24.1 | MQ2=0.168V st=0 | ok=0x6F err=205,0,0,1,35,0[0m
+[0;33mW (337057) sensors: VEML recovered[0m
+ENV vbat=26.44 i=0.105 v12=12.02 v5=4.99 v33=3.23 t=26.1 h=54 p=1012.8 tvoc=4 eco2=405 pm25=118.0 pm10=118.1 lux=1531 tb=28.2 tr=26.9 tf=24.1 mq2=0.167 st=0 ok=0x7F err=205,0,0,1,35,0
+[0;32mI (342447) sensors: Vbat=26.44 I=0.105A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.1C H=54% | TVOC=3 eCO2=400 | PM2.5=117.9 | Lux=2101 | Tbatt=28.2 Trear=26.9 Tfront=24.1 | MQ2=0.166V st=0 | ok=0x7F err=207,0,0,1,35,0[0m
+[0;33mW (343457) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.105 v12=12.00 v5=4.98 v33=3.22 t=26.1 h=54 p=1012.8 tvoc=4 eco2=401 pm25=117.9 pm10=117.9 lux=2071 tb=28.2 tr=26.9 tf=24.1 mq2=0.165 st=0 ok=0x7E err=209,0,0,1,35,0
+[0;32mI (347817) sensors: Vbat=26.44 I=0.105A | 12V=12.01 5V=4.98 3V3=3.22 | T=26.1C H=54% | TVOC=3 eCO2=400 | PM2.5=117.7 | Lux=2155 | Tbatt=28.2 Trear=26.9 Tfront=24.1 | MQ2=0.168V st=0 | ok=0x7E err=212,0,0,1,35,0[0m
+[0;33mW (350007) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.104 v12=12.02 v5=4.99 v33=3.22 t=26.1 h=54 p=1012.8 tvoc=5 eco2=400 pm25=117.7 pm10=117.7 lux=835 tb=28.2 tr=26.9 tf=24.1 mq2=0.164 st=0 ok=0x7F err=213,0,0,1,35,0
+[0;32mI (354247) sensors: Vbat=26.43 I=0.107A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.1C H=53% | TVOC=5 eCO2=400 | PM2.5=115.8 | Lux=1074 | Tbatt=28.3 Trear=26.9 Tfront=24.1 | MQ2=0.169V st=0 | ok=0x7F err=213,0,0,1,35,0[0m
+ENV vbat=26.43 i=0.107 v12=12.02 v5=4.99 v33=3.23 t=26.1 h=53 p=1012.8 tvoc=4 eco2=400 pm25=115.8 pm10=115.9 lux=1074 tb=28.3 tr=26.9 tf=24.1 mq2=0.169 st=0 ok=0x7F err=214,0,0,1,35,0
+[0;33mW (357427) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (359617) sensors: Vbat=26.43 I=0.107A | 12V=12.16 5V=5.03 3V3=3.23 | T=26.1C H=53% | TVOC=7 eCO2=400 | PM2.5=113.2 | Lux=1560 | Tbatt=28.3 Trear=26.9 Tfront=24.1 | MQ2=0.154V st=0 | ok=0x7E err=218,0,0,1,35,0[0m
+ENV vbat=26.43 i=0.107 v12=12.16 v5=5.03 v33=3.23 t=26.1 h=53 p=1012.8 tvoc=2 eco2=400 pm25=113.2 pm10=113.4 lux=1560 tb=28.3 tr=26.9 tf=24.1 mq2=0.154 st=0 ok=0x7E err=218,0,0,1,35,0
+[0;33mW (363977) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.105 v12=12.01 v5=4.98 v33=3.22 t=26.1 h=54 p=1012.8 tvoc=5 eco2=400 pm25=111.3 pm10=111.6 lux=1844 tb=28.3 tr=26.9 tf=24.1 mq2=0.170 st=0 ok=0x7F err=221,0,0,1,35,0
+[0;32mI (366027) sensors: Vbat=26.44 I=0.105A | 12V=12.01 5V=4.98 3V3=3.22 | T=26.1C H=54% | TVOC=8 eCO2=400 | PM2.5=111.3 | Lux=1844 | Tbatt=28.3 Trear=26.9 Tfront=24.1 | MQ2=0.170V st=0 | ok=0x7F err=221,0,0,1,35,0[0m
+ENV vbat=26.44 i=0.107 v12=12.00 v5=4.99 v33=3.23 t=26.1 h=54 p=1012.8 tvoc=2 eco2=400 pm25=111.3 pm10=111.6 lux=867 tb=28.3 tr=26.9 tf=24.1 mq2=0.166 st=0 ok=0x7F err=221,0,0,1,35,0
+[0;32mI (371437) sensors: Vbat=26.44 I=0.107A | 12V=12.02 5V=4.98 3V3=3.23 | T=26.1C H=54% | TVOC=8 eCO2=400 | PM2.5=110.7 | Lux=867 | Tbatt=28.3 Trear=26.9 Tfront=24.1 | MQ2=0.166V st=0 | ok=0x7F err=222,0,0,1,35,0[0m
+[0;33mW (373617) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.107 v12=12.02 v5=4.99 v33=3.23 t=26.1 h=54 p=1012.8 tvoc=7 eco2=400 pm25=110.7 pm10=111.3 lux=1771 tb=28.3 tr=26.9 tf=24.1 mq2=0.167 st=0 ok=0x7E err=225,0,0,1,35,0
+[0;32mI (377827) sensors: Vbat=26.44 I=0.107A | 12V=12.02 5V=4.99 3V3=3.22 | T=26.1C H=54% | TVOC=4 eCO2=400 | PM2.5=110.1 | Lux=1771 | Tbatt=28.3 Trear=26.9 Tfront=24.1 | MQ2=0.165V st=0 | ok=0x7E err=227,0,0,1,36,0[0m
+ENV vbat=26.44 i=0.107 v12=12.02 v5=4.98 v33=3.23 t=26.1 h=54 p=1012.9 tvoc=5 eco2=400 pm25=110.1 pm10=110.8 lux=1771 tb=28.3 tr=26.9 tf=24.1 mq2=0.166 st=0 ok=0x7E err=229,0,0,1,37,0
+[0;33mW (381007) sensors: INA recovered[0m
+[0;32mI (383217) sensors: Vbat=26.44 I=0.114A | 12V=12.24 5V=4.98 3V3=3.22 | T=26.1C H=54% | TVOC=4 eCO2=400 | PM2.5=109.6 | Lux=1584 | Tbatt=28.3 Trear=26.9 Tfront=24.1 | MQ2=0.168V st=0 | ok=0x7F err=229,0,0,1,37,0[0m
+ENV vbat=26.44 i=0.104 v12=12.00 v5=4.99 v33=3.22 t=26.1 h=54 p=1012.9 tvoc=1 eco2=400 pm25=109.6 pm10=110.2 lux=941 tb=28.3 tr=26.9 tf=24.1 mq2=0.168 st=0 ok=0x7F err=229,0,0,1,37,0
+[0;33mW (387577) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (389617) sensors: Vbat=26.44 I=0.104A | 12V=12.02 5V=4.99 3V3=3.22 | T=26.1C H=54% | TVOC=14 eCO2=400 | PM2.5=109.0 | Lux=2044 | Tbatt=28.3 Trear=26.9 Tfront=24.1 | MQ2=0.167V st=0 | ok=0x7E err=233,0,0,1,37,0[0m
+ENV vbat=26.44 i=0.104 v12=12.02 v5=4.99 v33=3.22 t=26.1 h=54 p=1012.9 tvoc=7 eco2=400 pm25=109.0 pm10=109.7 lux=2044 tb=28.3 tr=26.9 tf=24.1 mq2=0.167 st=0 ok=0x7E err=233,0,0,1,37,0
+[0;33mW (394977) sensors: INA recovered[0m
+[0;32mI (394997) sensors: Vbat=26.44 I=0.106A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.1C H=54% | TVOC=12 eCO2=400 | PM2.5=107.8 | Lux=1524 | Tbatt=28.3 Trear=26.9 Tfront=24.1 | MQ2=0.166V st=0 | ok=0x7F err=237,0,0,1,37,0[0m
+ENV vbat=26.44 i=0.106 v12=12.01 v5=4.99 v33=3.23 t=26.1 h=54 p=1012.9 tvoc=12 eco2=400 pm25=107.8 pm10=108.2 lux=1524 tb=28.3 tr=26.9 tf=24.1 mq2=0.166 st=0 ok=0x7F err=237,0,0,1,37,0
+ENV vbat=26.44 i=0.105 v12=12.01 v5=4.99 v33=3.23 t=26.1 h=54 p=1012.9 tvoc=9 eco2=400 pm25=107.8 pm10=108.2 lux=1761 tb=28.3 tr=26.9 tf=24.1 mq2=0.166 st=0 ok=0x7F err=239,0,0,1,38,0
+[0;32mI (401387) sensors: Vbat=26.44 I=0.105A | 12V=12.02 5V=4.98 3V3=3.23 | T=26.1C H=54% | TVOC=15 eCO2=400 | PM2.5=107.8 | Lux=1761 | Tbatt=28.3 Trear=26.9 Tfront=24.2 | MQ2=0.164V st=0 | ok=0x7F err=239,0,0,2,38,0[0m
+[0;33mW (402397) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.105 v12=12.01 v5=4.99 v33=3.23 t=26.1 h=54 p=1012.9 tvoc=7 eco2=400 pm25=107.8 pm10=108.2 lux=1761 tb=28.3 tr=26.9 tf=24.2 mq2=0.168 st=0 ok=0x7E err=242,0,0,2,39,0
+[0;32mI (406747) sensors: Vbat=26.44 I=0.105A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.1C H=54% | TVOC=9 eCO2=400 | PM2.5=110.2 | Lux=2027 | Tbatt=28.3 Trear=26.9 Tfront=24.2 | MQ2=0.159V st=0 | ok=0x7E err=244,0,0,2,39,0[0m
+ENV vbat=26.44 i=0.105 v12=12.01 v5=4.99 v33=3.23 t=26.1 h=54 p=1012.9 tvoc=7 eco2=400 pm25=110.2 pm10=110.6 lux=1156 tb=28.3 tr=26.9 tf=24.2 mq2=0.168 st=0 ok=0x7E err=247,0,0,2,40,0
+[0;33mW (411097) sensors: INA recovered[0m
+[0;32mI (413147) sensors: Vbat=26.44 I=0.104A | 12V=12.02 5V=4.99 3V3=3.22 | T=26.2C H=54% | TVOC=6 eCO2=400 | PM2.5=111.0 | Lux=838 | Tbatt=28.3 Trear=26.9 Tfront=24.2 | MQ2=0.166V st=0 | ok=0x7F err=247,0,0,2,40,0[0m
+ENV vbat=26.44 i=0.105 v12=12.02 v5=4.99 v33=3.22 t=26.2 h=54 p=1013.0 tvoc=6 eco2=400 pm25=111.0 pm10=111.5 lux=907 tb=28.3 tr=26.9 tf=24.2 mq2=0.169 st=0 ok=0x7F err=247,0,0,2,40,0
+[0;33mW (418507) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (418527) sensors: Vbat=26.44 I=0.105A | 12V=12.00 5V=4.98 3V3=3.23 | T=26.2C H=54% | TVOC=5 eCO2=400 | PM2.5=110.1 | Lux=907 | Tbatt=28.3 Trear=26.9 Tfront=24.2 | MQ2=0.162V st=0 | ok=0x7E err=250,0,0,2,41,0[0m
+ENV vbat=26.44 i=0.105 v12=11.91 v5=4.99 v33=3.23 t=26.2 h=54 p=1013.0 tvoc=4 eco2=400 pm25=110.1 pm10=110.7 lux=986 tb=28.3 tr=26.9 tf=24.2 mq2=0.166 st=0 ok=0x7E err=251,0,0,2,41,0
+[0;32mI (424907) sensors: Vbat=26.44 I=0.105A | 12V=12.01 5V=4.98 3V3=3.23 | T=26.1C H=54% | TVOC=12 eCO2=400 | PM2.5=109.1 | Lux=1609 | Tbatt=28.4 Trear=27.0 Tfront=24.2 | MQ2=0.170V st=0 | ok=0x7E err=255,0,0,2,42,0[0m
+ENV vbat=26.44 i=0.105 v12=12.01 v5=4.98 v33=3.23 t=26.1 h=54 p=1012.9 tvoc=10 eco2=400 pm25=109.1 pm10=109.8 lux=1609 tb=28.4 tr=27.0 tf=24.2 mq2=0.170 st=0 ok=0x7E err=255,0,0,2,42,0
+[0;33mW (428097) sensors: INA recovered[0m
+[0;32mI (430297) sensors: Vbat=26.44 I=0.113A | 12V=11.97 5V=4.99 3V3=3.23 | T=26.1C H=54% | TVOC=5 eCO2=400 | PM2.5=108.2 | Lux=948 | Tbatt=28.4 Trear=27.0 Tfront=24.2 | MQ2=0.167V st=0 | ok=0x7F err=258,0,0,2,42,0[0m
+ENV vbat=26.44 i=0.113 v12=11.97 v5=4.99 v33=3.23 t=26.1 h=54 p=1012.9 tvoc=5 eco2=400 pm25=108.2 pm10=108.9 lux=948 tb=28.4 tr=27.0 tf=24.2 mq2=0.167 st=0 ok=0x7F err=258,0,0,2,42,0
+[0;33mW (432477) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.113 v12=12.03 v5=4.98 v33=3.22 t=26.1 h=54 p=1012.9 tvoc=4 eco2=400 pm25=108.2 pm10=108.9 lux=2141 tb=28.4 tr=27.0 tf=24.2 mq2=0.168 st=0 ok=0x7E err=262,0,0,2,42,0
+[0;32mI (436687) sensors: Vbat=26.44 I=0.113A | 12V=12.05 5V=4.98 3V3=3.22 | T=26.2C H=54% | TVOC=10 eCO2=400 | PM2.5=107.3 | Lux=871 | Tbatt=28.4 Trear=27.0 Tfront=24.2 | MQ2=0.163V st=0 | ok=0x7E err=263,0,0,2,42,0[0m
+ENV vbat=26.44 i=0.113 v12=12.03 v5=4.98 v33=3.23 t=26.2 h=54 p=1012.9 tvoc=13 eco2=400 pm25=107.3 pm10=108.0 lux=871 tb=28.4 tr=27.0 tf=24.2 mq2=0.168 st=0 ok=0x7E err=266,0,0,2,43,0
+[0;33mW (442037) sensors: INA recovered[0m
+[0;32mI (442057) sensors: Vbat=26.44 I=0.105A | 12V=11.98 5V=4.99 3V3=3.22 | T=26.2C H=54% | TVOC=6 eCO2=400 | PM2.5=106.8 | Lux=2163 | Tbatt=28.4 Trear=27.0 Tfront=24.2 | MQ2=0.165V st=0 | ok=0x7F err=267,0,0,2,43,0[0m
+ENV vbat=26.44 i=0.105 v12=12.02 v5=4.99 v33=3.23 t=26.2 h=54 p=1012.9 tvoc=5 eco2=400 pm25=106.8 pm10=107.8 lux=1043 tb=28.4 tr=27.0 tf=24.2 mq2=0.156 st=0 ok=0x7F err=269,0,0,2,44,0
+[0;33mW (446407) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (448447) sensors: Vbat=26.44 I=0.105A | 12V=12.03 5V=4.99 3V3=3.22 | T=26.2C H=54% | TVOC=9 eCO2=400 | PM2.5=106.6 | Lux=1679 | Tbatt=28.4 Trear=27.0 Tfront=24.2 | MQ2=0.168V st=0 | ok=0x7E err=271,0,0,2,44,0[0m
+ENV vbat=26.44 i=0.105 v12=12.03 v5=4.99 v33=3.22 t=26.2 h=54 p=1012.9 tvoc=10 eco2=400 pm25=106.6 pm10=107.6 lux=1679 tb=28.4 tr=27.0 tf=24.2 mq2=0.168 st=0 ok=0x7E err=272,0,0,2,44,0
+[0;32mI (453807) sensors: Vbat=26.44 I=0.105A | 12V=12.01 5V=4.98 3V3=3.23 | T=26.2C H=54% | TVOC=0 eCO2=400 | PM2.5=105.7 | Lux=2112 | Tbatt=28.4 Trear=27.0 Tfront=24.2 | MQ2=0.165V st=0 | ok=0x7E err=276,0,0,2,45,0[0m
+ENV vbat=26.44 i=0.105 v12=12.01 v5=4.99 v33=3.22 t=26.2 h=54 p=1012.9 tvoc=4 eco2=400 pm25=105.7 pm10=106.7 lux=1246 tb=28.4 tr=27.0 tf=24.2 mq2=0.166 st=0 ok=0x7E err=277,0,0,2,45,0
+[0;33mW (455997) sensors: INA recovered[0m
+[0;32mI (460237) sensors: Vbat=26.44 I=0.104A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.2C H=54% | TVOC=6 eCO2=400 | PM2.5=104.4 | Lux=940 | Tbatt=28.4 Trear=27.0 Tfront=24.2 | MQ2=0.168V st=0 | ok=0x7F err=277,0,0,2,45,0[0m
+ENV vbat=26.44 i=0.104 v12=12.04 v5=4.99 v33=3.23 t=26.2 h=54 p=1012.8 tvoc=6 eco2=400 pm25=104.4 pm10=105.3 lux=940 tb=28.4 tr=27.0 tf=24.2 mq2=0.168 st=0 ok=0x7F err=277,0,0,2,45,0
+[0;33mW (463407) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.104 v12=12.04 v5=4.98 v33=3.23 t=26.2 h=54 p=1012.8 tvoc=3 eco2=400 pm25=104.4 pm10=105.3 lux=1905 tb=28.4 tr=27.0 tf=24.2 mq2=0.163 st=0 ok=0x7E err=281,0,0,2,46,0
+[0;32mI (465597) sensors: Vbat=26.44 I=0.104A | 12V=12.04 5V=4.98 3V3=3.23 | T=26.2C H=54% | TVOC=3 eCO2=400 | PM2.5=103.4 | Lux=1905 | Tbatt=28.4 Trear=27.0 Tfront=24.2 | MQ2=0.163V st=0 | ok=0x7E err=282,0,0,2,46,0[0m
+ENV vbat=26.44 i=0.104 v12=12.03 v5=4.98 v33=3.22 t=26.2 h=54 p=1012.8 tvoc=3 eco2=400 pm25=103.4 pm10=103.8 lux=1905 tb=28.4 tr=27.0 tf=24.2 mq2=0.162 st=0 ok=0x7E err=286,0,0,2,48,0
+[0;32mI (471967) sensors: Vbat=26.44 I=0.104A | 12V=12.02 5V=4.98 3V3=3.23 | T=26.2C H=54% | TVOC=8 eCO2=400 | PM2.5=103.6 | Lux=1037 | Tbatt=28.4 Trear=27.0 Tfront=24.2 | MQ2=0.167V st=0 | ok=0x7E err=287,0,0,2,48,0[0m
+[0;33mW (472987) sensors: INA recovered[0m
+ENV vbat=26.43 i=0.111 v12=12.00 v5=5.03 v33=3.22 t=26.2 h=54 p=1012.8 tvoc=1 eco2=400 pm25=103.6 pm10=104.2 lux=1660 tb=28.4 tr=27.0 tf=24.2 mq2=0.167 st=0 ok=0x7F err=287,0,0,2,48,0
+[0;32mI (477377) sensors: Vbat=26.43 I=0.116A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.2C H=54% | TVOC=3 eCO2=400 | PM2.5=102.8 | Lux=912 | Tbatt=28.4 Trear=27.0 Tfront=24.2 | MQ2=0.168V st=0 | ok=0x7F err=288,0,0,2,48,0[0m
+[0;33mW (479557) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.43 i=0.116 v12=12.02 v5=4.98 v33=3.22 t=26.2 h=54 p=1012.8 tvoc=7 eco2=400 pm25=102.8 pm10=103.4 lux=1646 tb=28.4 tr=27.0 tf=24.2 mq2=0.166 st=0 ok=0x7E err=290,0,0,2,48,0
+[0;32mI (483737) sensors: Vbat=26.43 I=0.116A | 12V=12.02 5V=4.99 3V3=3.22 | T=26.2C H=54% | TVOC=10 eCO2=400 | PM2.5=102.8 | Lux=1706 | Tbatt=28.4 Trear=27.1 Tfront=24.2 | MQ2=0.169V st=0 | ok=0x7E err=293,0,0,3,49,0[0m
+ENV vbat=26.43 i=0.116 v12=12.02 v5=4.99 v33=3.22 t=26.2 h=54 p=1012.8 tvoc=4 eco2=400 pm25=102.8 pm10=103.4 lux=1706 tb=28.4 tr=27.1 tf=24.2 mq2=0.169 st=0 ok=0x7E err=294,0,0,3,49,0
+[0;33mW (489087) sensors: INA recovered[0m
+[0;32mI (489107) sensors: Vbat=26.43 I=0.105A | 12V=12.02 5V=4.98 3V3=3.23 | T=26.2C H=54% | TVOC=2 eCO2=400 | PM2.5=100.0 | Lux=139 | Tbatt=28.4 Trear=27.1 Tfront=24.2 | MQ2=0.167V st=0 | ok=0x7F err=297,0,0,3,50,0[0m
+ENV vbat=26.43 i=0.105 v12=12.02 v5=4.99 v33=3.23 t=26.2 h=54 p=1012.8 tvoc=0 eco2=400 pm25=100.0 pm10=100.1 lux=897 tb=28.4 tr=27.1 tf=24.2 mq2=0.167 st=0 ok=0x7F err=297,0,0,3,50,0
+[0;33mW (493467) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.43 i=0.105 v12=12.05 v5=4.99 v33=3.23 t=26.2 h=54 p=1012.8 tvoc=8 eco2=400 pm25=100.5 pm10=100.7 lux=1914 tb=28.4 tr=27.1 tf=24.2 mq2=0.167 st=0 ok=0x7E err=301,0,0,3,50,0
+[0;32mI (495507) sensors: Vbat=26.43 I=0.105A | 12V=12.05 5V=4.99 3V3=3.23 | T=26.2C H=54% | TVOC=8 eCO2=400 | PM2.5=100.5 | Lux=1914 | Tbatt=28.4 Trear=27.1 Tfront=24.2 | MQ2=0.167V st=0 | ok=0x7E err=301,0,0,3,50,0[0m
+ENV vbat=26.43 i=0.105 v12=12.04 v5=4.98 v33=3.23 t=26.2 h=54 p=1012.8 tvoc=3 eco2=400 pm25=100.5 pm10=100.7 lux=1914 tb=28.4 tr=27.1 tf=24.2 mq2=0.167 st=0 ok=0x7E err=305,0,0,3,52,0
+[0;32mI (500857) sensors: Vbat=26.43 I=0.105A | 12V=12.04 5V=4.98 3V3=3.23 | T=26.2C H=54% | TVOC=3 eCO2=400 | PM2.5=100.4 | Lux=1914 | Tbatt=28.4 Trear=27.1 Tfront=24.2 | MQ2=0.167V st=0 | ok=0x7E err=306,0,0,3,52,0[0m
+[0;33mW (503047) sensors: INA recovered[0m
+ENV vbat=26.43 i=0.104 v12=12.01 v5=4.99 v33=3.23 t=26.2 h=54 p=1012.8 tvoc=5 eco2=400 pm25=100.4 pm10=100.6 lux=1427 tb=28.4 tr=27.1 tf=24.2 mq2=0.167 st=0 ok=0x7F err=307,0,0,3,52,0
+[0;32mI (507287) sensors: Vbat=26.43 I=0.104A | 12V=12.02 5V=4.99 3V3=3.22 | T=26.2C H=54% | TVOC=0 eCO2=400 | PM2.5=99.5 | Lux=942 | Tbatt=28.4 Trear=27.1 Tfront=24.2 | MQ2=0.169V st=0 | ok=0x7F err=307,0,0,3,52,0[0m
+ENV vbat=26.43 i=0.104 v12=12.02 v5=4.98 v33=3.23 t=26.2 h=54 p=1012.8 tvoc=4 eco2=400 pm25=99.5 pm10=99.6 lux=942 tb=28.4 tr=27.1 tf=24.2 mq2=0.170 st=0 ok=0x7F err=309,0,0,3,53,0
+[0;33mW (510457) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (512647) sensors: Vbat=26.43 I=0.104A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.2C H=54% | TVOC=8 eCO2=400 | PM2.5=98.1 | Lux=2118 | Tbatt=28.4 Trear=27.1 Tfront=24.2 | MQ2=0.167V st=0 | ok=0x7E err=312,0,0,3,53,0[0m
+ENV vbat=26.43 i=0.104 v12=12.04 v5=4.98 v33=3.23 t=26.2 h=54 p=1012.8 tvoc=6 eco2=400 pm25=98.1 pm10=98.1 lux=2079 tb=28.4 tr=27.1 tf=24.2 mq2=0.168 st=0 ok=0x7E err=314,0,0,3,53,0
+[0;33mW (517007) sensors: INA recovered[0m
+[0;32mI (519057) sensors: Vbat=26.44 I=0.104A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.2C H=54% | TVOC=6 eCO2=400 | PM2.5=96.8 | Lux=862 | Tbatt=28.4 Trear=27.1 Tfront=24.2 | MQ2=0.167V st=0 | ok=0x7F err=315,0,0,3,53,0[0m
+ENV vbat=26.43 i=0.113 v12=12.03 v5=4.99 v33=3.23 t=26.2 h=54 p=1012.8 tvoc=0 eco2=400 pm25=96.8 pm10=97.0 lux=862 tb=28.4 tr=27.1 tf=24.2 mq2=0.167 st=0 ok=0x7F err=315,0,0,3,53,0
+[0;33mW (524417) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (524437) sensors: Vbat=26.44 I=0.115A | 12V=12.01 5V=4.99 3V3=3.22 | T=26.2C H=54% | TVOC=2 eCO2=400 | PM2.5=97.0 | Lux=1324 | Tbatt=28.4 Trear=27.1 Tfront=24.2 | MQ2=0.168V st=0 | ok=0x7E err=318,0,0,3,54,0[0m
+ENV vbat=26.44 i=0.115 v12=12.01 v5=4.99 v33=3.22 t=26.2 h=54 p=1012.8 tvoc=0 eco2=400 pm25=97.0 pm10=97.5 lux=1324 tb=28.4 tr=27.1 tf=24.2 mq2=0.168 st=0 ok=0x7E err=318,0,0,3,54,0
+ENV vbat=26.44 i=0.115 v12=12.02 v5=4.99 v33=3.23 t=26.2 h=54 p=1012.8 tvoc=5 eco2=400 pm25=97.0 pm10=97.7 lux=2062 tb=28.4 tr=27.1 tf=24.2 mq2=0.168 st=0 ok=0x7E err=323,0,0,3,56,0
+[0;32mI (530807) sensors: Vbat=26.44 I=0.115A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.2C H=54% | TVOC=5 eCO2=400 | PM2.5=97.0 | Lux=2062 | Tbatt=28.4 Trear=27.1 Tfront=24.2 | MQ2=0.168V st=0 | ok=0x7E err=323,0,0,3,56,0[0m
+[0;33mW (532817) sensors: VEML lost: 3 failed reads in a row[0m
+[0;33mW (533987) sensors: INA recovered[0m
+[0;33mW (535007) sensors: VEML recovered[0m
+ENV vbat=26.44 i=0.111 v12=12.02 v5=4.99 v33=3.22 t=26.2 h=54 p=1012.8 tvoc=9 eco2=400 pm25=97.0 pm10=97.7 lux=930 tb=28.4 tr=27.1 tf=24.2 mq2=0.165 st=0 ok=0x7F err=325,0,0,3,57,0
+[0;32mI (536197) sensors: Vbat=26.43 I=0.104A | 12V=12.02 5V=4.99 3V3=3.22 | T=26.2C H=54% | TVOC=9 eCO2=400 | PM2.5=96.4 | Lux=930 | Tbatt=28.4 Trear=27.1 Tfront=24.2 | MQ2=0.165V st=0 | ok=0x7F err=325,0,0,3,57,0[0m
+ENV vbat=26.44 i=0.114 v12=12.00 v5=4.95 v33=3.22 t=26.2 h=54 p=1012.8 tvoc=1 eco2=400 pm25=96.4 pm10=97.2 lux=1441 tb=28.4 tr=27.1 tf=24.2 mq2=0.166 st=0 ok=0x7F err=327,0,0,3,58,0
+[0;33mW (540547) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (542587) sensors: Vbat=26.44 I=0.114A | 12V=12.00 5V=4.99 3V3=3.22 | T=26.2C H=54% | TVOC=11 eCO2=400 | PM2.5=94.8 | Lux=945 | Tbatt=28.4 Trear=27.1 Tfront=24.2 | MQ2=0.168V st=0 | ok=0x7E err=329,0,0,3,58,0[0m
+ENV vbat=26.44 i=0.114 v12=12.03 v5=4.98 v33=3.23 t=26.2 h=54 p=1012.9 tvoc=12 eco2=400 pm25=94.8 pm10=95.6 lux=945 tb=28.4 tr=27.1 tf=24.2 mq2=0.166 st=0 ok=0x7E err=331,0,0,3,59,0
+[0;32mI (547947) sensors: Vbat=26.44 I=0.114A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.2C H=54% | TVOC=9 eCO2=400 | PM2.5=94.8 | Lux=947 | Tbatt=28.4 Trear=27.1 Tfront=24.2 | MQ2=0.162V st=0 | ok=0x7E err=334,0,0,3,59,0[0m
+[0;33mW (548967) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.115 v12=12.02 v5=4.98 v33=3.22 t=26.2 h=54 p=1012.9 tvoc=1 eco2=400 pm25=94.8 pm10=95.7 lux=1681 tb=28.4 tr=27.1 tf=24.2 mq2=0.165 st=0 ok=0x7F err=334,0,0,3,59,0
+[0;32mI (554357) sensors: Vbat=26.43 I=0.105A | 12V=12.04 5V=4.98 3V3=3.23 | T=26.2C H=54% | TVOC=13 eCO2=400 | PM2.5=94.1 | Lux=881 | Tbatt=28.4 Trear=27.1 Tfront=24.3 | MQ2=0.168V st=0 | ok=0x7F err=336,0,0,3,60,0[0m
+[0;33mW (555367) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.43 i=0.105 v12=12.04 v5=4.98 v33=3.23 t=26.2 h=54 p=1012.9 tvoc=4 eco2=400 pm25=94.1 pm10=95.0 lux=881 tb=28.4 tr=27.1 tf=24.3 mq2=0.168 st=0 ok=0x7E err=337,0,0,3,60,0
+[0;32mI (559717) sensors: Vbat=26.43 I=0.105A | 12V=12.02 5V=4.99 3V3=3.22 | T=26.2C H=54% | TVOC=2 eCO2=400 | PM2.5=93.0 | Lux=157 | Tbatt=28.4 Trear=27.1 Tfront=24.3 | MQ2=0.166V st=0 | ok=0x7E err=341,0,0,3,61,0[0m
+ENV vbat=26.43 i=0.105 v12=12.02 v5=4.99 v33=3.22 t=26.2 h=54 p=1012.9 tvoc=4 eco2=400 pm25=93.0 pm10=93.8 lux=157 tb=28.4 tr=27.1 tf=24.3 mq2=0.166 st=0 ok=0x7E err=341,0,0,3,61,0
+[0;33mW (564067) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.104 v12=12.03 v5=4.98 v33=3.22 t=26.2 h=54 p=1012.8 tvoc=3 eco2=400 pm25=93.6 pm10=94.1 lux=945 tb=28.4 tr=27.1 tf=24.3 mq2=0.165 st=0 ok=0x7F err=344,0,0,3,62,0
+[0;32mI (566117) sensors: Vbat=26.44 I=0.104A | 12V=12.03 5V=4.98 3V3=3.22 | T=26.2C H=54% | TVOC=12 eCO2=400 | PM2.5=93.6 | Lux=945 | Tbatt=28.4 Trear=27.1 Tfront=24.2 | MQ2=0.165V st=0 | ok=0x7F err=344,0,0,3,62,0[0m
+ENV vbat=26.43 i=0.114 v12=12.05 v5=4.97 v33=3.23 t=26.2 h=54 p=1012.8 tvoc=11 eco2=400 pm25=93.6 pm10=94.1 lux=937 tb=28.4 tr=27.1 tf=24.2 mq2=0.167 st=0 ok=0x7F err=346,0,0,3,63,0
+[0;33mW (571477) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (571497) sensors: Vbat=26.43 I=0.114A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.2C H=54% | TVOC=10 eCO2=400 | PM2.5=94.3 | Lux=937 | Tbatt=28.4 Trear=27.1 Tfront=24.2 | MQ2=0.168V st=0 | ok=0x7E err=347,0,0,3,63,0[0m
+ENV vbat=26.43 i=0.114 v12=12.00 v5=4.99 v33=3.22 t=26.2 h=54 p=1012.8 tvoc=4 eco2=400 pm25=94.3 pm10=94.8 lux=2147 tb=28.4 tr=27.1 tf=24.2 mq2=0.167 st=0 ok=0x7E err=350,0,0,3,64,0
+[0;32mI (577867) sensors: Vbat=26.43 I=0.114A | 12V=12.03 5V=4.97 3V3=3.22 | T=26.2C H=54% | TVOC=5 eCO2=400 | PM2.5=93.2 | Lux=2147 | Tbatt=28.5 Trear=27.1 Tfront=24.3 | MQ2=0.168V st=0 | ok=0x7E err=352,0,0,3,65,0[0m
+[0;33mW (579877) sensors: VEML lost: 3 failed reads in a row[0m
+ENV vbat=26.43 i=0.114 v12=12.01 v5=4.98 v33=3.22 t=26.2 h=54 p=1012.8 tvoc=10 eco2=400 pm25=93.2 pm10=93.4 lux=2147 tb=28.5 tr=27.1 tf=24.3 mq2=0.167 st=0 ok=0x6E err=354,0,0,3,66,0
+[0;33mW (581047) sensors: INA recovered[0m
+[0;33mW (582067) sensors: VEML recovered[0m
+[0;32mI (583257) sensors: Vbat=26.43 I=0.105A | 12V=12.05 5V=4.99 3V3=3.23 | T=26.2C H=54% | TVOC=13 eCO2=400 | PM2.5=92.7 | Lux=1150 | Tbatt=28.5 Trear=27.1 Tfront=24.3 | MQ2=0.171V st=0 | ok=0x7F err=354,0,0,3,66,0[0m
+ENV vbat=26.43 i=0.105 v12=12.01 v5=4.99 v33=3.22 t=26.2 h=54 p=1012.8 tvoc=9 eco2=400 pm25=92.7 pm10=92.7 lux=924 tb=28.5 tr=27.1 tf=24.3 mq2=0.170 st=0 ok=0x7F err=355,0,0,3,66,0
+[0;33mW (586437) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (589617) sensors: Vbat=26.43 I=0.105A | 12V=12.03 5V=4.98 3V3=3.23 | T=26.2C H=54% | TVOC=8 eCO2=400 | PM2.5=92.7 | Lux=1770 | Tbatt=28.5 Trear=27.1 Tfront=24.3 | MQ2=0.168V st=0 | ok=0x7E err=359,0,0,4,67,0[0m
+ENV vbat=26.43 i=0.105 v12=12.03 v5=4.98 v33=3.23 t=26.2 h=54 p=1012.8 tvoc=12 eco2=400 pm25=92.7 pm10=92.7 lux=1770 tb=28.5 tr=27.1 tf=24.3 mq2=0.168 st=0 ok=0x7E err=359,0,0,4,67,0
+[0;33mW (594977) sensors: INA recovered[0m
+[0;32mI (594997) sensors: Vbat=26.43 I=0.113A | 12V=12.02 5V=4.98 3V3=3.23 | T=26.2C H=54% | TVOC=5 eCO2=400 | PM2.5=90.4 | Lux=154 | Tbatt=28.5 Trear=27.1 Tfront=24.3 | MQ2=0.168V st=0 | ok=0x7F err=363,0,0,4,67,0[0m
+ENV vbat=26.43 i=0.113 v12=12.02 v5=4.98 v33=3.23 t=26.2 h=54 p=1012.8 tvoc=5 eco2=400 pm25=90.4 pm10=90.5 lux=154 tb=28.5 tr=27.1 tf=24.3 mq2=0.168 st=0 ok=0x7F err=363,0,0,4,67,0
+ENV vbat=26.44 i=0.113 v12=12.03 v5=4.99 v33=3.22 t=26.2 h=54 p=1012.8 tvoc=9 eco2=400 pm25=90.4 pm10=90.5 lux=179 tb=28.5 tr=27.1 tf=24.3 mq2=0.165 st=0 ok=0x7F err=365,0,0,4,67,0
+[0;32mI (601417) sensors: Vbat=26.44 I=0.113A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.3C H=54% | TVOC=8 eCO2=400 | PM2.5=89.8 | Lux=179 | Tbatt=28.5 Trear=27.1 Tfront=24.3 | MQ2=0.168V st=0 | ok=0x7F err=365,0,0,4,67,0[0m
+[0;33mW (602427) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.113 v12=12.09 v5=4.99 v33=3.22 t=26.3 h=54 p=1012.8 tvoc=1 eco2=400 pm25=89.8 pm10=89.9 lux=171 tb=28.5 tr=27.1 tf=24.3 mq2=0.165 st=0 ok=0x7E err=368,0,0,4,67,0
+[0;32mI (606787) sensors: Vbat=26.44 I=0.113A | 12V=12.01 5V=4.95 3V3=3.23 | T=26.3C H=54% | TVOC=5 eCO2=400 | PM2.5=90.1 | Lux=139 | Tbatt=28.5 Trear=27.1 Tfront=24.3 | MQ2=0.165V st=0 | ok=0x7E err=370,0,0,4,67,0[0m
+[0;33mW (608977) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.113 v12=12.05 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=10 eco2=400 pm25=90.1 pm10=90.3 lux=144 tb=28.5 tr=27.1 tf=24.3 mq2=0.169 st=0 ok=0x7F err=371,0,0,4,67,0
+[0;32mI (613217) sensors: Vbat=26.44 I=0.105A | 12V=12.08 5V=4.97 3V3=3.23 | T=26.3C H=54% | TVOC=5 eCO2=400 | PM2.5=90.4 | Lux=146 | Tbatt=28.6 Trear=27.1 Tfront=24.3 | MQ2=0.166V st=0 | ok=0x7F err=371,0,0,4,67,0[0m
+ENV vbat=26.44 i=0.116 v12=12.08 v5=4.97 v33=3.23 t=26.3 h=54 p=1012.9 tvoc=9 eco2=400 pm25=90.4 pm10=90.5 lux=155 tb=28.6 tr=27.1 tf=24.3 mq2=0.166 st=0 ok=0x7F err=371,0,0,4,67,0
+[0;33mW (618577) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (618597) sensors: Vbat=26.44 I=0.116A | 12V=12.00 5V=4.98 3V3=3.22 | T=26.3C H=54% | TVOC=8 eCO2=400 | PM2.5=88.7 | Lux=155 | Tbatt=28.6 Trear=27.1 Tfront=24.3 | MQ2=0.168V st=0 | ok=0x7E err=374,0,0,4,68,0[0m
+ENV vbat=26.44 i=0.116 v12=12.01 v5=4.99 v33=3.22 t=26.3 h=54 p=1012.9 tvoc=3 eco2=400 pm25=88.7 pm10=88.9 lux=1163 tb=28.6 tr=27.1 tf=24.3 mq2=0.167 st=0 ok=0x7E err=375,0,0,4,68,0
+[0;32mI (624977) sensors: Vbat=26.44 I=0.116A | 12V=12.15 5V=4.99 3V3=3.22 | T=26.3C H=54% | TVOC=7 eCO2=400 | PM2.5=87.4 | Lux=1906 | Tbatt=28.5 Trear=27.2 Tfront=24.2 | MQ2=0.166V st=0 | ok=0x7E err=379,0,0,4,69,0[0m
+ENV vbat=26.44 i=0.116 v12=12.15 v5=4.99 v33=3.22 t=26.3 h=54 p=1012.8 tvoc=7 eco2=400 pm25=87.4 pm10=87.5 lux=1906 tb=28.5 tr=27.2 tf=24.2 mq2=0.166 st=0 ok=0x7E err=379,0,0,4,69,0
+[0;33mW (625997) sensors: INA recovered[0m
+[0;32mI (630387) sensors: Vbat=26.44 I=0.113A | 12V=12.05 5V=4.99 3V3=3.22 | T=26.3C H=54% | TVOC=7 eCO2=400 | PM2.5=86.6 | Lux=1373 | Tbatt=28.5 Trear=27.2 Tfront=24.2 | MQ2=0.171V st=0 | ok=0x7F err=380,0,0,4,69,0[0m
+ENV vbat=26.44 i=0.113 v12=12.05 v5=4.99 v33=3.22 t=26.3 h=54 p=1012.8 tvoc=7 eco2=400 pm25=86.6 pm10=86.6 lux=1373 tb=28.5 tr=27.2 tf=24.2 mq2=0.171 st=0 ok=0x7F err=380,0,0,4,69,0
+[0;33mW (632567) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.113 v12=12.00 v5=4.99 v33=3.22 t=26.3 h=54 p=1012.8 tvoc=4 eco2=400 pm25=86.6 pm10=86.6 lux=948 tb=28.5 tr=27.2 tf=24.2 mq2=0.168 st=0 ok=0x7E err=384,0,0,4,69,0
+[0;32mI (636777) sensors: Vbat=26.44 I=0.113A | 12V=12.02 5V=4.99 3V3=3.22 | T=26.3C H=54% | TVOC=8 eCO2=400 | PM2.5=86.7 | Lux=1867 | Tbatt=28.5 Trear=27.2 Tfront=24.3 | MQ2=0.159V st=0 | ok=0x7E err=385,0,0,4,69,0[0m
+[0;33mW (639957) sensors: INA recovered[0m
+ENV vbat=26.43 i=0.105 v12=12.03 v5=4.98 v33=3.23 t=26.3 h=54 p=1012.9 tvoc=5 eco2=400 pm25=86.7 pm10=86.8 lux=1867 tb=28.5 tr=27.2 tf=24.3 mq2=0.154 st=0 ok=0x7F err=387,0,0,4,70,0
+[0;32mI (642167) sensors: Vbat=26.44 I=0.105A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.3C H=54% | TVOC=10 eCO2=400 | PM2.5=86.6 | Lux=1849 | Tbatt=28.5 Trear=27.2 Tfront=24.3 | MQ2=0.169V st=0 | ok=0x7F err=387,0,0,4,70,0[0m
+ENV vbat=26.43 i=0.104 v12=12.00 v5=5.00 v33=3.22 t=26.3 h=54 p=1012.9 tvoc=11 eco2=400 pm25=86.6 pm10=86.6 lux=936 tb=28.5 tr=27.2 tf=24.3 mq2=0.164 st=0 ok=0x7F err=389,0,0,4,71,0
+[0;33mW (646517) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (648557) sensors: Vbat=26.43 I=0.104A | 12V=12.06 5V=4.99 3V3=3.23 | T=26.3C H=54% | TVOC=5 eCO2=400 | PM2.5=86.9 | Lux=1538 | Tbatt=28.6 Trear=27.2 Tfront=24.3 | MQ2=0.167V st=0 | ok=0x7E err=391,0,0,4,71,0[0m
+ENV vbat=26.43 i=0.104 v12=12.06 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=15 eco2=400 pm25=86.9 pm10=87.0 lux=1538 tb=28.6 tr=27.2 tf=24.3 mq2=0.167 st=0 ok=0x7E err=392,0,0,4,71,0
+[0;32mI (653927) sensors: Vbat=26.43 I=0.104A | 12V=12.02 5V=4.99 3V3=3.22 | T=26.3C H=54% | TVOC=9 eCO2=400 | PM2.5=86.6 | Lux=1991 | Tbatt=28.6 Trear=27.2 Tfront=24.3 | MQ2=0.168V st=0 | ok=0x7E err=396,0,0,4,71,0[0m
+ENV vbat=26.43 i=0.104 v12=12.04 v5=4.99 v33=3.22 t=26.3 h=54 p=1012.8 tvoc=1 eco2=400 pm25=86.6 pm10=86.8 lux=1126 tb=28.6 tr=27.2 tf=24.3 mq2=0.170 st=0 ok=0x7E err=397,0,0,4,71,0
+[0;33mW (656117) sensors: INA recovered[0m
+[0;32mI (660307) sensors: Vbat=26.44 I=0.113A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.3C H=54% | TVOC=13 eCO2=400 | PM2.5=86.6 | Lux=1415 | Tbatt=28.6 Trear=27.2 Tfront=24.3 | MQ2=0.166V st=0 | ok=0x7F err=399,0,0,5,72,0[0m
+ENV vbat=26.44 i=0.113 v12=12.01 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.7 tvoc=13 eco2=400 pm25=86.6 pm10=86.8 lux=1415 tb=28.6 tr=27.2 tf=24.3 mq2=0.166 st=0 ok=0x7F err=399,0,0,5,72,0
+[0;33mW (661317) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.113 v12=12.02 v5=4.99 v33=3.22 t=26.3 h=54 p=1012.7 tvoc=7 eco2=400 pm25=86.6 pm10=86.8 lux=144 tb=28.6 tr=27.2 tf=24.3 mq2=0.161 st=0 ok=0x7E err=403,0,0,5,73,0
+[0;32mI (665667) sensors: Vbat=26.44 I=0.113A | 12V=12.02 5V=4.99 3V3=3.22 | T=26.3C H=54% | TVOC=7 eCO2=400 | PM2.5=86.2 | Lux=144 | Tbatt=28.6 Trear=27.2 Tfront=24.3 | MQ2=0.161V st=0 | ok=0x7E err=404,0,0,5,73,0[0m
+[0;33mW (670017) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.106 v12=12.02 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.7 tvoc=7 eco2=400 pm25=86.2 pm10=86.6 lux=1584 tb=28.6 tr=27.2 tf=24.3 mq2=0.164 st=0 ok=0x7F err=407,0,0,5,74,0
+[0;32mI (672067) sensors: Vbat=26.44 I=0.106A | 12V=11.99 5V=4.99 3V3=3.22 | T=26.3C H=54% | TVOC=5 eCO2=400 | PM2.5=86.7 | Lux=1545 | Tbatt=28.6 Trear=27.2 Tfront=24.4 | MQ2=0.174V st=0 | ok=0x7F err=407,0,0,5,74,0[0m
+ENV vbat=26.44 i=0.106 v12=12.03 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=11 eco2=400 pm25=86.7 pm10=86.9 lux=1010 tb=28.6 tr=27.2 tf=24.4 mq2=0.168 st=0 ok=0x7F err=408,0,0,5,74,0
+[0;33mW (677437) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (677457) sensors: Vbat=26.44 I=0.106A | 12V=12.03 5V=5.00 3V3=3.22 | T=26.3C H=54% | TVOC=6 eCO2=400 | PM2.5=86.7 | Lux=895 | Tbatt=28.6 Trear=27.2 Tfront=24.4 | MQ2=0.169V st=0 | ok=0x7E err=410,0,0,5,74,0[0m
+ENV vbat=26.44 i=0.106 v12=12.01 v5=4.99 v33=3.22 t=26.3 h=54 p=1012.8 tvoc=5 eco2=400 pm25=86.7 pm10=86.8 lux=1564 tb=28.6 tr=27.2 tf=24.4 mq2=0.168 st=0 ok=0x7E err=412,0,0,5,74,0
+[0;32mI (683837) sensors: Vbat=26.44 I=0.106A | 12V=12.02 5V=4.98 3V3=3.23 | T=26.3C H=54% | TVOC=10 eCO2=400 | PM2.5=85.1 | Lux=1634 | Tbatt=28.6 Trear=27.2 Tfront=24.3 | MQ2=0.161V st=0 | ok=0x7E err=415,0,0,5,75,0[0m
+ENV vbat=26.44 i=0.106 v12=12.02 v5=4.98 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=11 eco2=400 pm25=85.1 pm10=85.2 lux=1634 tb=28.6 tr=27.2 tf=24.3 mq2=0.161 st=0 ok=0x7E err=416,0,0,5,75,0
+[0;33mW (687027) sensors: INA recovered[0m
+[0;32mI (689237) sensors: Vbat=26.43 I=0.106A | 12V=12.00 5V=4.99 3V3=3.23 | T=26.3C H=54% | TVOC=2 eCO2=400 | PM2.5=82.8 | Lux=1003 | Tbatt=28.6 Trear=27.2 Tfront=24.3 | MQ2=0.168V st=0 | ok=0x7F err=417,0,0,5,75,0[0m
+ENV vbat=26.43 i=0.106 v12=12.00 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=6 eco2=400 pm25=82.8 pm10=83.0 lux=967 tb=28.6 tr=27.2 tf=24.3 mq2=0.168 st=0 ok=0x7F err=418,0,0,5,75,0
+[0;33mW (692417) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.43 i=0.106 v12=12.07 v5=4.98 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=6 eco2=400 pm25=81.2 pm10=81.5 lux=967 tb=28.6 tr=27.2 tf=24.3 mq2=0.168 st=0 ok=0x7E err=422,0,0,5,77,0
+[0;32mI (695607) sensors: Vbat=26.43 I=0.106A | 12V=12.07 5V=4.98 3V3=3.23 | T=26.3C H=54% | TVOC=6 eCO2=400 | PM2.5=81.2 | Lux=967 | Tbatt=28.6 Trear=27.2 Tfront=24.4 | MQ2=0.168V st=0 | ok=0x7E err=422,0,0,5,77,0[0m
+[0;33mW (697617) sensors: VEML lost: 3 failed reads in a row[0m
+[0;33mW (699787) sensors: VEML recovered[0m
+ENV vbat=26.43 i=0.106 v12=12.00 v5=4.98 v33=3.22 t=26.3 h=54 p=1012.8 tvoc=7 eco2=400 pm25=81.2 pm10=81.5 lux=1546 tb=28.6 tr=27.2 tf=24.4 mq2=0.167 st=0 ok=0x7E err=426,0,0,5,78,0
+[0;33mW (700957) sensors: INA recovered[0m
+[0;32mI (700977) sensors: Vbat=26.43 I=0.110A | 12V=12.00 5V=4.98 3V3=3.22 | T=26.3C H=54% | TVOC=1 eCO2=400 | PM2.5=81.2 | Lux=1546 | Tbatt=28.6 Trear=27.2 Tfront=24.4 | MQ2=0.167V st=0 | ok=0x7F err=426,0,0,5,78,0[0m
+ENV vbat=26.43 i=0.110 v12=12.00 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=6 eco2=400 pm25=81.2 pm10=81.4 lux=1159 tb=28.6 tr=27.2 tf=24.4 mq2=0.168 st=0 ok=0x7F err=427,0,0,5,78,0
+[0;32mI (707397) sensors: Vbat=26.43 I=0.110A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.3C H=54% | TVOC=8 eCO2=400 | PM2.5=81.8 | Lux=1412 | Tbatt=28.6 Trear=27.2 Tfront=24.4 | MQ2=0.158V st=0 | ok=0x7F err=428,0,0,5,78,0[0m
+[0;33mW (708407) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.43 i=0.110 v12=12.03 v5=4.98 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=9 eco2=400 pm25=81.8 pm10=82.1 lux=1852 tb=28.6 tr=27.2 tf=24.4 mq2=0.168 st=0 ok=0x7E err=430,0,0,5,78,0
+[0;32mI (712767) sensors: Vbat=26.43 I=0.110A | 12V=11.97 5V=4.97 3V3=3.23 | T=26.3C H=54% | TVOC=5 eCO2=400 | PM2.5=83.0 | Lux=1508 | Tbatt=28.6 Trear=27.2 Tfront=24.4 | MQ2=0.168V st=0 | ok=0x7E err=433,0,0,5,78,0[0m
+ENV vbat=26.43 i=0.110 v12=12.03 v5=4.98 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=9 eco2=400 pm25=83.0 pm10=83.2 lux=1508 tb=28.6 tr=27.2 tf=24.4 mq2=0.157 st=0 ok=0x7E err=435,0,0,5,79,0
+[0;33mW (717117) sensors: INA recovered[0m
+[0;32mI (719167) sensors: Vbat=26.43 I=0.105A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.3C H=54% | TVOC=1 eCO2=400 | PM2.5=82.9 | Lux=1457 | Tbatt=28.6 Trear=27.2 Tfront=24.4 | MQ2=0.163V st=0 | ok=0x7F err=436,0,0,5,79,0[0m
+ENV vbat=26.43 i=0.106 v12=12.01 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=4 eco2=400 pm25=82.9 pm10=83.1 lux=1457 tb=28.6 tr=27.2 tf=24.4 mq2=0.163 st=0 ok=0x7F err=436,0,0,5,79,0
+[0;33mW (724537) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (724557) sensors: Vbat=26.43 I=0.114A | 12V=12.01 5V=4.98 3V3=3.23 | T=26.3C H=54% | TVOC=7 eCO2=400 | PM2.5=81.4 | Lux=2130 | Tbatt=28.6 Trear=27.2 Tfront=24.4 | MQ2=0.168V st=0 | ok=0x7E err=439,0,0,5,79,0[0m
+ENV vbat=26.43 i=0.114 v12=12.01 v5=4.98 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=2 eco2=400 pm25=81.4 pm10=81.8 lux=2130 tb=28.6 tr=27.2 tf=24.4 mq2=0.168 st=0 ok=0x7E err=439,0,0,5,79,0
+ENV vbat=26.43 i=0.114 v12=12.03 v5=4.98 v33=3.22 t=26.3 h=54 p=1012.8 tvoc=6 eco2=400 pm25=80.2 pm10=80.6 lux=2137 tb=28.6 tr=27.2 tf=24.4 mq2=0.166 st=0 ok=0x7E err=444,0,0,5,81,0
+[0;32mI (730927) sensors: Vbat=26.43 I=0.114A | 12V=12.03 5V=4.98 3V3=3.22 | T=26.3C H=54% | TVOC=6 eCO2=400 | PM2.5=80.2 | Lux=2137 | Tbatt=28.6 Trear=27.2 Tfront=24.4 | MQ2=0.166V st=0 | ok=0x7E err=444,0,0,5,81,0[0m
+[0;33mW (732937) sensors: VEML lost: 3 failed reads in a row[0m
+[0;33mW (734107) sensors: INA recovered[0m
+[0;33mW (735127) sensors: VEML recovered[0m
+ENV vbat=26.43 i=0.105 v12=12.00 v5=4.99 v33=3.22 t=26.3 h=54 p=1012.8 tvoc=8 eco2=400 pm25=80.2 pm10=80.6 lux=1455 tb=28.6 tr=27.2 tf=24.4 mq2=0.166 st=0 ok=0x7F err=446,0,0,5,82,0
+[0;32mI (736307) sensors: Vbat=26.43 I=0.105A | 12V=12.00 5V=4.99 3V3=3.22 | T=26.3C H=54% | TVOC=0 eCO2=400 | PM2.5=78.6 | Lux=1455 | Tbatt=28.6 Trear=27.2 Tfront=24.4 | MQ2=0.166V st=0 | ok=0x7F err=447,0,0,5,82,0[0m
+[0;33mW (738487) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.43 i=0.105 v12=12.03 v5=4.98 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=0 eco2=400 pm25=78.6 pm10=79.0 lux=1301 tb=28.6 tr=27.2 tf=24.4 mq2=0.170 st=0 ok=0x7E err=450,0,0,5,82,0
+[0;32mI (742697) sensors: Vbat=26.43 I=0.105A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.3C H=54% | TVOC=1 eCO2=400 | PM2.5=79.8 | Lux=1198 | Tbatt=28.6 Trear=27.2 Tfront=24.4 | MQ2=0.169V st=0 | ok=0x7E err=452,0,0,5,82,0[0m
+ENV vbat=26.43 i=0.105 v12=12.02 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.9 tvoc=7 eco2=400 pm25=79.8 pm10=80.2 lux=1198 tb=28.6 tr=27.2 tf=24.4 mq2=0.169 st=0 ok=0x7E err=454,0,0,5,83,0
+[0;33mW (748037) sensors: INA recovered[0m
+[0;32mI (748057) sensors: Vbat=26.43 I=0.115A | 12V=12.01 5V=5.04 3V3=3.23 | T=26.3C H=54% | TVOC=0 eCO2=400 | PM2.5=80.6 | Lux=1198 | Tbatt=28.6 Trear=27.2 Tfront=24.4 | MQ2=0.166V st=0 | ok=0x7F err=456,0,0,5,84,0[0m
+ENV vbat=26.43 i=0.104 v12=12.02 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.9 tvoc=9 eco2=400 pm25=80.6 pm10=81.0 lux=1439 tb=28.6 tr=27.2 tf=24.4 mq2=0.180 st=0 ok=0x7F err=457,0,0,5,84,0
+[0;33mW (752417) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (754457) sensors: Vbat=26.43 I=0.104A | 12V=12.03 5V=4.98 3V3=3.22 | T=26.3C H=54% | TVOC=9 eCO2=400 | PM2.5=81.2 | Lux=1713 | Tbatt=28.6 Trear=27.2 Tfront=24.4 | MQ2=0.168V st=0 | ok=0x7E err=460,0,0,5,84,0[0m
+ENV vbat=26.43 i=0.104 v12=12.03 v5=4.98 v33=3.22 t=26.3 h=54 p=1012.8 tvoc=3 eco2=400 pm25=81.2 pm10=81.5 lux=1713 tb=28.6 tr=27.2 tf=24.4 mq2=0.168 st=0 ok=0x7E err=460,0,0,5,84,0
+[0;32mI (759817) sensors: Vbat=26.43 I=0.104A | 12V=12.04 5V=4.98 3V3=3.23 | T=26.3C H=54% | TVOC=4 eCO2=400 | PM2.5=81.6 | Lux=1419 | Tbatt=28.6 Trear=27.2 Tfront=24.4 | MQ2=0.169V st=0 | ok=0x7E err=465,0,0,5,85,0[0m
+ENV vbat=26.43 i=0.104 v12=12.04 v5=4.98 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=10 eco2=400 pm25=81.6 pm10=81.9 lux=1419 tb=28.6 tr=27.2 tf=24.4 mq2=0.169 st=0 ok=0x7E err=465,0,0,5,85,0
+[0;33mW (762007) sensors: INA recovered[0m
+ENV vbat=26.43 i=0.106 v12=11.98 v5=4.99 v33=3.22 t=26.3 h=54 p=1012.8 tvoc=2 eco2=400 pm25=81.2 pm10=81.6 lux=1123 tb=28.6 tr=27.2 tf=24.4 mq2=0.157 st=0 ok=0x7F err=466,0,0,5,85,0
+[0;32mI (766247) sensors: Vbat=26.43 I=0.106A | 12V=11.98 5V=4.99 3V3=3.22 | T=26.3C H=54% | TVOC=3 eCO2=400 | PM2.5=81.2 | Lux=1123 | Tbatt=28.6 Trear=27.3 Tfront=24.4 | MQ2=0.157V st=0 | ok=0x7F err=466,0,0,5,85,0[0m
+[0;33mW (769417) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.43 i=0.106 v12=12.02 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.9 tvoc=7 eco2=400 pm25=81.2 pm10=81.6 lux=1123 tb=28.6 tr=27.3 tf=24.4 mq2=0.165 st=0 ok=0x7E err=469,0,0,5,86,0
+[0;32mI (771607) sensors: Vbat=26.43 I=0.106A | 12V=12.04 5V=4.99 3V3=3.23 | T=26.3C H=54% | TVOC=2 eCO2=400 | PM2.5=80.0 | Lux=2126 | Tbatt=28.6 Trear=27.3 Tfront=24.4 | MQ2=0.166V st=0 | ok=0x7E err=471,0,0,5,86,0[0m
+ENV vbat=26.43 i=0.106 v12=12.00 v5=4.99 v33=3.22 t=26.3 h=54 p=1012.9 tvoc=10 eco2=400 pm25=80.0 pm10=80.2 lux=2079 tb=28.6 tr=27.3 tf=24.4 mq2=0.167 st=0 ok=0x7E err=474,0,0,5,87,0
+[0;33mW (775957) sensors: INA recovered[0m
+[0;32mI (778007) sensors: Vbat=26.43 I=0.107A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.3C H=54% | TVOC=4 eCO2=400 | PM2.5=79.3 | Lux=982 | Tbatt=28.6 Trear=27.3 Tfront=24.4 | MQ2=0.168V st=0 | ok=0x7F err=474,0,0,5,87,0[0m
+ENV vbat=26.43 i=0.115 v12=12.12 v5=5.03 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=3 eco2=400 pm25=79.3 pm10=79.6 lux=1810 tb=28.6 tr=27.3 tf=24.4 mq2=0.169 st=0 ok=0x7F err=474,0,0,5,87,0
+[0;32mI (783417) sensors: Vbat=26.43 I=0.105A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.3C H=54% | TVOC=0 eCO2=400 | PM2.5=78.7 | Lux=1182 | Tbatt=28.6 Trear=27.3 Tfront=24.4 | MQ2=0.168V st=0 | ok=0x7F err=475,0,0,5,87,0[0m
+ENV vbat=26.43 i=0.105 v12=12.00 v5=4.98 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=0 eco2=400 pm25=78.7 pm10=78.8 lux=1988 tb=28.6 tr=27.3 tf=24.4 mq2=0.164 st=0 ok=0x7F err=476,0,0,5,87,0
+[0;33mW (785597) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (789807) sensors: Vbat=26.43 I=0.105A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.3C H=54% | TVOC=5 eCO2=400 | PM2.5=78.0 | Lux=2150 | Tbatt=28.6 Trear=27.3 Tfront=24.4 | MQ2=0.170V st=0 | ok=0x7E err=480,0,0,5,88,0[0m
+ENV vbat=26.43 i=0.105 v12=12.01 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=6 eco2=400 pm25=78.0 pm10=78.2 lux=2150 tb=28.6 tr=27.3 tf=24.4 mq2=0.170 st=0 ok=0x7E err=480,0,0,5,88,0
+[0;33mW (792987) sensors: INA recovered[0m
+[0;32mI (795197) sensors: Vbat=26.43 I=0.112A | 12V=12.01 5V=4.99 3V3=3.22 | T=26.3C H=54% | TVOC=7 eCO2=400 | PM2.5=77.6 | Lux=944 | Tbatt=28.6 Trear=27.3 Tfront=24.4 | MQ2=0.166V st=0 | ok=0x7F err=482,0,0,5,89,0[0m
+ENV vbat=26.43 i=0.112 v12=12.01 v5=4.99 v33=3.22 t=26.3 h=54 p=1012.8 tvoc=7 eco2=400 pm25=77.6 pm10=77.8 lux=944 tb=28.6 tr=27.3 tf=24.4 mq2=0.166 st=0 ok=0x7F err=482,0,0,5,89,0
+[0;33mW (799547) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.106 v12=12.02 v5=4.96 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=3 eco2=400 pm25=77.6 pm10=77.8 lux=1342 tb=28.6 tr=27.3 tf=24.4 mq2=0.169 st=0 ok=0x7E err=485,0,0,5,90,0
+[0;32mI (801587) sensors: Vbat=26.44 I=0.106A | 12V=11.99 5V=4.99 3V3=3.22 | T=26.3C H=54% | TVOC=12 eCO2=400 | PM2.5=77.5 | Lux=1017 | Tbatt=28.6 Trear=27.2 Tfront=24.4 | MQ2=0.168V st=0 | ok=0x7E err=486,0,0,5,90,0[0m
+ENV vbat=26.44 i=0.106 v12=12.02 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=0 eco2=400 pm25=77.5 pm10=77.8 lux=2146 tb=28.6 tr=27.2 tf=24.4 mq2=0.170 st=0 ok=0x7E err=489,0,0,5,90,0
+[0;32mI (806957) sensors: Vbat=26.44 I=0.106A | 12V=12.00 5V=4.99 3V3=3.23 | T=26.3C H=54% | TVOC=8 eCO2=400 | PM2.5=77.0 | Lux=948 | Tbatt=28.6 Trear=27.2 Tfront=24.4 | MQ2=0.167V st=0 | ok=0x7E err=491,0,0,5,90,0[0m
+[0;33mW (807977) sensors: INA recovered[0m
+ENV vbat=26.43 i=0.106 v12=12.05 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=0 eco2=400 pm25=77.0 pm10=77.4 lux=885 tb=28.6 tr=27.2 tf=24.4 mq2=0.170 st=0 ok=0x7F err=491,0,0,5,90,0
+[0;32mI (813377) sensors: Vbat=26.43 I=0.106A | 12V=12.01 5V=4.98 3V3=3.23 | T=26.3C H=54% | TVOC=6 eCO2=400 | PM2.5=76.7 | Lux=2073 | Tbatt=28.7 Trear=27.3 Tfront=24.4 | MQ2=0.167V st=0 | ok=0x7F err=493,0,0,5,90,0[0m
+[0;33mW (814387) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.43 i=0.106 v12=12.01 v5=4.98 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=10 eco2=400 pm25=76.7 pm10=77.1 lux=1897 tb=28.7 tr=27.3 tf=24.4 mq2=0.167 st=0 ok=0x7E err=495,0,0,5,90,0
+[0;32mI (818737) sensors: Vbat=26.43 I=0.106A | 12V=12.04 5V=4.98 3V3=3.23 | T=26.3C H=54% | TVOC=2 eCO2=400 | PM2.5=76.1 | Lux=1897 | Tbatt=28.7 Trear=27.3 Tfront=24.4 | MQ2=0.169V st=0 | ok=0x7E err=498,0,0,5,91,0[0m
+ENV vbat=26.43 i=0.106 v12=12.02 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.8 tvoc=0 eco2=400 pm25=76.1 pm10=76.7 lux=1382 tb=28.7 tr=27.3 tf=24.4 mq2=0.159 st=0 ok=0x7E err=499,0,0,5,91,0
+[0;33mW (823097) sensors: INA recovered[0m
+[0;32mI (825147) sensors: Vbat=26.43 I=0.105A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.3C H=54% | TVOC=8 eCO2=400 | PM2.5=76.0 | Lux=941 | Tbatt=28.6 Trear=27.3 Tfront=24.4 | MQ2=0.170V st=0 | ok=0x7F err=501,0,0,5,91,0[0m
+ENV vbat=26.43 i=0.105 v12=12.03 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.9 tvoc=8 eco2=400 pm25=76.0 pm10=76.6 lux=941 tb=28.6 tr=27.3 tf=24.4 mq2=0.170 st=0 ok=0x7F err=501,0,0,5,91,0
+ENV vbat=26.43 i=0.108 v12=12.02 v5=4.99 v33=3.23 t=26.3 h=54 p=1012.9 tvoc=11 eco2=400 pm25=76.0 pm10=76.6 lux=1688 tb=28.6 tr=27.3 tf=24.4 mq2=0.169 st=0 ok=0x7F err=503,0,0,5,91,0
+[0;33mW (830517) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (830537) sensors: Vbat=26.43 I=0.108A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.3C H=54% | TVOC=11 eCO2=400 | PM2.5=75.7 | Lux=1688 | Tbatt=28.6 Trear=27.3 Tfront=24.4 | MQ2=0.169V st=0 | ok=0x7E err=504,0,0,5,91,0[0m
+ENV vbat=26.43 i=0.108 v12=12.02 v5=4.98 v33=3.23 t=26.3 h=54 p=1012.9 tvoc=4 eco2=400 pm25=75.7 pm10=76.3 lux=854 tb=28.6 tr=27.3 tf=24.4 mq2=0.167 st=0 ok=0x7E err=508,0,0,5,91,0
+[0;32mI (836927) sensors: Vbat=26.43 I=0.108A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.3C H=55% | TVOC=5 eCO2=400 | PM2.5=74.9 | Lux=1588 | Tbatt=28.7 Trear=27.3 Tfront=24.4 | MQ2=0.167V st=0 | ok=0x7E err=509,0,0,5,91,0[0m
+[0;33mW (840117) sensors: INA recovered[0m
+ENV vbat=26.43 i=0.104 v12=12.04 v5=4.99 v33=3.23 t=26.3 h=55 p=1012.8 tvoc=11 eco2=400 pm25=74.9 pm10=75.4 lux=2033 tb=28.7 tr=27.3 tf=24.4 mq2=0.167 st=0 ok=0x7F err=511,0,0,5,91,0
+[0;32mI (842317) sensors: Vbat=26.43 I=0.113A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.3C H=55% | TVOC=8 eCO2=400 | PM2.5=74.5 | Lux=940 | Tbatt=28.7 Trear=27.3 Tfront=24.4 | MQ2=0.169V st=0 | ok=0x7F err=512,0,0,5,91,0[0m
+[0;33mW (844497) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.43 i=0.113 v12=12.03 v5=4.99 v33=3.23 t=26.3 h=55 p=1012.8 tvoc=2 eco2=400 pm25=74.5 pm10=74.8 lux=2080 tb=28.7 tr=27.3 tf=24.4 mq2=0.167 st=0 ok=0x7E err=514,0,0,5,91,0
+[0;32mI (848697) sensors: Vbat=26.43 I=0.113A | 12V=12.02 5V=5.00 3V3=3.22 | T=26.4C H=54% | TVOC=6 eCO2=400 | PM2.5=73.8 | Lux=2119 | Tbatt=28.7 Trear=27.3 Tfront=24.4 | MQ2=0.166V st=0 | ok=0x7E err=517,0,0,5,92,0[0m
+ENV vbat=26.43 i=0.113 v12=12.02 v5=5.00 v33=3.22 t=26.4 h=54 p=1012.8 tvoc=11 eco2=400 pm25=73.8 pm10=74.0 lux=2119 tb=28.7 tr=27.3 tf=24.4 mq2=0.166 st=0 ok=0x7E err=518,0,0,5,92,0
+[0;33mW (854047) sensors: INA recovered[0m
+[0;32mI (854067) sensors: Vbat=26.43 I=0.106A | 12V=12.01 5V=4.99 3V3=3.23 | T=26.4C H=54% | TVOC=5 eCO2=400 | PM2.5=73.3 | Lux=148 | Tbatt=28.7 Trear=27.3 Tfront=24.4 | MQ2=0.169V st=0 | ok=0x7F err=521,0,0,5,93,0[0m
+ENV vbat=26.43 i=0.106 v12=12.02 v5=4.99 v33=3.23 t=26.4 h=54 p=1012.8 tvoc=6 eco2=400 pm25=73.3 pm10=73.7 lux=1376 tb=28.7 tr=27.3 tf=24.4 mq2=0.169 st=0 ok=0x7F err=521,0,0,5,93,0
+[0;33mW (858417) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.43 i=0.106 v12=12.02 v5=4.99 v33=3.23 t=26.4 h=55 p=1012.8 tvoc=8 eco2=400 pm25=73.4 pm10=73.8 lux=1706 tb=28.7 tr=27.3 tf=24.4 mq2=0.168 st=0 ok=0x7E err=525,0,0,5,94,0
+[0;32mI (860457) sensors: Vbat=26.43 I=0.106A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.4C H=55% | TVOC=8 eCO2=400 | PM2.5=73.4 | Lux=1706 | Tbatt=28.7 Trear=27.3 Tfront=24.5 | MQ2=0.168V st=0 | ok=0x7E err=525,0,0,5,94,0[0m
+ENV vbat=26.43 i=0.106 v12=12.04 v5=4.98 v33=3.23 t=26.4 h=55 p=1012.8 tvoc=2 eco2=400 pm25=73.4 pm10=73.8 lux=1531 tb=28.7 tr=27.3 tf=24.5 mq2=0.171 st=0 ok=0x7E err=529,0,0,5,95,0
+[0;32mI (865817) sensors: Vbat=26.43 I=0.106A | 12V=12.04 5V=4.98 3V3=3.23 | T=26.4C H=55% | TVOC=2 eCO2=400 | PM2.5=73.3 | Lux=1531 | Tbatt=28.7 Trear=27.3 Tfront=24.5 | MQ2=0.171V st=0 | ok=0x7E err=530,0,0,5,95,0[0m
+[0;33mW (868007) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.106 v12=12.00 v5=4.99 v33=3.22 t=26.4 h=55 p=1012.8 tvoc=7 eco2=400 pm25=73.3 pm10=73.8 lux=1955 tb=28.7 tr=27.3 tf=24.5 mq2=0.172 st=0 ok=0x7F err=531,0,0,5,95,0
+[0;32mI (872247) sensors: Vbat=26.44 I=0.104A | 12V=12.02 5V=4.98 3V3=3.23 | T=26.4C H=55% | TVOC=9 eCO2=400 | PM2.5=72.4 | Lux=1174 | Tbatt=28.7 Trear=27.3 Tfront=24.4 | MQ2=0.170V st=0 | ok=0x7F err=531,0,0,5,95,0[0m
+ENV vbat=26.44 i=0.104 v12=12.02 v5=4.99 v33=3.23 t=26.4 h=55 p=1012.8 tvoc=0 eco2=400 pm25=72.4 pm10=72.6 lux=1174 tb=28.7 tr=27.3 tf=24.4 mq2=0.171 st=0 ok=0x7F err=533,0,0,5,96,0
+[0;33mW (875417) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (877607) sensors: Vbat=26.44 I=0.104A | 12V=12.03 5V=4.99 3V3=3.22 | T=26.4C H=55% | TVOC=11 eCO2=400 | PM2.5=73.4 | Lux=2119 | Tbatt=28.7 Trear=27.3 Tfront=24.4 | MQ2=0.169V st=0 | ok=0x7E err=536,0,0,5,96,0[0m
+ENV vbat=26.44 i=0.104 v12=12.02 v5=4.99 v33=3.22 t=26.4 h=55 p=1012.8 tvoc=5 eco2=400 pm25=73.4 pm10=73.5 lux=2090 tb=28.7 tr=27.3 tf=24.4 mq2=0.169 st=0 ok=0x7E err=538,0,0,5,96,0
+[0;33mW (881967) sensors: INA recovered[0m
+[0;32mI (884017) sensors: Vbat=26.43 I=0.103A | 12V=12.03 5V=4.98 3V3=3.23 | T=26.4C H=55% | TVOC=11 eCO2=400 | PM2.5=74.2 | Lux=974 | Tbatt=28.7 Trear=27.4 Tfront=24.5 | MQ2=0.169V st=0 | ok=0x7F err=539,0,0,5,96,0[0m
+ENV vbat=26.44 i=0.106 v12=12.03 v5=4.98 v33=3.23 t=26.4 h=55 p=1012.9 tvoc=9 eco2=400 pm25=74.2 pm10=74.3 lux=974 tb=28.7 tr=27.4 tf=24.5 mq2=0.169 st=0 ok=0x7F err=539,0,0,5,96,0
+[0;32mI (889427) sensors: Vbat=26.44 I=0.106A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.4C H=55% | TVOC=8 eCO2=400 | PM2.5=74.1 | Lux=1781 | Tbatt=28.7 Trear=27.4 Tfront=24.5 | MQ2=0.169V st=0 | ok=0x7F err=540,0,0,5,96,0[0m
+ENV vbat=26.44 i=0.106 v12=12.03 v5=4.99 v33=3.23 t=26.4 h=55 p=1012.9 tvoc=6 eco2=400 pm25=74.1 pm10=74.1 lux=1781 tb=28.7 tr=27.4 tf=24.5 mq2=0.169 st=0 ok=0x7F err=540,0,0,5,96,0
+[0;33mW (891607) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.44 i=0.106 v12=12.07 v5=5.03 v33=3.22 t=26.4 h=54 p=1012.8 tvoc=6 eco2=400 pm25=73.3 pm10=73.3 lux=908 tb=28.7 tr=27.4 tf=24.5 mq2=0.168 st=0 ok=0x7E err=545,0,0,5,97,0
+[0;32mI (895807) sensors: Vbat=26.44 I=0.106A | 12V=12.07 5V=5.03 3V3=3.22 | T=26.4C H=54% | TVOC=6 eCO2=400 | PM2.5=73.3 | Lux=908 | Tbatt=28.8 Trear=27.4 Tfront=24.4 | MQ2=0.168V st=0 | ok=0x7E err=545,0,0,5,97,0[0m
+[0;33mW (898987) sensors: INA recovered[0m
+ENV vbat=26.44 i=0.105 v12=12.02 v5=4.99 v33=3.22 t=26.4 h=54 p=1012.8 tvoc=3 eco2=400 pm25=73.3 pm10=73.3 lux=941 tb=28.8 tr=27.4 tf=24.4 mq2=0.169 st=0 ok=0x7F err=547,0,0,5,98,0
+[0;32mI (901197) sensors: Vbat=26.44 I=0.106A | 12V=12.02 5V=4.99 3V3=3.22 | T=26.4C H=54% | TVOC=7 eCO2=400 | PM2.5=72.4 | Lux=941 | Tbatt=28.8 Trear=27.4 Tfront=24.4 | MQ2=0.169V st=0 | ok=0x7F err=547,0,0,5,98,0[0m
+ENV vbat=26.43 i=0.106 v12=12.04 v5=4.99 v33=3.23 t=26.4 h=54 p=1012.8 tvoc=4 eco2=400 pm25=72.4 pm10=72.5 lux=2089 tb=28.8 tr=27.4 tf=24.4 mq2=0.169 st=0 ok=0x7F err=549,0,0,5,98,0
+[0;33mW (905557) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (907587) sensors: Vbat=26.43 I=0.106A | 12V=12.01 5V=4.98 3V3=3.23 | T=26.4C H=54% | TVOC=3 eCO2=400 | PM2.5=71.5 | Lux=2089 | Tbatt=28.8 Trear=27.4 Tfront=24.5 | MQ2=0.168V st=0 | ok=0x7E err=551,0,0,5,99,0[0m
+ENV vbat=26.43 i=0.106 v12=12.02 v5=4.99 v33=3.23 t=26.4 h=54 p=1012.9 tvoc=2 eco2=400 pm25=71.5 pm10=71.5 lux=2089 tb=28.8 tr=27.4 tf=24.5 mq2=0.168 st=0 ok=0x7E err=553,0,0,5,100,0
+[0;33mW (911757) sensors: VEML lost: 3 failed reads in a row[0m
+[0;32mI (912937) sensors: Vbat=26.43 I=0.106A | 12V=12.04 5V=4.98 3V3=3.23 | T=26.4C H=54% | TVOC=8 eCO2=400 | PM2.5=70.3 | Lux=2089 | Tbatt=28.8 Trear=27.4 Tfront=24.5 | MQ2=0.167V st=0 | ok=0x6E err=556,0,0,5,101,0[0m
+[0;33mW (913957) sensors: INA recovered[0m
+[0;33mW (913977) sensors: VEML recovered[0m
+ENV vbat=26.43 i=0.115 v12=12.05 v5=4.98 v33=3.23 t=26.4 h=54 p=1012.9 tvoc=10 eco2=400 pm25=70.3 pm10=70.3 lux=1894 tb=28.8 tr=27.4 tf=24.5 mq2=0.166 st=0 ok=0x7F err=556,0,0,5,101,0
+[0;32mI (919357) sensors: Vbat=26.43 I=0.111A | 12V=12.02 5V=4.98 3V3=3.23 | T=26.4C H=54% | TVOC=0 eCO2=400 | PM2.5=69.8 | Lux=902 | Tbatt=28.8 Trear=27.4 Tfront=24.5 | MQ2=0.168V st=0 | ok=0x7F err=558,0,0,5,102,0[0m
+[0;33mW (920367) sensors: INA lost: 3 failed reads in a row[0m
+ENV vbat=26.43 i=0.111 v12=12.02 v5=4.98 v33=3.23 t=26.4 h=54 p=1012.8 tvoc=4 eco2=400 pm25=69.8 pm10=69.8 lux=902 tb=28.8 tr=27.4 tf=24.5 mq2=0.168 st=0 ok=0x7E err=559,0,0,5,102,0
+[0;32mI (924727) sensors: Vbat=26.43 I=0.111A | 12V=12.03 5V=5.00 3V3=3.23 | T=26.4C H=54% | TVOC=0 eCO2=400 | PM2.5=69.3 | Lux=170 | Tbatt=28.8 Trear=27.4 Tfront=24.5 | MQ2=0.172V st=0 | ok=0x7E err=563,0,0,5,102,0[0m
+ENV vbat=26.43 i=0.111 v12=12.03 v5=5.00 v33=3.23 t=26.4 h=54 p=1012.8 tvoc=9 eco2=400 pm25=69.3 pm10=69.4 lux=170 tb=28.8 tr=27.4 tf=24.5 mq2=0.172 st=0 ok=0x7E err=563,0,0,5,102,0
+[0;33mW (929087) sensors: INA recovered[0m
+ENV vbat=26.43 i=0.104 v12=12.02 v5=4.99 v33=3.23 t=26.4 h=54 p=1012.8 tvoc=1 eco2=400 pm25=68.2 pm10=68.3 lux=150 tb=28.8 tr=27.4 tf=24.5 mq2=0.168 st=0 ok=0x7F err=566,0,0,5,102,0
+[0;32mI (931137) sensors: Vbat=26.43 I=0.104A | 12V=12.02 5V=4.99 3V3=3.23 | T=26.4C H=54% | TVOC=2 eCO2=400 | PM2.5=68.2 | Lux=150 | Tbatt=28.8 Trear=27.4 Tfront=24.5 | MQ2=0.168V st=0 | ok=0x7F err=566,0,0,5,102,0[0m
+ENV vbat=26.43 i=0.111 v12=12.03 v5=4.99 v33=3.23 t=26.4 h=54 p=1012.8 tvoc=0 eco2=400 pm25=68.2 pm10=68.3 lux=154 tb=28.8 tr=27.4 tf=24.5 mq2=0.173 st=0 ok=0x7F err=568,0,0,5,103,0
+[0;33mW (936497) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (936517) sensors: Vbat=26.43 I=0.111A | 12V=12.05 5V=4.98 3V3=3.23 | T=26.4C H=54% | TVOC=6 eCO2=400 | PM2.5=68.6 | Lux=154 | Tbatt=28.8 Trear=27.4 Tfront=24.5 | MQ2=0.165V st=0 | ok=0x7E err=569,0,0,5,103,0[0m
+ENV vbat=26.43 i=0.111 v12=12.02 v5=4.99 v33=3.23 t=26.4 h=54 p=1012.8 tvoc=8 eco2=400 pm25=68.6 pm10=68.8 lux=2000 tb=28.8 tr=27.4 tf=24.5 mq2=0.166 st=0 ok=0x7E err=572,0,0,5,104,0
+[0;32mI (942887) sensors: Vbat=26.43 I=0.111A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.4C H=55% | TVOC=7 eCO2=400 | PM2.5=68.9 | Lux=2000 | Tbatt=28.8 Trear=27.4 Tfront=24.5 | MQ2=0.158V st=0 | ok=0x7E err=574,0,0,5,105,0[0m
+[0;33mW (944897) sensors: VEML lost: 3 failed reads in a row[0m
+ENV vbat=26.43 i=0.111 v12=12.04 v5=4.98 v33=3.23 t=26.4 h=55 p=1012.9 tvoc=7 eco2=400 pm25=68.9 pm10=69.1 lux=2000 tb=28.8 tr=27.4 tf=24.5 mq2=0.169 st=0 ok=0x6E err=576,0,0,5,106,0
+[0;33mW (946067) sensors: INA recovered[0m
+[0;33mW (947087) sensors: VEML recovered[0m
+[0;32mI (948267) sensors: Vbat=26.43 I=0.105A | 12V=12.06 5V=4.98 3V3=3.22 | T=26.4C H=55% | TVOC=8 eCO2=400 | PM2.5=69.7 | Lux=1011 | Tbatt=28.8 Trear=27.4 Tfront=24.5 | MQ2=0.168V st=0 | ok=0x7F err=577,0,0,5,106,0[0m
+ENV vbat=26.43 i=0.105 v12=12.01 v5=4.98 v33=3.23 t=26.4 h=55 p=1012.9 tvoc=4 eco2=400 pm25=69.7 pm10=69.9 lux=1389 tb=28.8 tr=27.4 tf=24.5 mq2=0.170 st=0 ok=0x7F err=578,0,0,5,106,0
+[0;33mW (950447) sensors: INA lost: 3 failed reads in a row[0m
+[0;32mI (954657) sensors: Vbat=26.43 I=0.105A | 12V=12.04 5V=4.98 3V3=3.23 | T=26.4C H=55% | TVOC=11 eCO2=400 | PM2.5=69.8 | Lux=1351 | Tbatt=28.8 Trear=27.4 Tfront=24.5 | MQ2=0.168V st=0 | ok=0x7E err=582,0,0,5,106,0[0m
+ENV vbat=26.43 i=0.105 v12=12.04 v5=4.98 v33=3.23 t=26.4 h=55 p=1012.8 tvoc=9 eco2=400 pm25=69.8 pm10=70.0 lux=1351 tb=28.8 tr=27.4 tf=24.5 mq2=0.168 st=0 ok=0x7E err=582,0,0,5,106,0
+[0;33mW (960007) sensors: INA recovered[0m
+[0;32mI (960027) sensors: Vbat=26.43 I=0.114A | 12V=12.03 5V=4.99 3V3=3.23 | T=26.4C H=55% | TVOC=7 eCO2=400 | PM2.5=69.6 | Lux=2009 | Tbatt=28.8 Trear=27.4 Tfront=24.5 | MQ2=0.167V st=0 | ok=0x7F err=586,0,0,5,107,0[0m
+ENV vbat=26.43 i=0.114 v12=12.03 v5=4.99 v33=3.23 t=26.4 h=55 p=1012.8 tvoc=7 eco2=400 pm25=69.6 pm10=70.0 lux=2009 tb=28.8 tr=27.4 tf=24.5 mq2=0.167 st=0 ok=0x7F err=586,0,0,5,107,0

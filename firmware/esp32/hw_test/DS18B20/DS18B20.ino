@@ -22,28 +22,33 @@ void setup()
   Serial.print("Device Count = ");
   Serial.println(count);
 
+  sensors.requestTemperatures();
+
   for (int i = 0; i < count; i++)
   {
+    Serial.print("Sensor ");
+    Serial.print(i);
+    Serial.print("  addr: ");
+
     if (sensors.getAddress(addr, i))
     {
-      Serial.print("Sensor ");
-      Serial.print(i);
-      Serial.print(" Address: ");
-
       for (uint8_t j = 0; j < 8; j++)
       {
         if (addr[j] < 16) Serial.print("0");
         Serial.print(addr[j], HEX);
+        if (j < 7) Serial.print(":");
       }
-
-      Serial.println();
     }
     else
     {
-      Serial.print("Failed to read address for sensor ");
-      Serial.println(i);
+      Serial.print("UNKNOWN");
     }
+
+    Serial.print("  temp: ");
+    Serial.print(sensors.getTempCByIndex(i), 2);
+    Serial.println(" C");
   }
+  Serial.println("-- warm a sensor to identify which index it is --");
 }
 
 void loop()

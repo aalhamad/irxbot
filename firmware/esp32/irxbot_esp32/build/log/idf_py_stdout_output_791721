@@ -1,0 +1,90 @@
+d1) app_ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x9 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2810,len:0x1870
+load:0x403c8700,len:0x4
+load:0x403c8704,len:0xce8
+load:0x403cb700,len:0x2ed8
+entry 0x403c8918
+[0;32mI (27) boot: ESP-IDF v5.3.2 2nd stage bootloader[0m
+[0;32mI (27) boot: compile time Oct 24 2026 03:15:03[0m
+[0;32mI (27) boot: Multicore bootloader[0m
+[0;32mI (30) boot: chip revision: v0.2[0m
+[0;32mI (34) boot: efuse block revision: v1.4[0m
+[0;32mI (38) boot.esp32s3: Boot SPI Speed : 80MHz[0m
+[0;32mI (43) boot.esp32s3: SPI Mode       : DIO[0m
+[0;32mI (48) boot.esp32s3: SPI Flash Size : 16MB[0m
+[0;32mI (53) boot: Enabling RNG early entropy source...[0m
+[0;32mI (58) boot: Partition Table:[0m
+[0;32mI (62) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (69) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (76) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (84) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (91) boot: End of partition table[0m
+[0;32mI (95) esp_image: segment 0: paddr=00010020 vaddr=3c040020 size=11154h ( 69972) map[0m
+[0;32mI (116) esp_image: segment 1: paddr=0002117c vaddr=3fc95500 size=02f40h ( 12096) load[0m
+[0;32mI (119) esp_image: segment 2: paddr=000240c4 vaddr=40374000 size=0bf54h ( 48980) load[0m
+[0;32mI (133) esp_image: segment 3: paddr=00030020 vaddr=42000020 size=32524h (206116) map[0m
+[0;32mI (169) esp_image: segment 4: paddr=0006254c vaddr=4037ff54 size=054e0h ( 21728) load[0m
+[0;32mI (174) esp_image: segment 5: paddr=00067a34 vaddr=600fe100 size=00004h (     4) load[0m
+[0;32mI (182) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (182) boot: Disabling RNG early entropy source...[0m
+[0;32mI (198) cpu_start: Multicore app[0m
+[0;32mI (207) cpu_start: Pro cpu start user code[0m
+[0;32mI (208) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (208) app_init: Application information:[0m
+[0;32mI (210) app_init: Project name:     irxbot_esp32[0m
+[0;32mI (216) app_init: App version:      748f16f-dirty[0m
+[0;32mI (221) app_init: Compile time:     Oct 24 2026 03:15:21[0m
+[0;32mI (227) app_init: ELF file SHA256:  d58fa1aab...[0m
+[0;32mI (232) app_init: ESP-IDF:          v5.3.2[0m
+[0;32mI (237) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (242) efuse_init: Max chip rev:     v0.99 [0m
+[0;32mI (247) efuse_init: Chip rev:         v0.2[0m
+[0;32mI (252) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (259) heap_init: At 3FC98E60 len 000508B0 (322 KiB): RAM[0m
+[0;32mI (265) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM[0m
+[0;32mI (271) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM[0m
+[0;32mI (277) heap_init: At 600FE104 len 00001EE4 (7 KiB): RTCRAM[0m
+[0;32mI (285) spi_flash: detected chip: boya[0m
+[0;32mI (288) spi_flash: flash io: dio[0m
+[0;32mI (292) sleep: Configure to isolate all GPIO pins in sleep state[0m
+[0;32mI (299) sleep: Enable automatic switching of GPIO sleep configuration[0m
+[0;32mI (306) main_task: Started on CPU0[0m
+[0;32mI (336) main_task: Calling app_main()[0m
+[0;32mI (336) uart: started on UART1 rx=35 tx=36[0m
+[0;32mI (336) gpio: GPIO[14]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (346) gpio: GPIO[15]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (356) gpio: GPIO[16]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (366) gpio: GPIO[38]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (376) gpio: GPIO[39]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (386) lighting: started[0m
+[0;32mI (386) gpio: GPIO[8]| InputEn: 1| OutputEn: 1| OpenDrain: 1| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (396) gpio: GPIO[9]| InputEn: 1| OutputEn: 1| OpenDrain: 1| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (406) sensors: started[0m
+[0;32mI (406) main_task: Returned from app_main()[0m
+[0;32mI (416) gpio: GPIO[4]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (416) gpio: GPIO[4]| InputEn: 1| OutputEn: 1| OpenDrain: 1| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (856) sensors: ina=0 bme=1 sgp=1 sps=1 veml=1 ds=1(3)[0m
+[0;32mI (866) sensors: MQ-2 init, warming up 3 min[0m
+[0;32mI (6326) sensors: 12V=7.11 5V=5.21 3V3=2.84 | T=0.0C H=0% | TVOC=0 eCO2=400 | PM2.5=131.6 | Lux=21 | Tbatt=0.0 Trear=0.0 Tfront=0.0 | MQ2=0.147V st=0[0m
+[0;32mI (15146) sensors: 12V=10.94 5V=5.15 3V3=2.85 | T=22.0C H=68% | TVOC=0 eCO2=400 | PM2.5=212.8 | Lux=29 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.138V st=0[0m
+[0;32mI (20616) sensors: 12V=10.60 5V=5.17 3V3=2.85 | T=22.0C H=68% | TVOC=7 eCO2=425 | PM2.5=822.3 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.142V st=0[0m
+[0;32mI (29446) sensors: 12V=9.56 5V=5.15 3V3=2.87 | T=22.4C H=71% | TVOC=10 eCO2=433 | PM2.5=454.4 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.139V st=0[0m
+[0;32mI (34916) sensors: 12V=10.28 5V=5.18 3V3=2.84 | T=22.4C H=71% | TVOC=24 eCO2=442 | PM2.5=308.5 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.139V st=0[0m
+[0;32mI (43746) sensors: 12V=9.42 5V=5.19 3V3=2.84 | T=22.3C H=70% | TVOC=19 eCO2=437 | PM2.5=319.6 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.144V st=0[0m
+[0;32mI (49216) sensors: 12V=9.42 5V=5.18 3V3=2.84 | T=22.3C H=70% | TVOC=14 eCO2=440 | PM2.5=321.8 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.143V st=0[0m
+[0;32mI (58046) sensors: 12V=8.79 5V=5.17 3V3=2.85 | T=22.4C H=70% | TVOC=13 eCO2=410 | PM2.5=316.9 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.141V st=0[0m
+[0;32mI (63516) sensors: 12V=8.46 5V=5.15 3V3=2.84 | T=22.4C H=70% | TVOC=12 eCO2=451 | PM2.5=318.8 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.139V st=0[0m
+[0;32mI (72346) sensors: 12V=8.45 5V=5.17 3V3=2.84 | T=22.4C H=70% | TVOC=21 eCO2=506 | PM2.5=332.1 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.142V st=0[0m
+[0;32mI (77816) sensors: 12V=12.69 5V=5.16 3V3=2.90 | T=22.4C H=70% | TVOC=20 eCO2=464 | PM2.5=335.8 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.137V st=0[0m
+[0;32mI (86646) sensors: 12V=10.93 5V=5.17 3V3=2.84 | T=22.4C H=70% | TVOC=36 eCO2=565 | PM2.5=332.9 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.141V st=0[0m
+[0;32mI (92116) sensors: 12V=9.49 5V=5.17 3V3=2.85 | T=22.4C H=70% | TVOC=32 eCO2=545 | PM2.5=342.9 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.145V st=0[0m
+[0;32mI (100946) sensors: 12V=17.82 5V=5.17 3V3=2.85 | T=22.4C H=70% | TVOC=38 eCO2=549 | PM2.5=364.7 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.123V st=0[0m
+[0;32mI (106416) sensors: 12V=18.85 5V=5.16 3V3=2.81 | T=22.4C H=70% | TVOC=28 eCO2=532 | PM2.5=391.2 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.130V st=0[0m
+[0;32mI (115246) sensors: 12V=17.41 5V=5.15 3V3=2.80 | T=22.4C H=69% | TVOC=33 eCO2=524 | PM2.5=390.0 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.133V st=0[0m
+[0;32mI (120716) sensors: 12V=18.09 5V=5.15 3V3=2.83 | T=22.4C H=69% | TVOC=55 eCO2=646 | PM2.5=7901.7 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.131V st=0[0m
+[0;32mI (129546) sensors: 12V=15.63 5V=5.14 3V3=2.45 | T=22.3C H=69% | TVOC=49 eCO2=658 | PM2.5=1198.1 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.133V st=0[0m
+[0;32mI (135016) sensors: 12V=11.79 5V=5.16 3V3=2.86 | T=22.3C H=69% | TVOC=53 eCO2=635 | PM2.5=576.0 | Lux=0 | Tbatt=22.8 Trear=23.1 Tfront=21.8 | MQ2=0.146V st=0[0m

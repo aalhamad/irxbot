@@ -1,0 +1,175 @@
+[0�ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2810,len:0x1870
+load:0x403c8700,len:0x4
+load:0x403c8704,len:0xce8
+load:0x403cb700,len:0x2ed8
+entry 0x403c8918
+[0;32mI (27) boot: ESP-IDF v5.3.2 2nd stage bootloader[0m
+[0;32mI (27) boot: compile time Oct 24 2026 03:15:03[0m
+[0;32mI (27) boot: Multicore bootloader[0m
+[0;32mI (30) boot: chip revision: v0.2[0m
+[0;32mI (34) boot: efuse block revision: v1.4[0m
+[0;32mI (38) boot.esp32s3: Boot SPI Speed : 80MHz[0m
+[0;32mI (43) boot.esp32s3: SPI Mode       : DIO[0m
+[0;32mI (48) boot.esp32s3: SPI Flash Size : 16MB[0m
+[0;32mI (53) boot: Enabling RNG early entropy source...[0m
+[0;32mI (58) boot: Partition Table:[0m
+[0;32mI (62) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (69) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (76) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (84) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (91) boot: End of partition table[0m
+[0;32mI (95) esp_image: segment 0: paddr=00010020 vaddr=3c040020 size=1194ch ( 72012) map[0m
+[0;32mI (117) esp_image: segment 1: paddr=00021974 vaddr=3fc95500 size=02f40h ( 12096) load[0m
+[0;32mI (119) esp_image: segment 2: paddr=000248bc vaddr=40374000 size=0b75ch ( 46940) load[0m
+[0;32mI (133) esp_image: segment 3: paddr=00030020 vaddr=42000020 size=32ed8h (208600) map[0m
+[0;32mI (170) esp_image: segment 4: paddr=00062f00 vaddr=4037f75c size=05cd8h ( 23768) load[0m
+[0;32mI (175) esp_image: segment 5: paddr=00068be0 vaddr=600fe100 size=00004h (     4) load[0m
+[0;32mI (183) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (183) boot: Disabling RNG early entropy source...[0m
+[0;32mI (199) cpu_start: Multicore app[0m
+[0;32mI (208) cpu_start: Pro cpu start user code[0m
+[0;32mI (208) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (208) app_init: Application information:[0m
+[0;32mI (211) app_init: Project name:     irxbot_esp32[0m
+[0;32mI (216) app_init: App version:      748f16f-dirty[0m
+[0;32mI (222) app_init: Compile time:     Oct 24 2026 03:15:21[0m
+[0;32mI (228) app_init: ELF file SHA256:  b7db06605...[0m
+[0;32mI (233) app_init: ESP-IDF:          v5.3.2[0m
+[0;32mI (238) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (242) efuse_init: Max chip rev:     v0.99 [0m
+[0;32mI (247) efuse_init: Chip rev:         v0.2[0m
+[0;32mI (252) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (259) heap_init: At 3FC98E70 len 000508A0 (322 KiB): RAM[0m
+[0;32mI (265) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM[0m
+[0;32mI (272) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM[0m
+[0;32mI (278) heap_init: At 600FE104 len 00001EE4 (7 KiB): RTCRAM[0m
+[0;32mI (285) spi_flash: detected chip: boya[0m
+[0;32mI (288) spi_flash: flash io: dio[0m
+[0;32mI (293) sleep: Configure to isolate all GPIO pins in sleep state[0m
+[0;32mI (299) sleep: Enable automatic switching of GPIO sleep configuration[0m
+[0;32mI (307) main_task: Started on CPU0[0m
+[0;32mI (337) main_task: Calling app_main()[0m
+[0;32mI (337) uart: started on UART1 rx=35 tx=36[0m
+[0;32mI (337) gpio: GPIO[14]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (347) gpio: GPIO[15]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (357) gpio: GPIO[16]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (367) gpio: GPIO[38]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (377) gpio: GPIO[39]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (387) lighting: started[0m
+[0;32mI (387) gpio: GPIO[8]| InputEn: 1| OutputEn: 1| OpenDrain: 1| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (397) gpio: GPIO[9]| InputEn: 1| OutputEn: 1| OpenDrain: 1| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (407) sensors: started[0m
+[0;32mI (407) main_task: Returned from app_main()[0m
+[0;32mI (417) gpio: GPIO[4]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (417) gpio: GPIO[4]| InputEn: 1| OutputEn: 1| OpenDrain: 1| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;33mW (867) sensors: INA ID try 1: ESP_ERR_INVALID_STATE[0m
+[0;32mI (917) sensors: INA ID try 2: OK 0x5449[0m
+[0;32mI (947) sensors: ina=1 bme=1 sgp=1 sps=1 veml=1 ds=1(3)[0m
+[0;32mI (947) sensors: MQ-2 init, warming up 3 min[0m
+[0;32mI (3027) sensors: VEML als=426 white=880(ESP_OK) conf=0x0000(ESP_OK)[0m
+[0;32mI (5267) sensors: VEML als=493 white=1057(ESP_OK) conf=0x0000(ESP_OK)[0m
+[0;32mI (6477) sensors: Vbat=26.44 I=0.106A | 12V=11.93 5V=4.97 3V3=3.23 | T=0.0C H=0% | TVOC=0 eCO2=400 | PM2.5=191.0 | Lux=28 | Tbatt=0.0 Trear=0.0 Tfront=0.0 | MQ2=0.168V st=0[0m
+[0;32mI (7537) sensors: VEML als=337 white=656(ESP_OK) conf=0x0000(ESP_OK)[0m
+[0;32mI (9777) sensors: VEML als=448 white=933(ESP_OK) conf=0x0000(ESP_OK)[0m
+[0;32mI (12017) sensors: VEML als=488 white=1045(ESP_OK) conf=0x0000(ESP_OK)[0m
+[0;32mI (15387) sensors: Vbat=26.44 I=0.105A | 12V=12.01 5V=4.98 3V3=3.23 | T=22.3C H=66% | TVOC=0 eCO2=400 | PM2.5=188.6 | Lux=28 | Tbatt=23.1 Trear=23.4 Tfront=22.6 | MQ2=0.166V st=0[0m
+[0;32mI (17457) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (19697) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (20907) sensors: Vbat=26.44 I=0.107A | 12V=11.99 5V=5.00 3V3=3.23 | T=22.3C H=66% | TVOC=6 eCO2=425 | PM2.5=184.8 | Lux=0 | Tbatt=23.1 Trear=23.4 Tfront=22.6 | MQ2=0.172V st=0[0m
+[0;32mI (21967) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (24207) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (26447) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (29817) sensors: Vbat=26.44 I=0.115A | 12V=12.03 5V=4.98 3V3=3.23 | T=22.3C H=66% | TVOC=5 eCO2=412 | PM2.5=182.6 | Lux=0 | Tbatt=23.1 Trear=23.4 Tfront=22.6 | MQ2=0.186V st=0[0m
+[0;32mI (31907) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (34147) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (35357) sensors: Vbat=26.44 I=0.106A | 12V=11.99 5V=4.98 3V3=3.24 | T=22.3C H=66% | TVOC=6 eCO2=416 | PM2.5=179.0 | Lux=0 | Tbatt=23.1 Trear=23.4 Tfront=22.6 | MQ2=0.161V st=0[0m
+[0;32mI (36417) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (38657) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (40897) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (44267) sensors: Vbat=26.44 I=0.116A | 12V=11.99 5V=4.98 3V3=3.24 | T=22.3C H=65% | TVOC=0 eCO2=400 | PM2.5=177.0 | Lux=0 | Tbatt=23.1 Trear=23.5 Tfront=22.6 | MQ2=0.159V st=0[0m
+[0;32mI (46357) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (48597) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (49807) sensors: Vbat=26.44 I=0.106A | 12V=11.97 5V=5.00 3V3=3.24 | T=22.3C H=65% | TVOC=4 eCO2=412 | PM2.5=173.1 | Lux=0 | Tbatt=23.1 Trear=23.5 Tfront=22.6 | MQ2=0.160V st=0[0m
+[0;32mI (50867) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (53107) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (55347) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (58717) sensors: Vbat=26.44 I=0.105A | 12V=12.11 5V=4.98 3V3=3.22 | T=22.3C H=66% | TVOC=3 eCO2=406 | PM2.5=170.0 | Lux=0 | Tbatt=23.2 Trear=23.5 Tfront=22.6 | MQ2=0.160V st=0[0m
+[0;32mI (60807) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (63047) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (64257) sensors: Vbat=26.44 I=0.107A | 12V=11.99 5V=4.99 3V3=3.22 | T=22.3C H=66% | TVOC=7 eCO2=407 | PM2.5=167.2 | Lux=0 | Tbatt=23.2 Trear=23.5 Tfront=22.6 | MQ2=0.162V st=0[0m
+[0;32mI (65317) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (67557) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (69797) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (73167) sensors: Vbat=26.44 I=0.106A | 12V=11.97 5V=4.97 3V3=3.23 | T=22.3C H=66% | TVOC=10 eCO2=406 | PM2.5=166.6 | Lux=0 | Tbatt=23.2 Trear=23.4 Tfront=22.6 | MQ2=0.158V st=0[0m
+[0;32mI (75257) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (77497) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (78707) sensors: Vbat=26.44 I=0.115A | 12V=12.00 5V=4.97 3V3=3.23 | T=22.3C H=66% | TVOC=4 eCO2=410 | PM2.5=164.0 | Lux=0 | Tbatt=23.2 Trear=23.4 Tfront=22.6 | MQ2=0.161V st=0[0m
+[0;32mI (79767) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (82007) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (84247) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (87617) sensors: Vbat=26.44 I=0.106A | 12V=10.18 5V=4.97 3V3=3.32 | T=22.3C H=66% | TVOC=7 eCO2=404 | PM2.5=164.5 | Lux=0 | Tbatt=23.2 Trear=23.5 Tfront=22.6 | MQ2=0.161V st=0[0m
+[0;32mI (89707) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (91947) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (93157) sensors: Vbat=26.44 I=0.116A | 12V=12.00 5V=4.97 3V3=3.20 | T=22.3C H=66% | TVOC=5 eCO2=400 | PM2.5=163.4 | Lux=0 | Tbatt=23.2 Trear=23.5 Tfront=22.6 | MQ2=0.159V st=0[0m
+[0;32mI (94217) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (96457) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (98697) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (102067) sensors: Vbat=26.44 I=0.108A | 12V=12.02 5V=4.97 3V3=3.21 | T=22.2C H=66% | TVOC=8 eCO2=408 | PM2.5=161.5 | Lux=0 | Tbatt=23.2 Trear=23.5 Tfront=22.6 | MQ2=0.161V st=0[0m
+[0;32mI (104157) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (106397) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (107607) sensors: Vbat=26.44 I=0.104A | 12V=12.12 5V=4.97 3V3=3.23 | T=22.2C H=66% | TVOC=9 eCO2=419 | PM2.5=158.1 | Lux=0 | Tbatt=23.2 Trear=23.5 Tfront=22.6 | MQ2=0.161V st=0[0m
+[0;32mI (108667) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (110907) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (113147) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (116517) sensors: Vbat=26.44 I=0.114A | 12V=12.01 5V=4.97 3V3=3.23 | T=22.3C H=67% | TVOC=14 eCO2=418 | PM2.5=156.5 | Lux=0 | Tbatt=23.2 Trear=23.5 Tfront=22.6 | MQ2=0.160V st=0[0m
+[0;32mI (118607) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (120847) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (122057) sensors: Vbat=26.44 I=0.104A | 12V=12.01 5V=4.96 3V3=3.22 | T=22.3C H=67% | TVOC=11 eCO2=411 | PM2.5=155.1 | Lux=0 | Tbatt=23.2 Trear=23.5 Tfront=22.6 | MQ2=0.161V st=0[0m
+[0;32mI (123117) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (125357) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (127597) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (130967) sensors: Vbat=26.44 I=0.114A | 12V=11.93 5V=4.99 3V3=3.22 | T=22.2C H=67% | TVOC=12 eCO2=413 | PM2.5=155.0 | Lux=0 | Tbatt=23.2 Trear=23.5 Tfront=22.6 | MQ2=0.159V st=0[0m
+[0;32mI (133057) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (135297) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (136507) sensors: Vbat=26.44 I=0.107A | 12V=12.01 5V=5.00 3V3=3.23 | T=22.2C H=67% | TVOC=16 eCO2=415 | PM2.5=152.0 | Lux=0 | Tbatt=23.2 Trear=23.5 Tfront=22.6 | MQ2=0.161V st=0[0m
+[0;32mI (137567) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (139807) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (142047) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (145417) sensors: Vbat=26.44 I=0.105A | 12V=12.04 5V=4.98 3V3=3.23 | T=22.3C H=68% | TVOC=26 eCO2=411 | PM2.5=149.0 | Lux=0 | Tbatt=23.2 Trear=23.5 Tfront=22.6 | MQ2=0.161V st=0[0m
+[0;32mI (147507) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (149747) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (150957) sensors: Vbat=26.44 I=0.105A | 12V=11.99 5V=4.98 3V3=3.23 | T=22.3C H=68% | TVOC=22 eCO2=412 | PM2.5=145.7 | Lux=0 | Tbatt=23.2 Trear=23.5 Tfront=22.6 | MQ2=0.160V st=0[0m
+[0;32mI (152017) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (154257) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (156497) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (159867) sensors: Vbat=26.44 I=0.105A | 12V=12.02 5V=4.97 3V3=3.24 | T=22.3C H=68% | TVOC=19 eCO2=415 | PM2.5=143.7 | Lux=0 | Tbatt=23.2 Trear=23.5 Tfront=22.6 | MQ2=0.158V st=0[0m
+[0;32mI (161957) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (164197) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (165407) sensors: Vbat=26.43 I=0.113A | 12V=11.99 5V=5.00 3V3=3.23 | T=22.3C H=68% | TVOC=27 eCO2=410 | PM2.5=143.1 | Lux=0 | Tbatt=23.2 Trear=23.5 Tfront=22.6 | MQ2=0.160V st=0[0m
+[0;32mI (166467) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (168707) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (170947) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (174317) sensors: Vbat=26.44 I=0.105A | 12V=11.99 5V=4.97 3V3=3.23 | T=22.3C H=69% | TVOC=28 eCO2=414 | PM2.5=141.7 | Lux=0 | Tbatt=23.2 Trear=23.5 Tfront=22.6 | MQ2=0.162V st=0[0m
+[0;32mI (176407) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (178647) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (179857) sensors: Vbat=26.44 I=0.107A | 12V=11.99 5V=4.97 3V3=3.21 | T=22.3C H=69% | TVOC=30 eCO2=412 | PM2.5=138.7 | Lux=0 | Tbatt=23.2 Trear=23.5 Tfront=22.6 | MQ2=0.163V st=0[0m
+[0;32mI (180917) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (183157) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (185397) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (188767) sensors: Vbat=26.44 I=0.106A | 12V=12.01 5V=4.98 3V3=3.23 | T=22.3C H=69% | TVOC=30 eCO2=400 | PM2.5=138.9 | Lux=0 | Tbatt=23.2 Trear=23.6 Tfront=22.6 | MQ2=0.162V st=0[0m
+[0;32mI (190857) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (193097) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (194307) sensors: Vbat=26.43 I=0.106A | 12V=12.13 5V=4.94 3V3=3.23 | T=22.3C H=69% | TVOC=32 eCO2=416 | PM2.5=138.8 | Lux=0 | Tbatt=23.2 Trear=23.6 Tfront=22.6 | MQ2=0.161V st=0[0m
+[0;32mI (195367) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (197607) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (199847) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (203217) sensors: Vbat=26.44 I=0.112A | 12V=12.00 5V=4.97 3V3=3.23 | T=22.3C H=70% | TVOC=34 eCO2=417 | PM2.5=136.4 | Lux=0 | Tbatt=23.3 Trear=23.6 Tfront=22.6 | MQ2=0.166V st=0[0m
+[0;32mI (205307) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (207547) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m
+[0;32mI (208757) sensors: Vbat=26.44 I=0.108A | 12V=12.07 5V=4.97 3V3=3.22 | T=22.3C H=70% | TVOC=32 eCO2=412 | PM2.5=134.3 | Lux=0 | Tbatt=23.3 Trear=23.6 Tfront=22.6 | MQ2=0.167V st=0[0m
+[0;32mI (209817) sensors: VEML als=0 white=0(ESP_OK) conf=0x0001(ESP_OK)[0m

@@ -1,4 +1,4 @@
-/* USER CODE BEGIN Header */
+	/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file           : main.c
@@ -299,6 +299,15 @@ int main(void)
                   HAL_Delay(5);
                   vesc_can_dump_status();
               }
+              else if (cmd_len >= 6 &&
+                  cmd_buf[0]=='L' && cmd_buf[1]=='I' &&
+                  cmd_buf[2]=='G' && cmd_buf[3]=='H' &&
+                  cmd_buf[4]=='T' && cmd_buf[5]==' ')
+              {
+                  HAL_UART_Transmit(&huart3, cmd_buf, cmd_len, 50);
+                  HAL_UART_Transmit(&huart3, (uint8_t*)"\n", 1, 10);
+                  HAL_UART_Transmit(&huart2, (uint8_t*)"LIGHT_OK\r\n", 10, 50);
+              }
               else
               {
                   HAL_UART_Transmit(&huart2, (uint8_t*)"ERR:CMD\r\n", 9, 50);
@@ -378,6 +387,11 @@ int main(void)
                   (bmp >> 3) & 1);
               HAL_UART_Transmit(&huart2, (uint8_t*)buf, n, 10);
               HAL_UART_Transmit(&huart3, (uint8_t*)buf, n, 10);
+
+              const char *lmsg = (bmp != 0)
+                  ? "LIGHT ALL 255 0 0 BLINK\n"
+                  : "LIGHT ALL 0 0 0 SOLID\n";
+              HAL_UART_Transmit(&huart3, (uint8_t*)lmsg, strlen(lmsg), 50);
           }
       }
 

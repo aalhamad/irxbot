@@ -1,0 +1,15 @@
+--- esp-idf-monitor 1.10.0 on /dev/ttyACM1 115200
+--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H
+--- 0x4037945d: i2c_ll_read_rxfifo at /home/aalhamad/apps/esp-idf/components/hal/esp32s3/include/hal/i2c_ll.h:699(inlined by) i2c_isr_receive_handler at /home/aalhamad/apps/esp-idf/components/esp_driver_i2c/i2c_master.c:645
+--- 0x40056f5c: memcpy in ROM
+--- 0x40056f72: memcpy in ROM
+--- 0x4037945a: i2c_ll_read_rxfifo at /home/aalhamad/apps/esp-idf/components/hal/esp32s3/include/hal/i2c_ll.h:699(inlined by) i2c_isr_receive_handler at /home/aalhamad/apps/esp-idf/components/esp_driver_i2c/i2c_master.c:645
+--- 0x403794fa: i2c_master_isr_handler_default at /home/aalhamad/apps/esp-idf/components/esp_driver_i2c/i2c_master.c:683
+--- 0x4037674d: shared_intr_isr at /home/aalhamad/apps/esp-idf/components/esp_hw_support/intr_alloc.c:445
+--- 0x403774bd: _xt_lowint1 at /home/aalhamad/apps/esp-idf/components/xtensa/xtensa_vectors.S:1240
+--- 0x4037984b: xt_utils_wait_for_intr at /home/aalhamad/apps/esp-idf/components/xtensa/include/xt_utils.h:82(inlined by) esp_cpu_wait_for_intr at /home/aalhamad/apps/esp-idf/components/esp_hw_support/cpu.c:55
+--- 0x42003a26: esp_vApplicationIdleHook at /home/aalhamad/apps/esp-idf/components/esp_system/freertos_hooks.c:58
+--- 0x4037dfc1: prvIdleTask at /home/aalhamad/apps/esp-idf/components/freertos/FreeRTOS-Kernel/tasks.c:4353
+--- 0x4037d019: vPortTaskWrapper at /home/aalhamad/apps/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:139
+--- 0x40375b0c: esp_restart_noos at /home/aalhamad/apps/esp-idf/components/esp_system/port/soc/esp32s3/system_internal.c:158
+
