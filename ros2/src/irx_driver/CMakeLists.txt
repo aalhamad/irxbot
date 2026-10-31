@@ -12,6 +12,8 @@ find_package(std_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(diagnostic_msgs REQUIRED)
 
 add_executable(motor_driver_node src/motor_driver_node.cpp)
 
@@ -29,7 +31,16 @@ ament_target_dependencies(motor_driver_node
   tf2
   tf2_ros)
 
-install(TARGETS motor_driver_node
+add_executable(esp32_telemetry_node src/esp32_telemetry_node.cpp)
+
+target_compile_features(esp32_telemetry_node PUBLIC cxx_std_17)
+
+ament_target_dependencies(esp32_telemetry_node
+  rclcpp
+  sensor_msgs
+  diagnostic_msgs)
+
+install(TARGETS motor_driver_node esp32_telemetry_node
   DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
