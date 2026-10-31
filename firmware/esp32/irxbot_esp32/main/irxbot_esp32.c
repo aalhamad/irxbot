@@ -3,6 +3,7 @@
 #include "task_sensors.h"
 #include "task_telemetry.h"
 #include "task_alarm.h"
+#include "task_display.h"
 
 void app_main(void)
 {
@@ -11,4 +12,5 @@ void app_main(void)
     task_sensors_start();
     task_telemetry_start();
     task_alarm_start();
+    task_display_start();
 }
