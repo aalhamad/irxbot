@@ -90,6 +90,53 @@ static void MX_USART3_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+/* USART2 RX ring buffer: filled by USART2_IRQHandler, drained by the main loop.
+ * The loop blocks on I2C for far longer than one byte time (87 us at 115200). */
+#define UART2_RX_SIZE 256U   /* uint8_t indices wrap at exactly this size */
+
+static volatile uint8_t uart2_rx[UART2_RX_SIZE];
+static volatile uint8_t uart2_rx_head = 0;
+static volatile uint8_t uart2_rx_tail = 0;
+static volatile uint8_t uart2_rx_lost = 0;
+
+void Uart2_RxByte(uint8_t b)
+{
+    uint8_t next = (uint8_t)(uart2_rx_head + 1U);
+    if (next == uart2_rx_tail)
+    {
+        uart2_rx_lost = 1;   /* full: the line being received is now corrupt */
+        return;
+    }
+    uart2_rx[uart2_rx_head] = b;
+    uart2_rx_head = next;
+}
+
+static uint8_t Uart2_RxPop(uint8_t *b)
+{
+    if (uart2_rx_tail == uart2_rx_head) return 0;
+    *b = uart2_rx[uart2_rx_tail];
+    uart2_rx_tail = (uint8_t)(uart2_rx_tail + 1U);
+    return 1;
+}
+
+/* Strict "<left> <right>" parse. A partial number must never become a speed. */
+static uint8_t Parse_Cmd(const char *s, int32_t *left, int32_t *right)
+{
+    char *end;
+    long l = strtol(s, &end, 10);
+    if (end == s || *end != ' ') return 0;
+
+    const char *r_start = end + 1;
+    long r = strtol(r_start, &end, 10);
+    if (end == r_start || *end != '\0') return 0;
+
+    if (l < -6000 || l > 6000 || r < -6000 || r > 6000) return 0;
+
+    *left  = (int32_t)l;
+    *right = (int32_t)r;
+    return 1;
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -130,20 +177,10 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_UART_Transmit(&huart2, (uint8_t*)"BOOT\r\n", 6, 100);
 
-  /* CAN: accept-all filter then start */
-  {
-      CAN_FilterTypeDef f = {0};
-      f.FilterBank           = 0;
-      f.FilterMode           = CAN_FILTERMODE_IDMASK;
-      f.FilterScale          = CAN_FILTERSCALE_32BIT;
-      f.FilterFIFOAssignment = CAN_RX_FIFO0;
-      f.FilterActivation     = ENABLE;
-      if (HAL_CAN_ConfigFilter(&hcan1, &f) != HAL_OK ||
-          HAL_CAN_Start(&hcan1) != HAL_OK)
-          HAL_UART_Transmit(&huart2, (uint8_t*)"ERR:CAN\r\n", 9, 100);
-      else
-          HAL_UART_Transmit(&huart2, (uint8_t*)"CAN_OK\r\n", 8, 100);
-  }
+  if (vesc_can_start() != HAL_OK)
+      HAL_UART_Transmit(&huart2, (uint8_t*)"ERR:CAN\r\n", 9, 100);
+  else
+      HAL_UART_Transmit(&huart2, (uint8_t*)"CAN_OK\r\n", 8, 100);
 
   /* IMU — hardware reset pulse so BNO085 boots clean on every MCU reset */
   HAL_GPIO_WritePin(IMU_RESET_GPIO_Port, IMU_RESET_Pin, GPIO_PIN_RESET);
@@ -181,6 +218,9 @@ int main(void)
   /* Energise contactor */
   HAL_GPIO_WritePin(CONTACTOR_EN_GPIO_Port, CONTACTOR_EN_Pin, GPIO_PIN_SET);
   HAL_UART_Transmit(&huart2, (uint8_t*)"CONTACTOR_ON\r\n", 14, 50);
+
+  /* Jetson commands: enabled last so nothing sent during boot is acted on */
+  __HAL_UART_ENABLE_IT(&huart2, UART_IT_RXNE);
 
   /* USER CODE END 2 */
 
@@ -259,14 +299,24 @@ int main(void)
       }
 
       /* ── UART RX: accumulate CMD <left> <right> ── */
-      while (__HAL_UART_GET_FLAG(&huart2, UART_FLAG_RXNE))
+      uint8_t b;
+      while (Uart2_RxPop(&b))
       {
-          uint8_t b = (uint8_t)(huart2.Instance->DR & 0xFF);
           if (b == '\n' || b == '\r')
           {
               if (cmd_len == 0) continue;   /* ignore empty / duplicate CR+LF */
               cmd_buf[cmd_len] = '\0';
-              if (cmd_len >= 6 &&
+              if (uart2_rx_lost)
+              {
+                  /* Bytes were dropped, so this line can't be trusted */
+                  uart2_rx_lost = 0;
+                  HAL_UART_Transmit(&huart2, (uint8_t*)"ERR:CMD\r\n", 9, 50);
+              }
+              else if (cmd_len == 3 && memcmp(cmd_buf, "CAN", 3) == 0)
+              {
+                  vesc_can_dump_status();
+              }
+              else if (cmd_len >= 6 &&
                   cmd_buf[0]=='H' && cmd_buf[1]=='O' &&
                   cmd_buf[2]=='R' && cmd_buf[3]=='N' && cmd_buf[4]==' ')
               {
@@ -282,22 +332,22 @@ int main(void)
                   cmd_buf[0]=='C' && cmd_buf[1]=='M' &&
                   cmd_buf[2]=='D' && cmd_buf[3]==' ')
               {
-                  char *p   = (char*)cmd_buf + 4;
-                  int32_t l = strtol(p, &p, 10);
-                  int32_t r = (*p == ' ') ? strtol(p + 1, NULL, 10) : 0;
+                  int32_t l, r;
+                  if (Parse_Cmd((char*)cmd_buf + 4, &l, &r))
+                  {
+                      char ack[32];
+                      int an = snprintf(ack, sizeof(ack), "CMD_OK %ld %ld\r\n", l, r);
+                      HAL_UART_Transmit(&huart2, (uint8_t*)ack, an, 50);
 
-                  char ack[32];
-                  int an = snprintf(ack, sizeof(ack), "CMD_OK %ld %ld\r\n", l, r);
-                  HAL_UART_Transmit(&huart2, (uint8_t*)ack, an, 50);
-
-                  cmd_left  = l;
-                  cmd_right = r;
-                  last_cmd_tick = now;
-                  robot_set_rpm(l, r);
-
-                  /* Report CAN peripheral error state after the send attempt */
-                  HAL_Delay(5);
-                  vesc_can_dump_status();
+                      cmd_left  = l;
+                      cmd_right = r;
+                      last_cmd_tick = now;
+                      robot_set_rpm(l, r);
+                  }
+                  else
+                  {
+                      HAL_UART_Transmit(&huart2, (uint8_t*)"ERR:CMD\r\n", 9, 50);
+                  }
               }
               else if (cmd_len >= 6 &&
                   cmd_buf[0]=='L' && cmd_buf[1]=='I' &&
@@ -326,9 +376,6 @@ int main(void)
           HAL_GPIO_WritePin(HORN_GPIO_Port, HORN_Pin, GPIO_PIN_RESET);
           horn_off_tick = 0;
       }
-
-      /* ── CAN RX: update cached VESC feedback ── */
-      vesc_process_rx();
 
       /* ── Periodic CMD resend @ 200 ms — keeps VESCs alive within their 1s timeout ── */
       if (last_cmd_tick > 0 && (now - last_cmd_tick) >= 200)
@@ -417,7 +464,10 @@ int main(void)
           {
               uint32_t last = vesc_last_seen(id);
               if (last == 0) continue;  /* never heard — VESC may not be powered */
-              if ((now - last) > 1000 && (now - last_err_tick[id-1]) > 2000)
+              /* Read the tick after `last`: `now` is from the top of the loop, so
+               * a frame received since then would make (now - last) wrap around
+               * and report a healthy VESC as silent. */
+              if ((HAL_GetTick() - last) > 1000 && (now - last_err_tick[id-1]) > 2000)
               {
                   last_err_tick[id-1] = now;
                   char err[16];
