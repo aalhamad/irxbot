@@ -85,6 +85,7 @@ ENV_FIELDS_BY_CHIP = {
     "SPS30": ("pm25", "pm10"), "VEML7700": ("lux",), "DS18B20": ("tb", "tr"),
 }
 MQ2_WARMED_BIT = 6
+PM_SUSPECT = 150.0  # ug/m3; clean indoor air is far below this
 
 results = []
 
@@ -566,6 +567,8 @@ def judge_env(env):
             report(name, FAIL, "missing from telemetry")
         elif field == "mq2" and not env.get("ok", 0) & (1 << MQ2_WARMED_BIT):
             report(name, WARN, f"{value:g} V, still warming up (3 min after power on)")
+        elif field in ("pm25", "pm10") and value > PM_SUSPECT:
+            report(name, WARN, f"{value:g} ug/m3 is very high: smoke, dust or a faulty sensor")
         elif judge_env_value(value, low, high):
             report(name, OK, f"{value:g}")
         else:
@@ -579,7 +582,7 @@ def check_jetson_usb(devices, manual):
     if RESPEAKER_ID not in devices and not has_alsa_card("ArrayUAC10"):
         report("ReSpeaker microphone", FAIL, "not found on USB")
     else:
-        check_microphone()
+        check_microphone(manual)
     if manual:
         report("Amplifier and left speaker", check_speaker(0))
         report("Amplifier and right speaker", check_speaker(1))
@@ -597,7 +600,9 @@ def has_alsa_card(name):
         return False
 
 
-def check_microphone():
+def check_microphone(manual):
+    if manual:
+        input("  Press Enter, then talk for 2 seconds.")
     with tempfile.NamedTemporaryFile(suffix=".raw") as tmp:
         result = run(["arecord", "-q", "-D", ALSA_DEVICE, "-f", "S16_LE", "-r", "16000",
                       "-c", "1", "-t", "raw", "-d", "2", tmp.name])
@@ -606,7 +611,12 @@ def check_microphone():
             return
         peak = audio_peak(tmp.read())
     if peak == 0:
-        report("ReSpeaker microphone", FAIL, "records pure silence")
+        # Its processed output can be exactly 0 in a quiet room, so only a
+        # silent recording made while someone talks counts as a fault
+        if manual:
+            report("ReSpeaker microphone", FAIL, "records silence while you talk")
+        else:
+            report("ReSpeaker microphone", WARN, "silent, may just be a quiet room: use --manual")
     else:
         report("ReSpeaker microphone", OK, f"recording, peak level {peak}")
 
@@ -666,7 +676,10 @@ def check_networks():
     else:
         report("Wi-Fi", FAIL, f"state {states.get('wifi', 'no adapter')}")
     state = states.get("ethernet", "no adapter")
-    report("Ethernet", OK if state == "connected" else WARN, f"state {state}")
+    if state == "connected":
+        report("Ethernet", OK, "connected")
+    else:
+        report("Ethernet", NOT_TESTED, f"state {state}")
 
 
 def video_nodes(name_part):
