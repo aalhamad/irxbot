@@ -1,6 +1,6 @@
 # IRX Robot — Complete Component List (Current Design)
 
-Rev 2026-10-11 · Source of truth for hardware
+Rev 2026-11-01 · Source of truth for hardware
 
 ---
 
@@ -13,9 +13,10 @@ Rev 2026-10-11 · Source of truth for hardware
 | Jetson Branch Fuse | Protect Jetson power wiring |
 | Powered USB Hub (+ supply) | USB expansion; prevents voltage-drop issues |
 | Remote Dashboard (Foxglove, over Wi-Fi/Ethernet) | Map, cameras, LiDAR, nav state, ROS2 diagnostics — viewed on laptop/tablet/phone (no on-robot Jetson display) |
-| ReSpeaker USB Mic Array | Voice input |
-| TPA3116D2 Amplifier | Audio output |
-| 2 × Passive Speakers | Voice/audio (stereo pair, front enclosure) |
+| ReSpeaker USB Mic Array | Voice commands; USB to Jetson |
+| XH-M139 2.1 Amplifier (TPA3116D2, 12–24 V, 2×50 W + 100 W) | Audio output; 12 V rail via own 5 A fuse, audio in from ReSpeaker 3.5 mm jack; subwoofer output unused |
+| 2 × SOTAMIA 3" Full-Range Speakers (4 Ω, 30 W, waterproof) | Voice/audio (stereo pair, front enclosure) |
+| Quectel EC25-EUX 4G LTE Modem (+ SIM, antenna) | Cellular networking; USB to Jetson via powered hub |
 | Front RGB-D Camera (RealSense D435i) | AI vision & depth (own IMU for VIO) |
 | Front Thermal Camera | Fire/heat detection |
 | 360° Camera | Situational awareness (also covers rear view) |
@@ -128,6 +129,7 @@ Rev 2026-10-11 · Source of truth for hardware
 - DDR-120B-24 Branch Fuse
 - Mean Well DDR-120B-12 (16.8–33.6V in, 12V/10A out) → lighting/peripherals
 - DDR-120B-12 Branch Fuse
+- Audio Amplifier Branch Fuse (5 A, from 12 V rail; never from the raw battery bus, which reaches ~29 V and exceeds the amplifier's 24 V rating)
 - 24→5 V Converter → logic
 - 24→5 V Converter Branch Fuse
 - Jetson Branch Fuse
@@ -141,15 +143,15 @@ Rev 2026-10-11 · Source of truth for hardware
 - **USB serial:** Jetson ↔ ESP32-S3
 - **UART (dedicated):** STM32 → ESP32-S3 — turn-signal / hazard commands
 - **CAN Bus:** SN65HVD230 transceiver · 2 × 120 Ω terminators (physical ends only → ~60 Ω across H-L, power off) · twisted-pair (CAN-H/CAN-L) · common ground/reference (CAN TVS listed under Power/Protection)
-- I²C, Ethernet, Wi-Fi
+- I²C, Ethernet, Wi-Fi, 4G LTE (Quectel EC25-EUX)
 
 ## 8. Audio
 
 | Component | MCU |
 |---|---|
 | ReSpeaker USB Mic | Jetson |
-| TPA3116D2 Amplifier | Jetson |
-| 2 × Speakers (stereo pair, front enclosure) | Jetson |
+| XH-M139 Amplifier (TPA3116D2) | Jetson, via ReSpeaker 3.5 mm output |
+| 2 × SOTAMIA 3" Speakers (stereo pair, front enclosure) | Jetson, via amplifier |
 | Buzzer (12V) | ESP32-S3 |
 | Horn (12V) | STM32 |
 
