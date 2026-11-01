@@ -6,7 +6,7 @@ See `docs/hardware-check-plan.md` for the plan and decisions.
 
 ### Hardware check and rewiring
 - [ ] Compile and flash the `STATUS` firmware (see `docs/workflow.md`)
-- [ ] Investigate the first check results: ToF right, BME280, second DS18B20, high dust readings, LiDAR (see `docs/hardware-check-plan.md`)
+- [ ] Investigate the check results: invalid ToF readings, VEML7700 failed reads, high dust readings, LiDAR (see `docs/hardware-check-plan.md`)
 - [ ] Confirm where ESP-IDF is, or install version 5.3.2 on the Jetson
 - [ ] Run `scripts/robot_check.py --manual --baseline` and correct it from the first real output
 - [ ] Decide whether to add the motor spin test (recommended before rewiring)

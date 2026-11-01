@@ -163,6 +163,25 @@ def judge_imu(samples):
     return OK, f"quaternion length {norm:.3f}, acceleration {accel:.1f} m/s2"
 
 
+def judge_tof(readings, online):
+    """The firmware reports 0 for any reading it judged invalid, such as nothing in
+    range, so a 0 alone does not mean the sensor failed. online is None if unknown."""
+    if online is not None and not online:
+        return FAIL, "offline: check XSHUT and I2C wires"
+    if not readings:
+        return FAIL, "no reading"
+    valid = [r for r in readings if r > 0]
+    if not valid:
+        if online:
+            return WARN, "online, but no valid distance: use --manual to test with a hand"
+        return FAIL, "reads 0 mm"
+    if max(valid) > 4000:
+        return WARN, f"reads {max(valid)} mm, beyond its 4 m range"
+    if len(valid) < len(readings):
+        return WARN, f"{min(valid)} to {max(valid)} mm, {len(valid)} of {len(readings)} readings valid"
+    return OK, f"{min(valid)} to {max(valid)} mm"
+
+
 def judge_env_value(value, low, high):
     return low <= value <= high
 
@@ -411,20 +430,10 @@ def check_stm32(port_arg):
             report(name, OK, f"heard {status['vesc'][index]} ms ago")
 
     # ToF
-    latest = tof[-1] if tof else {}
     for bit, label, where in TOF_SENSORS:
-        name = f"ToF {where}"
-        distance = latest.get(label)
-        if status_ok and not status["tof"] & (1 << bit):
-            report(name, FAIL, "offline: check XSHUT and I2C wires")
-        elif distance is None:
-            report(name, FAIL, "no reading")
-        elif distance == 0:
-            report(name, FAIL, "reads 0 mm")
-        elif distance > 4000:
-            report(name, WARN, f"reads {distance} mm, beyond its 4 m range")
-        else:
-            report(name, OK, f"{distance} mm")
+        online = status["tof"] & (1 << bit) if status_ok else None
+        state, detail = judge_tof([s[label] for s in tof if label in s], online)
+        report(f"ToF {where}", state, detail)
     return stm
 
 
@@ -446,8 +455,9 @@ def manual_stm32(stm):
             parsed = parse_tof(line)
             if parsed and label in parsed:
                 seen.append(parsed[label])
-        if seen and 0 < min(seen) < 300:
-            report(name, OK, f"saw {min(seen)} mm")
+        valid = [d for d in seen if d > 0]
+        if valid and min(valid) < 300:
+            report(name, OK, f"saw {min(valid)} mm")
         else:
             report(name, FAIL, f"readings {seen}: hand not seen, sensor may be swapped")
 
