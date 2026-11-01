@@ -9,7 +9,7 @@ See `docs/hardware-check-plan.md` for the plan and decisions.
 - [ ] Investigate the check results: invalid ToF readings, VEML7700 failed reads, high dust readings, LiDAR (see `docs/hardware-check-plan.md`)
 - [ ] Confirm where ESP-IDF is, or install version 5.3.2 on the Jetson
 - [ ] Run `scripts/robot_check.py --manual --baseline` and correct it from the first real output
-- [ ] Decide whether to add the motor spin test (recommended before rewiring)
+- [ ] Before rewiring, run `robot_check.py --spin` with the wheels up and confirm all 4 wheels turn
 - [ ] Check the Waveshare hub's input voltage on its label before powering it
 - [ ] Temporary USB layout: Jetson = RealSense, STM32, ESP32, Waveshare hub. Waveshare hub = 4G modem, LiDAR, 360° camera, black 4-port hub. Black hub (unpowered, strap it down, all ports on) = ReSpeaker, thermal adapter
 - [ ] When the second Waveshare hub arrives, it replaces the black hub: Waveshare hub 1 = ReSpeaker, 360° camera, LiDAR, hub 2. Hub 2 = thermal adapter, 4G modem
@@ -67,7 +67,6 @@ See `docs/hardware-check-plan.md` for the plan and decisions.
 - [ ] Foxglove for live data, then a custom dashboard if wanted (`docs/hardware-check-plan.md`)
 - [ ] Resolve the ToF count: spec says 4 with a downward one, firmware has 5 with none
 - [ ] Disable regen below 0 °C for outdoor use
-- [ ] Fix `CLAUDE.md` or restore `scripts/` (`deploy.sh` and `motor_spin.py` no longer exist)
 - [ ] Delete `~/irx_fw_diag` and `~/irx_test.log` on the Jetson
 
 ## Only if needed

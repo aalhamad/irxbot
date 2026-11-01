@@ -30,7 +30,7 @@ Or build and flash on the Jetson without CubeIDE:
 ./scripts/flash_stm32.sh
 ```
 
-Check the hardware from the Jetson (never moves the motors; see `docs/hardware-check-plan.md`):
+Check the hardware from the Jetson (only `--spin` moves the motors; see `docs/hardware-check-plan.md`):
 ```bash
 python3 scripts/robot_check.py
 ```
@@ -66,7 +66,7 @@ ros2 run irx_driver motor_driver_node
 
 ### Motor smoke test (serial)
 ```bash
-python3 scripts/motor_spin.py   # sends CMD 3000 3000 to /dev/ttyACM0
+python3 scripts/robot_check.py --spin   # wheels up: ERPM 1000 for 5 s, then stops
 ```
 
 ## Architecture

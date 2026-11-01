@@ -51,8 +51,9 @@ Stop the ROS2 nodes first, because they hold the serial ports.
 | `python3 scripts/robot_check.py` | Automatic checks |
 | `python3 scripts/robot_check.py --manual` | Adds hand-in-front-of-ToF, bumper, RC, E-stop, horn, light, LCD and speaker checks |
 | `python3 scripts/robot_check.py --baseline` | Also saves this run as the reference; later runs list anything worse |
+| `python3 scripts/robot_check.py --spin` | Spins the wheels instead of checking, wheels off the ground; `--spin [left] [right] --time s` sets speed and time |
 
-The script never sends `CMD`, so it cannot move the motors.
+Only `--spin` sends `CMD`; without it the script cannot move the motors.
 
 Each run also saves its output to `scripts/robot_check.log`, replacing the last run. Git ignores this file, so it stays on the Jetson. To compare against an earlier run, use `--baseline`.
 
@@ -60,7 +61,7 @@ Each run also saves its output to `scripts/robot_check.log`, replacing the last 
 
 | Part | Status |
 |---|---|
-| 4 motors and hall sensors | Not tested. Separate spin test proposed, not written or approved |
+| 4 motors and hall sensors | Not checked automatically. `--spin` turns all 4 together and shows front-wheel speed feedback; watch each wheel. A test of one motor at a time is not written |
 | 360° camera | Needs its USB name set in `CAMERA_360_NAME` |
 | Spotlight | Firmware has no command for it |
 | Pan/tilt, laser, E-stop and contactor aux contacts, panel buttons, IR lights, rear light, hazard flasher | No firmware support yet |

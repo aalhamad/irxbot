@@ -10,7 +10,16 @@ Run on the Jetson with the ROS2 nodes stopped (they hold the serial ports):
 Every run lists anything that got worse since the saved reference. Needs only
 the Python standard library.
 
-It never sends CMD, so it cannot move the motors. Exit code is 1 if anything FAILs.
+These checks never send CMD, so they cannot move the motors. Exit code is 1 if
+anything FAILs.
+
+Spinning the wheels is a separate job, run instead of the checks. Wheels must be
+off the ground; it asks first, and Ctrl+C stops the motors:
+
+    python3 scripts/robot_check.py --spin                 # all wheels, ERPM 1000, 5 s
+    python3 scripts/robot_check.py --spin 1500            # both sides at ERPM 1500
+    python3 scripts/robot_check.py --spin 1000 -1000      # left, right
+    python3 scripts/robot_check.py --spin 1000 --time 10  # for 10 s
 """
 import argparse
 import array
@@ -86,6 +95,10 @@ ENV_FIELDS_BY_CHIP = {
 }
 MQ2_WARMED_BIT = 6
 PM_SUSPECT = 150.0  # ug/m3; clean indoor air is far below this
+
+SPIN_MAX_ERPM = 3000
+SPIN_MAX_SECONDS = 60
+SPIN_SEND_PERIOD_S = 0.2  # the STM32 stops the motors after 1 s without a command
 
 results = []
 
@@ -833,7 +846,7 @@ def not_available_yet(manual):
                  "Contactor auxiliary contact", "Panel buttons",
                  "IR illuminators", "Rear light", "Hazard-flasher fallback"):
         report(name, NOT_BUILT, "no firmware or wiring map to test against")
-    report("4 motors and hall sensors", NOT_TESTED, "needs spinning, this check never moves them")
+    report("4 motors and hall sensors", NOT_TESTED, "run --spin with the wheels off the ground")
     if not manual:
         report("Bumpers, RC, E-stop, horn, lights", NOT_TESTED, "use --manual")
     print("\nCheck by hand, software cannot see these:")
@@ -852,6 +865,66 @@ def compare_with_baseline(baseline):
         print("  nothing")
     for name, before, now in worse:
         print(f"  {name}: was {before}, now {now}")
+
+
+def stop_wheels(link):
+    # Sent twice in case one is lost; the STM32's 1 s timeout is the backstop
+    for _ in range(2):
+        link.write("CMD 0 0\n")
+        time.sleep(0.05)
+
+
+def spin_wheels(left, right, duration, port_arg):
+    if max(abs(left), abs(right)) > SPIN_MAX_ERPM:
+        print(f"STOPPED: speed must be within +/-{SPIN_MAX_ERPM} ERPM")
+        return 1
+    if not 0 < duration <= SPIN_MAX_SECONDS:
+        print(f"STOPPED: time must be above 0 and at most {SPIN_MAX_SECONDS} s")
+        return 1
+    port = port_arg or find_tty(STM32_VENDOR)
+    if not port:
+        print("STOPPED: STM32 not found on USB")
+        return 1
+    busy = port_busy(port)
+    if busy:
+        print(f"STOPPED: {port} in use by {busy}, stop it first")
+        return 1
+
+    print(f"Left {left}, right {right} ERPM for {duration:g} s. Ctrl+C stops.")
+    if not ask("Wheels off the ground, RC off, E-stop in reach?"):
+        print("Not started.")
+        return 1
+
+    link = Serial(port, 115200)
+    command = f"CMD {left} {right}\n"
+    acknowledged = False
+    interrupted = False
+    feedback = None
+    end = time.monotonic() + duration
+    try:
+        while time.monotonic() < end:
+            link.write(command)
+            for line in link.lines(SPIN_SEND_PERIOD_S):
+                if line.startswith("CMD_OK"):
+                    acknowledged = True
+                elif line.startswith("ODO "):
+                    feedback = line
+                elif line.startswith("ERR:") or line.startswith("RC_ON"):
+                    print(line)
+    except KeyboardInterrupt:
+        interrupted = True
+        print("\nStopping.")
+    finally:
+        stop_wheels(link)
+        link.close()
+
+    print("Stop sent.")
+    if feedback:
+        print(f"Last speed feedback (left, right): {feedback}")
+    if not acknowledged and not interrupted:
+        print("WARNING: the STM32 never confirmed the command")
+        return 1
+    return 0
 
 
 class Tee:
@@ -884,7 +957,17 @@ def main():
     parser.add_argument("--baseline", action="store_true", help="save this run as the reference")
     parser.add_argument("--stm-port", help="default: found by USB ID")
     parser.add_argument("--esp-port", help="default: found by USB ID")
+    parser.add_argument("--spin", nargs="*", type=int, metavar="ERPM",
+                        help="spin the wheels instead of checking: [left] [right], default 1000")
+    parser.add_argument("--time", type=float, default=5.0, help="seconds for --spin, default 5")
     args = parser.parse_args()
+
+    if args.spin is not None:
+        if len(args.spin) > 2:
+            parser.error("--spin takes at most left and right")
+        left = args.spin[0] if args.spin else 1000
+        right = args.spin[1] if len(args.spin) == 2 else left
+        return spin_wheels(left, right, args.time, args.stm_port)
 
     log_path = open_log()
     print(time.strftime("Robot check %Y-%m-%d %H:%M:%S"))
