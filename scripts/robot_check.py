@@ -844,6 +844,30 @@ def compare_with_baseline(baseline):
         print(f"  {name}: was {before}, now {now}")
 
 
+class Tee:
+    """Writes everything printed to both the screen and a log file."""
+
+    def __init__(self, screen, log):
+        self.screen = screen
+        self.log = log
+
+    def write(self, text):
+        self.screen.write(text)
+        self.log.write(text)
+
+    def flush(self):
+        self.screen.flush()
+        self.log.flush()
+
+
+def open_log():
+    """Starts logging to a new dated file beside this script. Returns its path."""
+    folder = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(folder, time.strftime("robot_check_%Y%m%d_%H%M%S.log"))
+    sys.stdout = Tee(sys.stdout, open(path, "w"))
+    return path
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--manual", action="store_true", help="include hands-on checks")
@@ -852,6 +876,8 @@ def main():
     parser.add_argument("--esp-port", help="default: found by USB ID")
     args = parser.parse_args()
 
+    log_path = open_log()
+    print(time.strftime("Robot check %Y-%m-%d %H:%M:%S"))
     print("Motors will not move: this script never sends CMD.")
     stm = check_stm32(args.stm_port)
     check_esp32(args.esp_port, args.manual)
@@ -882,6 +908,7 @@ def main():
     failed = [name for name, status, _ in results if status == FAIL]
     if failed:
         print("FAILED: " + ", ".join(failed))
+    print(f"Log: {log_path}")
     return 1 if failed else 0
 
 
