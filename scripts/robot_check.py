@@ -316,12 +316,14 @@ class Stm32:
         self.serial = Serial(port, 115200)
 
     def status(self):
-        self.serial.write("STATUS\n")
-        for _ in range(4):
-            for line in self.serial.lines(0.25):
-                parsed = parse_status(line)
-                if parsed:
-                    return parsed
+        # Retried because the first command after opening the port can be lost
+        for _ in range(3):
+            self.serial.write("STATUS\n")
+            for _ in range(4):
+                for line in self.serial.lines(0.25):
+                    parsed = parse_status(line)
+                    if parsed:
+                        return parsed
         return None
 
     def close(self):

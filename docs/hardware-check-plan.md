@@ -38,6 +38,8 @@ From one run on the old STM32 firmware, before any rewiring.
 
 The 4G modem and RealSense also failed, probably because they are not plugged in. The thermal camera failed because it is not wired yet.
 
+A second run changed some of these. BME280 and the second DS18B20 now pass, with the MQ-2 warmed up, so the first failures may only mean the ESP32 had just started. Watch them for repeats. PM2.5 / PM10 fell to 194 / 199 µg/m³, still very high. VEML7700 reported 3 failed reads since boot, which may be a loose wire. ToF right still reads 0 mm.
+
 ## Running the check
 
 Stop the ROS2 nodes first, because they hold the serial ports.
