@@ -52,7 +52,7 @@ Stop the ROS2 nodes first, because they hold the serial ports.
 
 The script never sends `CMD`, so it cannot move the motors.
 
-Each run also saves its output to a new dated file beside the script, such as `scripts/robot_check_20261101_210000.log`. Git ignores these files, so they stay on the Jetson.
+Each run also saves its output to `scripts/robot_check.log`, replacing the last run. Git ignores this file, so it stays on the Jetson. To compare against an earlier run, use `--baseline`.
 
 ## Coverage gaps
 

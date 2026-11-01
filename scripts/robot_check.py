@@ -861,9 +861,9 @@ class Tee:
 
 
 def open_log():
-    """Starts logging to a new dated file beside this script. Returns its path."""
+    """Starts logging to robot_check.log beside this script, replacing the last run."""
     folder = os.path.dirname(os.path.abspath(__file__))
-    path = os.path.join(folder, time.strftime("robot_check_%Y%m%d_%H%M%S.log"))
+    path = os.path.join(folder, "robot_check.log")
     sys.stdout = Tee(sys.stdout, open(path, "w"))
     return path
 
