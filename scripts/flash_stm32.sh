@@ -12,7 +12,7 @@ PORT=/dev/ttyACM0
 BUILD=$HOME/irx_fw_build
 OBJ=$BUILD/obj
 OUT=$BUILD/current
-MIN_SIZE=50000
+MIN_SIZE=20000  # catches an empty or failed build; real images are about 50 KB
 
 fail() {
     echo "STOPPED: $1. Nothing was flashed." >&2

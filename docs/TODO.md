@@ -5,7 +5,9 @@
 See `docs/hardware-check-plan.md` for the plan and decisions.
 
 ### Hardware check and rewiring
-- [ ] Compile and flash the `STATUS` firmware
+- [ ] Compile and flash the `STATUS` firmware (see `docs/workflow.md`)
+- [ ] Investigate the first check results: ToF right, BME280, second DS18B20, high dust readings, LiDAR (see `docs/hardware-check-plan.md`)
+- [ ] Confirm where ESP-IDF is, or install version 5.3.2 on the Jetson
 - [ ] Run `scripts/robot_check.py --manual --baseline` and correct it from the first real output
 - [ ] Decide whether to add the motor spin test (recommended before rewiring)
 - [ ] Check the Waveshare hub's input voltage on its label before powering it
@@ -39,6 +41,9 @@ See `docs/hardware-check-plan.md` for the plan and decisions.
 - [ ] Thermal camera: wire it through the USB-serial adapter, get a reading, confirm its data format
 
 ### ESP32
+- [ ] Flash the LCD IP firmware and rebuild `ros2/` on the Jetson; confirm the LCD shows the IP and telemetry still arrives
+- [ ] Install `scripts/irx-esp32-telemetry.service` so the IP shows at boot
+- [ ] Reserve a fixed IP for the Jetson in the router
 - [ ] Connect the native `USB` port (`303a:1001`) to the Jetson; leave the 5V pin and other USB port empty
 - [ ] Power the LED strips from the 5 V rail, not through the ESP32 board
 - [ ] Set up fixed port names for the STM32 and ESP32

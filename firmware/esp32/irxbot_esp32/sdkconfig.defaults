@@ -1,3 +1,6 @@
+# USB carries only telemetry and commands, read by task_telemetry.c; logs stay on UART0
+CONFIG_ESP_CONSOLE_SECONDARY_NONE=y
+
 # LVGL fonts used by task_display.c
 CONFIG_LV_FONT_MONTSERRAT_14=y
 CONFIG_LV_FONT_MONTSERRAT_20=y

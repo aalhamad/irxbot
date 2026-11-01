@@ -1,5 +1,6 @@
 #include "task_display.h"
 #include "task_sensors.h"
+#include "task_telemetry.h"
 
 #include "driver/spi_master.h"
 #include "esp_err.h"
@@ -50,7 +51,7 @@ static lv_obj_t *_volts, *_amps, *_load;
 static lv_obj_t *_v12, *_v5, *_v33;
 static lv_obj_t *_t_bat, *_t_rear, *_t_front, *_t_air;
 static lv_obj_t *_pm25, *_tvoc, *_eco2, *_lux;
-static lv_obj_t *_gas_panel, *_gas_state, *_gas_volts;
+static lv_obj_t *_gas_panel, *_gas_state, *_jetson_ip;
 
 /* ── Widgets ────────────────────────────────────────────────────────────────── */
 
@@ -140,10 +141,10 @@ static void build_ui(void)
     _eco2 = make_row(right, 56, "eCO2");
     _lux  = make_row(right, 83, "LUX");
 
-    /* Gas */
+    /* Gas, and the Jetson's IP address */
     _gas_panel = make_panel(scr, 4, 196, 312, 40, C_PANEL);
     _gas_state = make_label(_gas_panel, LV_ALIGN_LEFT_MID, 10, 0, &lv_font_montserrat_20, C_TEXT, "GAS WARMUP");
-    _gas_volts = make_label(_gas_panel, LV_ALIGN_RIGHT_MID, -10, 0, &lv_font_montserrat_14, C_MUTED, "--");
+    _jetson_ip = make_label(_gas_panel, LV_ALIGN_RIGHT_MID, -10, 0, &lv_font_montserrat_14, C_TEXT, "NO JETSON");
 }
 
 /* ── Updates ────────────────────────────────────────────────────────────────── */
@@ -169,7 +170,7 @@ static void update_status(uint32_t up_ms, uint8_t ok)
     }
 }
 
-static void update_gas(uint8_t ok, uint8_t st, float volts)
+static void update_gas(uint8_t ok, uint8_t st)
 {
     lv_color_t bg = C_PANEL, fg = C_TEXT;
     const char *text;
@@ -180,10 +181,9 @@ static void update_gas(uint8_t ok, uint8_t st, float volts)
     else                      text = "GAS OK";
 
     set_text(_gas_state, "%s", text);
-    set_text(_gas_volts, "%.2f V", volts);
     lv_obj_set_style_bg_color(_gas_panel, bg, 0);
     lv_obj_set_style_text_color(_gas_state, fg, 0);
-    lv_obj_set_style_text_color(_gas_volts, fg, 0);
+    lv_obj_set_style_text_color(_jetson_ip, fg, 0);
 }
 
 static void update_ui(void)
@@ -213,7 +213,11 @@ static void update_ui(void)
     set_text(_eco2, "%u", g_sensors.eco2_ppm);
     set_text(_lux, "%.0f", g_sensors.lux);
 
-    update_gas(ok, g_sensors.mq2_status, g_sensors.mq2_v);
+    update_gas(ok, g_sensors.mq2_status);
+
+    char ip_text[16];
+    telemetry_get_ip_text(ip_text, sizeof(ip_text));
+    set_text(_jetson_ip, "%s", ip_text);
 }
 
 /* ── Setup ──────────────────────────────────────────────────────────────────── */

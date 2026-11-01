@@ -1,0 +1,21 @@
+# Starts esp32_telemetry_node at boot, so the LCD shows the Jetson's IP without logging in.
+#
+# Install on the Jetson, after building ros2/:
+#   sudo cp ~/irxbot/scripts/irx-esp32-telemetry.service /etc/systemd/system/
+#   sudo systemctl enable --now irx-esp32-telemetry
+#
+# It holds the ESP32's port, so stop it before scripts/robot_check.py or flashing the ESP32:
+#   sudo systemctl stop irx-esp32-telemetry
+
+[Unit]
+Description=IRXBot ESP32 telemetry and LCD IP address
+After=network.target
+
+[Service]
+User=aalhamad
+ExecStart=/bin/bash -c 'source /opt/ros/humble/setup.bash && source /home/aalhamad/irxbot/ros2/install/setup.bash && exec ros2 run irx_driver esp32_telemetry_node --ros-args -p serial_port:=$(ls /dev/serial/by-id/usb-Espressif* | head -n 1)'
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

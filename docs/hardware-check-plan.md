@@ -20,6 +20,24 @@ Decisions from the 2026-11-01 discussion.
 7. View everything in Foxglove.
 8. Build the custom dashboard if the look is wanted, starting with the System screen as the debug screen.
 
+## First results on the robot
+
+From one run on the old STM32 firmware, before any rewiring.
+
+| Part | Result | Next |
+|---|---|---|
+| ToF right | Reads 0 mm | Check its XSHUT and I²C wires |
+| BME280 | Not responding | Check its wires and its I²C address (0x76 or 0x77) |
+| DC-DC temperature | -127; only one DS18B20 found | Check the second sensor |
+| PM2.5 / PM10 | 282 / 304 µg/m³ | Real dust or smoke, or a faulty SPS30 |
+| LiDAR | No reply | Confirm it is plugged in, then check the connection settings |
+| ToF front left | 17 mm | Check nothing is blocking it |
+| Bus current | 0.116 A | Confirm what the INA228 measures |
+| SGP30 | 0 VOC, 400 eCO₂ | See if the readings change after it has been on a while |
+| Wi-Fi | 44% signal | Recheck with the robot closed |
+
+The 4G modem and RealSense also failed, probably because they are not plugged in. The thermal camera failed because it is not wired yet.
+
 ## Running the check
 
 Stop the ROS2 nodes first, because they hold the serial ports.

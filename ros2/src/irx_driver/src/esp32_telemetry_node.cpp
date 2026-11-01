@@ -1,6 +1,7 @@
 // Reads "ENV key=value ..." lines from the ESP32-S3 over USB serial and publishes
 // /battery (sensor_msgs/BatteryState) and /diagnostics (diagnostic_msgs/DiagnosticArray).
-// The port also carries ESP32 log lines, so anything else is ignored.
+// Anything else on the port is ignored. Also sends this computer's IP address to the
+// ESP32 every 5 s, for its LCD.
 
 #include <diagnostic_msgs/msg/diagnostic_array.hpp>
 #include <diagnostic_msgs/msg/diagnostic_status.hpp>
@@ -8,7 +9,10 @@
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/battery_state.hpp>
 
+#include <arpa/inet.h>
 #include <fcntl.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
 #include <termios.h>
 #include <unistd.h>
 
@@ -121,6 +125,31 @@ std::string number(double value, int precision)
     return text;
 }
 
+// The address this computer would use to reach the network, or "" if it has no route.
+// Connecting a UDP socket only picks the route; it sends nothing.
+std::string local_ip()
+{
+    const int sock = ::socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock < 0) return "";
+
+    sockaddr_in remote{};
+    remote.sin_family = AF_INET;
+    remote.sin_port = htons(53);
+    ::inet_pton(AF_INET, "8.8.8.8", &remote.sin_addr);
+
+    std::string result;
+    sockaddr_in local{};
+    socklen_t local_len = sizeof(local);
+    char text[INET_ADDRSTRLEN];
+    if (::connect(sock, reinterpret_cast<sockaddr *>(&remote), sizeof(remote)) == 0 &&
+        ::getsockname(sock, reinterpret_cast<sockaddr *>(&local), &local_len) == 0 &&
+        ::inet_ntop(AF_INET, &local.sin_addr, text, sizeof(text)) != nullptr) {
+        result = text;
+    }
+    ::close(sock);
+    return result;
+}
+
 }  // namespace
 
 class Esp32TelemetryNode : public rclcpp::Node
@@ -138,6 +167,7 @@ public:
         last_sample_time_ = now();
         read_timer_ = create_wall_timer(100ms, [this]() { read_serial(); });
         stale_timer_ = create_wall_timer(1s, [this]() { check_stale(); });
+        ip_timer_ = create_wall_timer(5s, [this]() { send_ip(); });
     }
 
     ~Esp32TelemetryNode() override
@@ -148,7 +178,7 @@ public:
 private:
     bool open_port()
     {
-        fd_ = ::open(port_.c_str(), O_RDONLY | O_NOCTTY | O_NONBLOCK);
+        fd_ = ::open(port_.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
         if (fd_ < 0) return false;
 
         termios tty{};
@@ -197,6 +227,18 @@ private:
             RCLCPP_WARN(get_logger(), "Lost %s, reconnecting", port_.c_str());
             close_port();
             return;
+        }
+    }
+
+    void send_ip()
+    {
+        if (fd_ < 0) return;
+        const std::string ip = local_ip();
+        const std::string line = "IP " + (ip.empty() ? std::string("NONE") : ip) + "\n";
+        // Best effort: it repeats, and a full buffer must not stall telemetry
+        if (::write(fd_, line.data(), line.size()) < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+            RCLCPP_WARN_THROTTLE(get_logger(), *get_clock(), 30000, "Cannot send IP to ESP32: %s",
+                                 std::strerror(errno));
         }
     }
 
@@ -372,6 +414,7 @@ private:
     rclcpp::Publisher<diagnostic_msgs::msg::DiagnosticArray>::SharedPtr diagnostics_pub_;
     rclcpp::TimerBase::SharedPtr read_timer_;
     rclcpp::TimerBase::SharedPtr stale_timer_;
+    rclcpp::TimerBase::SharedPtr ip_timer_;
 };
 
 int main(int argc, char **argv)

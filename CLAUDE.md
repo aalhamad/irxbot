@@ -10,6 +10,10 @@ IRXBot is a 4WD industrial robot with a three-layer compute architecture:
 - **STM32 NUCLEO-F446RE** — real-time motor control via CAN, safety logic, IMU/ToF sensors, bumpers, RC override, horn, contactor enable
 - **ESP32-S3** — environmental/air-quality sensors, power monitoring, WS2812B lighting, ST7789 LCD display
 
+## Workflow
+
+Commit and push to `main` from the PC only when asked; the user pulls on the Jetson and runs the scripts. See `docs/workflow.md`, and say after each push which of its steps are required.
+
 ## Build & Flash
 
 ### STM32 Firmware (`firmware/stm32/irx_drive/`)
@@ -35,7 +39,12 @@ python3 scripts/robot_check.py
 - **hw_test/** — standalone Arduino sketches for per-sensor hardware validation only. Not production code.
 - **Main firmware** (`firmware/esp32/irxbot_esp32/`) — **ESP-IDF + FreeRTOS** (not Arduino). One task per job: sensors, lighting, UART from STM32, telemetry to Jetson over USB serial.
 
-ESP-IDF is installed at `~/apps/esp-idf`. Activate the environment before building:
+Build and flash on the Jetson (needs ESP-IDF at `~/apps/esp-idf`):
+```bash
+./scripts/flash_esp32.sh
+```
+
+To do it by hand, activate the environment first:
 ```bash
 . ~/apps/esp-idf/export.sh
 ```
@@ -50,9 +59,8 @@ idf.py -p /dev/ttyUSB0 monitor
 
 ### ROS2 Package (`ros2/`)
 ```bash
-cd ros2
-colcon build --packages-select irx_driver
-source install/setup.bash
+./scripts/build_ros2.sh
+source ros2/install/setup.bash
 ros2 run irx_driver motor_driver_node
 ```
 
@@ -133,6 +141,15 @@ LIGHT <target> <R> <G> <B> <mode>\n
 |---|---|
 | `SPEED <rpm>\n` | Current wheel ERPM (for speed-dependent lighting) |
 | `BMP <bitmask>\n` | Bumper state (FL=1, FR=2, RL=4, RR=8) — proximity warning |
+
+### ESP32-S3 ↔ Jetson (native USB serial)
+
+| Direction | Format | Meaning |
+|---|---|---|
+| ESP32 → Jetson | `ENV key=value ...\n` | Sensor telemetry every 5 s |
+| Jetson → ESP32 | `IP <address>\n` or `IP NONE\n` | Jetson IP for the LCD, every 5 s; the LCD shows `NO JETSON` after 30 s without one |
+
+The USB port carries only these lines. ESP32 logs go to UART0, the board's other USB port.
 
 ### CAN Bus (STM32 → 4× Flipsky 75100)
 - 500 kbps — prescaler=6, BS1=11TQ, BS2=2TQ on 84 MHz APB1
