@@ -38,6 +38,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define CMD_TIMEOUT_MS  1000U   /* stop if the Jetson sends no valid CMD for this long */
+#define ODO_PERIOD_MS   50U     /* 20 Hz */
+#define SPEED_PERIOD_MS 200U    /* 5 Hz to the ESP32 */
 
 /* USER CODE END PD */
 
@@ -60,6 +63,8 @@ UART_HandleTypeDef huart3;
 static uint32_t last_imu_tick     = 0;
 static uint32_t last_tof_tick     = 0;
 static uint32_t last_odo_tick     = 0;
+static uint32_t last_speed_tick   = 0;
+static uint32_t last_cmd_rx_tick  = 0;
 static uint32_t last_err_tick[4]  = {0};
 static uint8_t  cmd_buf[32];
 static uint8_t  cmd_len           = 0;
@@ -342,6 +347,7 @@ int main(void)
                       cmd_left  = l;
                       cmd_right = r;
                       last_cmd_tick = now;
+                      last_cmd_rx_tick = now;
                       robot_set_rpm(l, r);
                   }
                   else
@@ -375,6 +381,15 @@ int main(void)
       {
           HAL_GPIO_WritePin(HORN_GPIO_Port, HORN_Pin, GPIO_PIN_RESET);
           horn_off_tick = 0;
+      }
+
+      /* ── Jetson link lost: the resend below would otherwise run the motors forever ── */
+      if (last_cmd_tick > 0 && (now - last_cmd_rx_tick) > CMD_TIMEOUT_MS)
+      {
+          if (!rc_override) robot_set_rpm(0, 0);
+          cmd_left = cmd_right = 0;
+          last_cmd_tick = 0;
+          HAL_UART_Transmit(&huart2, (uint8_t*)"ERR:CMD_TIMEOUT\r\n", 17, 50);
       }
 
       /* ── Periodic CMD resend @ 200 ms — keeps VESCs alive within their 1s timeout ── */
@@ -442,8 +457,8 @@ int main(void)
           }
       }
 
-      /* ── ODO report @ 10 s (debug rate) ── */
-      if ((now - last_odo_tick) >= 10000)
+      /* ── ODO report @ 20 Hz ── */
+      if ((now - last_odo_tick) >= ODO_PERIOD_MS)
       {
           last_odo_tick = now;
 
@@ -455,9 +470,13 @@ int main(void)
           int n = snprintf(buf, sizeof(buf), "ODO %ld %ld\r\n", l_rpm, r_rpm);
           HAL_UART_Transmit(&huart2, (uint8_t*)buf, n, 10);
 
-          int32_t avg_rpm = (l_rpm + r_rpm) / 2;
-          int sn = snprintf(buf, sizeof(buf), "SPEED %ld\n", avg_rpm);
-          HAL_UART_Transmit(&huart3, (uint8_t*)buf, sn, 10);
+          if ((now - last_speed_tick) >= SPEED_PERIOD_MS)
+          {
+              last_speed_tick = now;
+              int32_t avg_rpm = (l_rpm + r_rpm) / 2;
+              int sn = snprintf(buf, sizeof(buf), "SPEED %ld\n", avg_rpm);
+              HAL_UART_Transmit(&huart3, (uint8_t*)buf, sn, 10);
+          }
 
           /* Report any VESC that has stopped responding (rate-limited to 1 per 2 s) */
           for (uint8_t id = 1; id <= 4; id++)

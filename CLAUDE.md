@@ -64,13 +64,14 @@ The ROS2 `irx_driver` node communicates with the STM32 over `/dev/ttyACM0`.
 
 | Direction | Format | Meaning |
 |---|---|---|
-| Jetson → STM32 | `CMD <left_rpm> <right_rpm>\n` | Set wheel ERPM |
+| Jetson → STM32 | `CMD <left_rpm> <right_rpm>\n` | Set wheel ERPM, ±6000. Replies `CMD_OK <l> <r>`; a partial or out-of-range command gets `ERR:CMD` and is ignored |
+| Jetson → STM32 | `CAN\n` | Print CAN error state: `CAN LEC= BOFF= EPVF= EWGF= TEC= REC= TSR= MSR=` |
 | Jetson → STM32 | `HORN <ms>\n` | Sound horn for ms (max 5000) |
 | Jetson → STM32 | `LIGHT <target> <R> <G> <B> <mode>\n` | Forwarded to ESP32-S3 via USART3 |
 | STM32 → Jetson | `IMU qw qx qy qz ax ay az gx gy gz\r\n` | BNO085 data @ ~3 s (debug; tune for 50 Hz) |
 | STM32 → Jetson | `TOF FL:<mm> FR:<mm> L:<mm> R:<mm> REAR:<mm>\r\n` | VL53L1X distances @ 3 s (debug; tune for 10 Hz) |
 | STM32 → Jetson | `BMP <FL> <FR> <RL> <RR>\r\n` | Bumper state on change (1=pressed) |
-| STM32 → Jetson | `ODO <left_rpm> <right_rpm>\r\n` | Actual VESC ERPM feedback @ 10 s (debug; tune for production); both positive for forward motion — right side NOT negated |
+| STM32 → Jetson | `ODO <left_rpm> <right_rpm>\r\n` | Actual VESC ERPM feedback @ 20 Hz, left from VESC 2 (FL), right from VESC 1 (FR); both positive for forward motion — right side NOT negated |
 | STM32 → Jetson | `RC_ON\r\n` / `RC_OFF\r\n` | RC override state change |
 | STM32 → Jetson | `CAN_OK\r\n` / `ERR:CAN\r\n` | CAN init result on boot |
 | STM32 → Jetson | `IMU_OK\r\n` / `ERR:IMU\r\n` | IMU init result on boot |
@@ -79,7 +80,7 @@ The ROS2 `irx_driver` node communicates with the STM32 over `/dev/ttyACM0`.
 
 A 500 ms watchdog in the ROS2 node sends `CMD 0 0` if no `/cmd_vel` arrives.
 
-**CMD watchdog:** STM32 resends the last CMD every 200 ms to keep VESCs alive within their 1 s timeout. `last_cmd_tick = 0` disables the resend (used when RC override takes over).
+**CMD watchdog:** STM32 resends the last CMD every 200 ms to keep VESCs alive within their 1 s timeout. `last_cmd_tick = 0` disables the resend (used when RC override takes over). If no valid CMD arrives for 1 s the STM32 stops the motors, disables the resend and sends `ERR:CMD_TIMEOUT`, so anything driving the robot must keep sending CMD (the ROS2 node's 500 ms watchdog does).
 
 ### STM32 → ESP32-S3 (USART3, PC10 TX / PC5 RX, 115200 8N1)
 
