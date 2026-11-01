@@ -11,8 +11,41 @@ extern UART_HandleTypeDef huart2;
 
 /* ── Cached VESC feedback ──────────────────────────────────────────────────── */
 
-static int32_t  _vesc_rpm[4]       = {0};
-static uint32_t _vesc_last_tick[4] = {0};
+/* Written by CAN1_RX0_IRQHandler, read by the main loop */
+static volatile int32_t  _vesc_rpm[4]       = {0};
+static volatile uint32_t _vesc_last_tick[4] = {0};
+
+/* ── Start: filter, CAN start, RX interrupt ────────────────────────────────── */
+
+HAL_StatusTypeDef vesc_can_start(void)
+{
+    /* Accept only extended frames whose packet ID (bits 8-15) is STATUS, from
+     * any VESC ID (bits 0-7). Status 2-4 frames would only fill the FIFO. */
+    const uint32_t id   = ((uint32_t)CAN_PACKET_STATUS << 8);
+    const uint32_t mask = 0x1FFFFF00U;
+
+    CAN_FilterTypeDef f = {0};
+    f.FilterBank           = 0;
+    f.FilterMode           = CAN_FILTERMODE_IDMASK;
+    f.FilterScale          = CAN_FILTERSCALE_32BIT;
+    f.FilterIdHigh         = (uint16_t)((id << 3) >> 16);
+    f.FilterIdLow          = (uint16_t)((id << 3) | CAN_ID_EXT);
+    f.FilterMaskIdHigh     = (uint16_t)((mask << 3) >> 16);
+    f.FilterMaskIdLow      = (uint16_t)((mask << 3) | CAN_ID_EXT);
+    f.FilterFIFOAssignment = CAN_RX_FIFO0;
+    f.FilterActivation     = ENABLE;
+    f.SlaveStartFilterBank = 14;   /* banks 0-13 belong to CAN1 */
+
+    if (HAL_CAN_ConfigFilter(&hcan1, &f) != HAL_OK) return HAL_ERROR;
+    if (HAL_CAN_Start(&hcan1) != HAL_OK)            return HAL_ERROR;
+
+    /* Drain from the ISR: the main loop blocks on I2C and UART for longer than
+     * the 3-frame FIFO lasts. */
+    HAL_NVIC_SetPriority(CAN1_RX0_IRQn, 5, 0);
+    HAL_NVIC_EnableIRQ(CAN1_RX0_IRQn);
+    __HAL_CAN_ENABLE_IT(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
+    return HAL_OK;
+}
 
 /* ── TX ────────────────────────────────────────────────────────────────────── */
 
@@ -36,7 +69,7 @@ HAL_StatusTypeDef vesc_set_rpm(uint8_t id, int32_t rpm)
     return HAL_CAN_AddTxMessage(&hcan1, &txHeader, data, &mailbox);
 }
 
-/* ── RX processing (call every main loop) ──────────────────────────────────── */
+/* ── RX processing (called from CAN1_RX0_IRQHandler) ───────────────────────── */
 
 void vesc_process_rx(void)
 {

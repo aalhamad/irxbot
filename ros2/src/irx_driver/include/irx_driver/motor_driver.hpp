@@ -18,7 +18,8 @@ public:
 
 private:
     void cmd_vel_callback(const geometry_msgs::msg::Twist::SharedPtr msg);
-    void read_odometry();
+    void read_serial();
+    void handle_odometry(int32_t left_rpm, int32_t right_rpm);
     bool open_serial(const std::string &port, int baud);
     bool send_command(int32_t left_rpm, int32_t right_rpm);
 
@@ -33,6 +34,7 @@ private:
 
     // Serial
     int serial_fd_;
+    std::string serial_rx_;  // bytes received but not yet a complete line
 
     // Odometry
     double x_, y_, theta_;

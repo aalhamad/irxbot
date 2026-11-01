@@ -11,6 +11,7 @@
 #include <stdint.h>
 #include "stm32f4xx_hal.h"
 
+HAL_StatusTypeDef vesc_can_start(void);
 HAL_StatusTypeDef vesc_set_rpm(uint8_t id, int32_t rpm);
 HAL_StatusTypeDef vesc_get_rpm(uint8_t id, int32_t *rpm);
 void              vesc_process_rx(void);

@@ -7,6 +7,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "ibus.h"
+#include "vesc_can.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -31,7 +32,7 @@
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
-
+void Uart2_RxByte(uint8_t b);   /* main.c */
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -204,7 +205,13 @@ void I2C1_EV_IRQHandler(void)
 void USART2_IRQHandler(void)
 {
   /* USER CODE BEGIN USART2_IRQn 0 */
-
+  /* TX is polled, so RX is the only interrupt source. Returning here skips the
+   * HAL handler below, which CubeMX restores on regeneration. */
+  if (__HAL_UART_GET_FLAG(&huart2, UART_FLAG_RXNE))
+      Uart2_RxByte((uint8_t)(huart2.Instance->DR & 0xFF));
+  if (__HAL_UART_GET_FLAG(&huart2, UART_FLAG_ORE))
+      __HAL_UART_CLEAR_OREFLAG(&huart2);
+  return;
   /* USER CODE END USART2_IRQn 0 */
   HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */
@@ -220,5 +227,10 @@ void USART1_IRQHandler(void)
         IBus_RxByte((uint8_t)(huart1.Instance->DR & 0xFF));
     if (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_ORE))
         __HAL_UART_CLEAR_OREFLAG(&huart1);
+}
+
+void CAN1_RX0_IRQHandler(void)
+{
+    vesc_process_rx();
 }
 /* USER CODE END 1 */

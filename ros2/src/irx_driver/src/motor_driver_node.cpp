@@ -52,10 +52,10 @@ MotorDriver::MotorDriver(const rclcpp::NodeOptions &options)
         "/cmd_vel", 10,
         std::bind(&MotorDriver::cmd_vel_callback, this, std::placeholders::_1));
 
-    // Odometry timer — read ODO from STM32 every 50ms
+    // Serial timer — read lines from STM32 every 50ms
     odom_timer_ = this->create_wall_timer(
         std::chrono::milliseconds(50),
-        std::bind(&MotorDriver::read_odometry, this));
+        std::bind(&MotorDriver::read_serial, this));
 
     // Watchdog timer — stop motors if no cmd_vel
     watchdog_timer_ = this->create_wall_timer(
@@ -96,22 +96,40 @@ void MotorDriver::cmd_vel_callback(const geometry_msgs::msg::Twist::SharedPtr ms
     send_command(left_rpm, right_rpm);
 }
 
-void MotorDriver::read_odometry()
+void MotorDriver::read_serial()
 {
     if (serial_fd_ < 0)
         return;
 
-    char buf[64];
-    int n = read(serial_fd_, buf, sizeof(buf) - 1);
-    if (n <= 0)
-        return;
+    // The STM32 sends IMU, TOF, ODO and other lines on one port, and a read can
+    // start or end anywhere inside a line, so reassemble lines before parsing.
+    char buf[256];
+    int n;
+    while ((n = read(serial_fd_, buf, sizeof(buf))) > 0)
+        serial_rx_.append(buf, n);
 
-    buf[n] = '\0';
+    size_t start = 0;
+    size_t end;
+    while ((end = serial_rx_.find('\n', start)) != std::string::npos)
+    {
+        const std::string line = serial_rx_.substr(start, end - start);
+        start = end + 1;
 
-    int32_t left_rpm = 0, right_rpm = 0;
-    if (sscanf(buf, "ODO %d %d", &left_rpm, &right_rpm) != 2)
-        return;
+        int32_t left_rpm = 0, right_rpm = 0;
+        if (sscanf(line.c_str(), "ODO %d %d", &left_rpm, &right_rpm) == 2)
+            handle_odometry(left_rpm, right_rpm);
+        else if (line.rfind("ERR:", 0) == 0)
+            RCLCPP_WARN(this->get_logger(), "STM32: %s", line.c_str());
+    }
+    serial_rx_.erase(0, start);
 
+    // Never let a stream with no newlines grow without bound
+    if (serial_rx_.size() > 1024)
+        serial_rx_.clear();
+}
+
+void MotorDriver::handle_odometry(int32_t left_rpm, int32_t right_rpm)
+{
     // Convert ERPM to wheel velocity (m/s)
     double wheel_circumference = 2.0 * M_PI * wheel_radius_;
     double left_vel = (left_rpm / (60.0 * pole_pairs_ * gear_ratio_)) * wheel_circumference;
@@ -213,7 +231,7 @@ bool MotorDriver::open_serial(const std::string &port, int baud)
     tty.c_lflag = 0;
     tty.c_oflag = 0;
     tty.c_cc[VMIN] = 0;
-    tty.c_cc[VTIME] = 1;
+    tty.c_cc[VTIME] = 0;  // non-blocking: the read timer runs on the only executor thread
     tcsetattr(serial_fd_, TCSANOW, &tty);
 
     // Wait for STM32 boot
