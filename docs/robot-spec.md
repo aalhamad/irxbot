@@ -11,19 +11,16 @@ Rev 2026-11-01 · Source of truth for hardware
 | Jetson Orin Nano | Main AI computer |
 | Dedicated isolated 24V→19V (or required Vin) DC/DC supply for Jetson | Own power rail, not a shared general-purpose converter |
 | Jetson Branch Fuse | Protect Jetson power wiring |
-| Powered USB Hub (+ supply) | USB expansion; prevents voltage-drop issues |
+| Powered USB Hub (Waveshare USB3.2-Gen1-HUB-4U, 4 ports, + supply) | USB expansion; prevents voltage-drop issues |
 | Remote Dashboard (Foxglove, over Wi-Fi/Ethernet) | Map, cameras, LiDAR, nav state, ROS2 diagnostics — viewed on laptop/tablet/phone (no on-robot Jetson display) |
 | ReSpeaker USB Mic Array | Voice commands; USB to Jetson |
 | XH-M139 2.1 Amplifier (TPA3116D2, 12–24 V, 2×50 W + 100 W) | Audio output; 12 V rail via own 5 A fuse, audio in from ReSpeaker 3.5 mm jack; subwoofer output unused |
 | 2 × SOTAMIA 3" Full-Range Speakers (4 Ω, 30 W, waterproof) | Voice/audio (stereo pair, front enclosure) |
 | Quectel EC25-EUX 4G LTE Modem (+ SIM, antenna) | Cellular networking; USB to Jetson via powered hub |
 | Front RGB-D Camera (RealSense D435i) | AI vision & depth (own IMU for VIO) |
-| Front Thermal Camera | Fire/heat detection |
-| 360° Camera | Situational awareness (also covers rear view) |
+| Front Thermal Camera (MLX90640BAA module, 32×24 pixels) | Fire/heat detection; UART to Jetson through a USB-serial adapter (planned, not wired yet) |
+| 360° Camera (2 MP fisheye USB UVC module, 32×32 mm, single lens) | Situational awareness (also covers rear view) |
 | 2D LiDAR (RPLIDAR C1) | SLAM / navigation / obstacle detection |
-| GNSS Receiver (u-blox NEO-M8N) | Outdoor localization (USB/UART; not RTK/cm-level) |
-| UWB Tag | Indoor positioning (USB/UART/network to Jetson) |
-| Bluetooth Gamepad | Manual teleop / testing |
 | Ethernet | Networking |
 | Wi-Fi | Networking |
 
@@ -86,8 +83,6 @@ Rev 2026-11-01 · Source of truth for hardware
 | 360° Camera | Jetson | External |
 | ReSpeaker Microphone | Jetson | External |
 | 2D LiDAR | Jetson | External |
-| GNSS Receiver | Jetson | External |
-| UWB Tag | Jetson | External |
 | Bumper Switches | STM32 | External |
 
 **ToF init:** all 5 share default address 0x29 → STM32 holds all XSHUT LOW, enables one at a time, reassigns address sequentially (0x30–0x34). No TCA9548A needed.
@@ -177,17 +172,11 @@ Rev 2026-11-01 · Source of truth for hardware
 - STM32 enable is a normally-off stage: MCU active → coil chain energizes; MCU reset/power-loss/disconnect/IWDG-reset → contactor drops.
 - STM32 can refuse to energize but cannot hold the contactor closed if the E-stop opens.
 
-## 10. Positioning
-
-- GNSS Receiver (NEO-M8N) — outdoor, USB/UART to Jetson (not RTK)
-- UWB Tag (on robot) — USB/UART/network to Jetson
-- UWB Anchors (3–6, fixed & powered in environment, off-robot)
-
 ---
 
 ## Final Controller Responsibility
 
-**Jetson:** AI / ROS2 · cameras (RGB-D, thermal, 360°) · LiDAR · GNSS/UWB · audio/voice · nav/SLAM · object detection · remote Foxglove dashboard
+**Jetson:** AI / ROS2 · cameras (RGB-D, thermal, 360°) · LiDAR · audio/voice · nav/SLAM · object detection · remote Foxglove dashboard
 
 **STM32:** Motor control/CAN · safety logic (contactor enable, not e-stop authority) · IWDG · e-stop + contactor status readback · bumpers · IMU · ToF · RC override · pan/tilt + laser · horn · turn-signal command (UART → ESP32-S3)
 

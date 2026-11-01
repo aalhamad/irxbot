@@ -321,6 +321,25 @@ int main(void)
               {
                   vesc_can_dump_status();
               }
+              else if (cmd_len == 6 && memcmp(cmd_buf, "STATUS", 6) == 0)
+              {
+                  /* Hardware check: ms since each VESC was heard (-1 = never), online ToF mask */
+                  long age[4];
+                  for (uint8_t id = 1; id <= 4; id++)
+                  {
+                      uint32_t last = vesc_last_seen(id);
+                      age[id-1] = (last == 0) ? -1 : (long)(HAL_GetTick() - last);
+                  }
+                  uint8_t tof_mask = 0;
+                  for (int i = 0; i < TOF_COUNT; i++)
+                      if (ToF_Get(i)->online) tof_mask |= (uint8_t)(1U << i);
+                  char st[80];
+                  int sn = snprintf(st, sizeof(st),
+                      "STATUS VESC:%ld,%ld,%ld,%ld TOF:%u IMU:%u RC:%u BMP:%u\r\n",
+                      age[0], age[1], age[2], age[3], tof_mask,
+                      BNO085_GetData()->valid, IBus_Get()->valid, bumper_last);
+                  HAL_UART_Transmit(&huart2, (uint8_t*)st, sn, 50);
+              }
               else if (cmd_len >= 6 &&
                   cmd_buf[0]=='H' && cmd_buf[1]=='O' &&
                   cmd_buf[2]=='R' && cmd_buf[3]=='N' && cmd_buf[4]==' ')

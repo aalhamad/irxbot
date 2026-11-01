@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 IRXBot is a 4WD industrial robot with a three-layer compute architecture:
 
-- **Jetson Orin Nano** — ROS2 Humble, Nav2/SLAM, cameras, LiDAR, GNSS/UWB, audio
+- **Jetson Orin Nano** — ROS2 Humble, Nav2/SLAM, cameras, LiDAR, audio
 - **STM32 NUCLEO-F446RE** — real-time motor control via CAN, safety logic, IMU/ToF sensors, bumpers, RC override, horn, contactor enable
 - **ESP32-S3** — environmental/air-quality sensors, power monitoring, WS2812B lighting, ST7789 LCD display
 
@@ -66,6 +66,7 @@ The ROS2 `irx_driver` node communicates with the STM32 over `/dev/ttyACM0`.
 |---|---|---|
 | Jetson → STM32 | `CMD <left_rpm> <right_rpm>\n` | Set wheel ERPM, ±6000. Replies `CMD_OK <l> <r>`; a partial or out-of-range command gets `ERR:CMD` and is ignored |
 | Jetson → STM32 | `CAN\n` | Print CAN error state: `CAN LEC= BOFF= EPVF= EWGF= TEC= REC= TSR= MSR=` |
+| Jetson → STM32 | `STATUS\n` | Hardware check: `STATUS VESC:<age1>,<age2>,<age3>,<age4> TOF:<mask> IMU:<0/1> RC:<0/1> BMP:<mask>`; ages are ms since last heard, -1 = never |
 | Jetson → STM32 | `HORN <ms>\n` | Sound horn for ms (max 5000) |
 | Jetson → STM32 | `LIGHT <target> <R> <G> <B> <mode>\n` | Forwarded to ESP32-S3 via USART3 |
 | STM32 → Jetson | `IMU qw qx qy qz ax ay az gx gy gz\r\n` | BNO085 data @ ~3 s (debug; tune for 50 Hz) |

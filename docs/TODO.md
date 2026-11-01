@@ -2,18 +2,27 @@
 
 ## Now
 
-### Jetson connection
-- [ ] Jetson unreachable at `192.168.8.191`: check it is on and get its IP with `hostname -I`
+See `docs/hardware-check-plan.md` for the plan and decisions.
 
-### SIM / 4G (Quectel EC25-EUX)
+### Hardware check and rewiring
+- [ ] Compile and flash the `STATUS` firmware
+- [ ] Run `scripts/robot_check.py --manual --baseline` and correct it from the first real output
+- [ ] Decide whether to add the motor spin test (recommended before rewiring)
+- [ ] Check the Waveshare hub's input voltage on its label before powering it
+- [ ] Temporary USB layout: Jetson = RealSense, STM32, ESP32, Waveshare hub. Waveshare hub = 4G modem, LiDAR, 360° camera, black 4-port hub. Black hub (unpowered, strap it down, all ports on) = ReSpeaker, thermal adapter
+- [ ] When the second Waveshare hub arrives, it replaces the black hub: Waveshare hub 1 = ReSpeaker, 360° camera, LiDAR, hub 2. Hub 2 = thermal adapter, 4G modem
+- [ ] Photograph and label the wires
+- [ ] Rewire one section at a time, running the check after each: power, CAN, STM32 sensors, ESP32 sensors, USB
+
+## Next
+
+### SIM / 4G (Quectel EC25-EUX), after rewiring
 - [ ] Fit SIM and antenna (`MAIN`, plus `DIV` if available)
 - [ ] Connect modem to Jetson through the powered USB hub
 - [ ] Turn on `ModemManager` and confirm the modem appears in `mmcli -L`
 - [ ] Add rules so `ModemManager` ignores the STM32 and ESP32. **Do not drive while it is on without these**
 - [ ] Set up the connection (needs carrier APN and SIM PIN status)
 - [ ] Decide what it is for: remote access, Foxglove away from Wi-Fi, or internet only
-
-## Next
 
 ### Audio
 - [x] Confirm the ReSpeaker has a 3.5 mm output
@@ -24,6 +33,10 @@
 - [ ] Check for motor noise in the speakers and microphone while driving (the audio cable is unshielded)
 - [ ] Mount the speakers and amp inside the robot
 - [ ] Write the voice command software (none exists yet)
+
+### Cameras
+- [ ] 360° camera: connect it, get a picture, set `CAMERA_360_NAME` in `scripts/robot_check.py`
+- [ ] Thermal camera: wire it through the USB-serial adapter, get a reading, confirm its data format
 
 ### ESP32
 - [ ] Connect the native `USB` port (`303a:1001`) to the Jetson; leave the 5V pin and other USB port empty
@@ -44,10 +57,12 @@
 ## Later
 - [ ] Publish IMU and ToF as ROS2 topics at proper rates (still every 3 s)
 - [ ] Reinstall `sllidar_ros2` for the LiDAR
+- [ ] Charger indicator with ATtiny
 - [ ] Set up SLAM, then Nav2
+- [ ] Foxglove for live data, then a custom dashboard if wanted (`docs/hardware-check-plan.md`)
+- [ ] Resolve the ToF count: spec says 4 with a downward one, firmware has 5 with none
 - [ ] Disable regen below 0 °C for outdoor use
 - [ ] Fix `CLAUDE.md` or restore `scripts/` (`deploy.sh` and `motor_spin.py` no longer exist)
-- [ ] Decide what to do with `docs/Robot_Spec_2026.md` (conflicts with the hardware: 4 ToF, SBUS)
 - [ ] Delete `~/irx_fw_diag` and `~/irx_test.log` on the Jetson
 
 ## Only if needed
