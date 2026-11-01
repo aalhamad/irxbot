@@ -21,9 +21,14 @@ arm-none-eabi-objcopy -O binary Debug/irx_drive.elf Debug/irx_drive.bin
 st-flash --reset --connect-under-reset write Debug/irx_drive.bin 0x08000000
 ```
 
-Deploy ELF from dev machine to Jetson then flash remotely:
+Or build and flash on the Jetson without CubeIDE:
 ```bash
-./scripts/deploy.sh
+./scripts/flash_stm32.sh
+```
+
+Check the hardware from the Jetson (never moves the motors; see `docs/hardware-check-plan.md`):
+```bash
+python3 scripts/robot_check.py
 ```
 
 ### ESP32 Firmware
