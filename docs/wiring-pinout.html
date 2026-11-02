@@ -25,7 +25,6 @@
 
 <p><b>Voltage colours:</b>
 <span class="v v33">3.3 V</span> · <span class="v v5">5 V</span> · <span class="v v12">12 V</span> · <span class="v v24">24 V</span> · <span class="v vg">GND</span>.
-"V+" means the part's supply pin (VCC / VIN).</p>
 
 <div class="warn"><b>Before power-on:</b>
 (1) All boards share one common GND. (2) STM32 and ESP32 signal pins are <b>3.3 V</b>; never put 5 V, 12 V or 24 V on a signal pin.
@@ -37,7 +36,7 @@
 <h3>Power and network</h3>
 <table>
 <tr><th>Connector</th><th>Goes to</th><th>Voltage</th><th>Notes</th></tr>
-<tr><td class="pin">DC jack</td><td>Own 24 V → 19 V DC-DC, through the Jetson branch fuse</td><td class="v v24">19 V V+</td><td>Not shared with other loads</td></tr>
+<tr><td class="pin">DC jack</td><td>Own 24 V → 19 V DC-DC, through the Jetson branch fuse</td><td class="v v24">19 V</td><td>Not shared with other loads</td></tr>
 <tr><td class="pin">Ethernet</td><td>Network</td><td>—</td><td>Wi-Fi is built in</td></tr>
 </table>
 
@@ -65,7 +64,7 @@
 <h3>Thermal camera (MLX90640 board) → USB-serial adapter</h3>
 <table>
 <tr><th>Thermal board</th><th>Adapter</th><th>Voltage</th><th>Notes</th></tr>
-<tr><td class="pin">VIN</td><td>3V3</td><td class="v v33">3.3 V V+</td><td>Use 5V only if the adapter has no 3.3 V pin</td></tr>
+<tr><td class="pin">VIN</td><td>3V3</td><td class="v v33">3.3 V</td><td>Use 5V only if the adapter has no 3.3 V pin</td></tr>
 <tr><td class="pin">GND</td><td>GND</td><td class="v vg">GND</td><td></td></tr>
 <tr><td class="pin">TX</td><td>RX</td><td class="v v33">3.3 V</td><td>Crossed</td></tr>
 <tr><td class="pin">RX</td><td>TX</td><td class="v v33">3.3 V</td><td>Crossed</td></tr>
@@ -75,7 +74,7 @@
 <h3>Audio</h3>
 <table>
 <tr><th>From</th><th>To</th><th>Voltage</th><th>Notes</th></tr>
-<tr><td class="pin">12 V rail → 5 A fuse</td><td>XH-M139 amplifier DC +/−</td><td class="v v12">12 V V+</td><td>Never the raw battery bus (reaches ~29 V)</td></tr>
+<tr><td class="pin">12 V rail → 5 A fuse</td><td>XH-M139 amplifier DC + / −</td><td class="v v12">12 V</td><td>Never the raw battery bus (reaches ~29 V)</td></tr>
 <tr><td class="pin">ReSpeaker 3.5 mm</td><td>Amplifier audio in (L, R, GND)</td><td>Audio</td><td></td></tr>
 <tr><td class="pin">Amp L + / L −</td><td>Left speaker + / −</td><td>Audio</td><td>Speaker − never to GND</td></tr>
 <tr><td class="pin">Amp R + / R −</td><td>Right speaker + / −</td><td>Audio</td><td>Subwoofer output left empty</td></tr>
@@ -101,7 +100,7 @@ The ToF pin labels in CubeMX (TOF_XSHUT_FRONT etc.) are out of date; this table 
 <tr><th>Pin</th><th>Header</th><th>Goes to</th><th>Voltage</th><th>Notes</th></tr>
 <tr><td class="pin">PA12</td><td>—</td><td>SN65HVD230 CTX / TX</td><td class="v v33">3.3 V</td><td>CAN1 TX, 500 kbps</td></tr>
 <tr><td class="pin">PA11</td><td>—</td><td>SN65HVD230 CRX / RX</td><td class="v v33">3.3 V</td><td>CAN1 RX</td></tr>
-<tr><td class="pin">3V3</td><td>3V3</td><td>SN65HVD230 VCC</td><td class="v v33">3.3 V V+</td><td>3.3 V part — not 5 V</td></tr>
+<tr><td class="pin">3V3</td><td>3V3</td><td>SN65HVD230 VCC</td><td class="v v33">3.3 V</td><td>3.3 V part — not 5 V</td></tr>
 <tr><td class="pin">GND</td><td>GND</td><td>SN65HVD230 GND</td><td class="v vg">GND</td><td></td></tr>
 <tr><td class="pin">CAN-H / CAN-L / GND</td><td>—</td><td>VESC 1 FR · 2 FL · 3 RR · 4 RL</td><td>Bus</td><td>3 wires, twisted H/L. 120 Ω only at the two ends of the bus</td></tr>
 </table>
@@ -116,11 +115,11 @@ The ToF pin labels in CubeMX (TOF_XSHUT_FRONT etc.) are out of date; this table 
 <tr><td class="pin">PC7</td><td>D9</td><td>ToF <b>FRONT LEFT</b> XSHUT</td><td class="v v33">3.3 V</td><td>0x32</td></tr>
 <tr><td class="pin">PB6</td><td>D10</td><td>ToF <b>FRONT RIGHT</b> XSHUT</td><td class="v v33">3.3 V</td><td>0x33</td></tr>
 <tr><td class="pin">PC9</td><td>—</td><td>ToF <b>REAR</b> XSHUT</td><td class="v v33">3.3 V</td><td>0x34</td></tr>
-<tr><td class="pin">3V3 / GND</td><td>3V3 / GND</td><td>All 5 ToF VIN / GND</td><td class="v v33">3.3 V V+</td><td></td></tr>
+<tr><td class="pin">3V3 / GND</td><td>3V3 / GND</td><td>All 5 ToF VIN / GND</td><td class="v v33">3.3 V</td><td></td></tr>
 <tr><td class="pin">PB10</td><td>D6</td><td>BNO085 IMU SCL</td><td class="v v33">3.3 V</td><td>I2C2 — separate bus from ToF</td></tr>
 <tr><td class="pin">PC12</td><td>—</td><td>BNO085 IMU SDA</td><td class="v v33">3.3 V</td><td>I2C2</td></tr>
 <tr><td class="pin">PC8</td><td>—</td><td>BNO085 RST</td><td class="v v33">3.3 V</td><td>Pulsed low at boot</td></tr>
-<tr><td class="pin">3V3 / GND</td><td>3V3 / GND</td><td>BNO085 VIN / GND</td><td class="v v33">3.3 V V+</td><td></td></tr>
+<tr><td class="pin">3V3 / GND</td><td>3V3 / GND</td><td>BNO085 VIN / GND</td><td class="v v33">3.3 V</td><td></td></tr>
 </table>
 
 <h3>Bumpers, RC, horn, contactor</h3>
@@ -131,7 +130,7 @@ The ToF pin labels in CubeMX (TOF_XSHUT_FRONT etc.) are out of date; this table 
 <tr><td class="pin">PC2</td><td>—</td><td>Bumper rear left</td><td class="v v33">3.3 V</td></tr>
 <tr><td class="pin">PC3</td><td>—</td><td>Bumper rear right</td><td class="v v33">3.3 V</td></tr>
 <tr><td class="pin">PA10</td><td>D2</td><td>FS-iA10B <b>iBUS</b> servo signal</td><td class="v v33">signal</td><td>USART1 RX. Use the iBUS port, not PWM or SBUS</td></tr>
-<tr><td class="pin">5 V rail / GND</td><td>—</td><td>FS-iA10B V+ / GND</td><td class="v v5">5 V V+</td><td>Regulated 5 V; GND common with STM32</td></tr>
+<tr><td class="pin">5 V rail / GND</td><td>—</td><td>FS-iA10B power / GND</td><td class="v v5">5 V</td><td>Regulated 5 V; GND common with STM32</td></tr>
 <tr><td class="pin">PA9</td><td>D8</td><td>Not used</td><td>—</td><td>USART1 TX</td></tr>
 <tr><td class="pin">PC6</td><td>—</td><td>Horn MOSFET/relay TRIG</td><td class="v v33">3.3 V</td><td>Horn itself on <span class="v v12">12 V</span>, own fuse</td></tr>
 <tr><td class="pin">PB12</td><td>—</td><td>XY-MOS board TRIG (contactor)</td><td class="v v33">3.3 V</td><td>HIGH = contactor on. See section 4</td></tr>
@@ -152,19 +151,19 @@ Power: from the Jetson through the <b>USB</b> port; do not also feed the 5V pin.
 
 <h3>I2C sensors — all on GPIO 8 (SDA) and GPIO 9 (SCL)</h3>
 <table>
-<tr><th>Sensor</th><th>Address</th><th>V+</th><th>Notes</th></tr>
-<tr><td class="pin">INA228</td><td>0x40</td><td class="v v33">3.3 V V+</td><td>2 mΩ shunt in the 24 V bus; its VBUS pin reads the <span class="v v24">24 V</span> bus</td></tr>
-<tr><td class="pin">BME280</td><td>0x76</td><td class="v v33">3.3 V V+</td><td>Firmware expects 0x76</td></tr>
-<tr><td class="pin">SGP30</td><td>0x58</td><td class="v v33">3.3 V V+</td><td></td></tr>
-<tr><td class="pin">SPS30</td><td>0x69</td><td class="v v5">5 V V+</td><td>Needs 5 V. <b>SEL pin → GND</b> for I2C. SDA/SCL still on GPIO 8/9</td></tr>
-<tr><td class="pin">VEML7700</td><td>0x10</td><td class="v v33">3.3 V V+</td><td>Had failed reads — check its wires</td></tr>
+<tr><th>Sensor</th><th>Address</th><th>Voltage</th><th>Notes</th></tr>
+<tr><td class="pin">INA228</td><td>0x40</td><td class="v v33">3.3 V</td><td>2 mΩ shunt in the 24 V bus; its VBUS pin reads the <span class="v v24">24 V</span> bus</td></tr>
+<tr><td class="pin">BME280</td><td>0x76</td><td class="v v33">3.3 V</td><td>Firmware expects 0x76</td></tr>
+<tr><td class="pin">SGP30</td><td>0x58</td><td class="v v33">3.3 V</td><td></td></tr>
+<tr><td class="pin">SPS30</td><td>0x69</td><td class="v v5">5 V</td><td>Needs 5 V. <b>SEL pin → GND</b> for I2C. SDA/SCL still on GPIO 8/9</td></tr>
+<tr><td class="pin">VEML7700</td><td>0x10</td><td class="v v33">3.3 V</td><td>Had failed reads — check its wires</td></tr>
 </table>
 
 <h3>Other sensors</h3>
 <table>
 <tr><th>GPIO</th><th>Goes to</th><th>Voltage</th><th>Notes</th></tr>
-<tr><td class="pin">4</td><td>Both DS18B20 DATA (battery + DC-DC)</td><td class="v v33">3.3 V V+</td><td>Same wire; 4.7 kΩ pull-up DATA → 3.3 V</td></tr>
-<tr><td class="pin">1</td><td>MQ-2 AO</td><td class="v v5">5 V V+</td><td>Module on 5 V, but GPIO 1 takes 3.3 V max — divide AO down if it can exceed 3.3 V</td></tr>
+<tr><td class="pin">4</td><td>Both DS18B20 DATA (battery + DC-DC)</td><td class="v v33">3.3 V</td><td>Same wire; 4.7 kΩ pull-up DATA → 3.3 V</td></tr>
+<tr><td class="pin">1</td><td>MQ-2 AO</td><td class="v v5">5 V</td><td>Module on 5 V, but GPIO 1 takes 3.3 V max — divide AO down if it can exceed 3.3 V</td></tr>
 <tr><td class="pin">2</td><td>12 V rail divider (56k / 10k, 100 nF)</td><td class="v v12">12 V</td><td>Divider top to 12 V, middle to GPIO</td></tr>
 <tr><td class="pin">6</td><td>5 V rail divider (22k / 10k, 100 nF)</td><td class="v v5">5 V</td><td></td></tr>
 <tr><td class="pin">7</td><td>3.3 V rail divider (10k / 10k, 100 nF)</td><td class="v v33">3.3 V</td><td></td></tr>
@@ -178,14 +177,14 @@ Power: from the Jetson through the <b>USB</b> port; do not also feed the 5V pin.
 <tr><td class="pin">12</td><td>SCK / SCL</td><td class="v v33">3.3 V</td><td></td></tr>
 <tr><td class="pin">41</td><td>DC</td><td class="v v33">3.3 V</td><td></td></tr>
 <tr><td class="pin">5</td><td>RST</td><td class="v v33">3.3 V</td><td></td></tr>
-<tr><td class="pin">3V3 / GND</td><td>VCC (and BL) / GND</td><td class="v v33">3.3 V V+</td><td>No GPIO controls the backlight</td></tr>
+<tr><td class="pin">3V3 / GND</td><td>VCC (and BL) / GND</td><td class="v v33">3.3 V</td><td>No GPIO controls the backlight</td></tr>
 </table>
 
 <h3>Lights and buzzer — GPIO drives a MOSFET; the load runs from its own rail</h3>
 <table>
 <tr><th>GPIO</th><th>Goes to</th><th>Load voltage</th><th>Notes</th></tr>
-<tr><td class="pin">38</td><td>WS2812B LEFT strip DIN (23 LEDs)</td><td class="v v5">5 V V+</td><td>Through level shifter + 330 Ω. Strip power from the 5 V rail, not the ESP32 board</td></tr>
-<tr><td class="pin">39</td><td>WS2812B RIGHT strip DIN (23 LEDs)</td><td class="v v5">5 V V+</td><td>Same as left; bulk capacitor at the strip</td></tr>
+<tr><td class="pin">38</td><td>WS2812B LEFT strip DIN (23 LEDs)</td><td class="v v5">5 V</td><td>Through level shifter + 330 Ω. Strip power from the 5 V rail, not the ESP32 board</td></tr>
+<tr><td class="pin">39</td><td>WS2812B RIGHT strip DIN (23 LEDs)</td><td class="v v5">5 V</td><td>Same as left; bulk capacitor at the strip</td></tr>
 <tr><td class="pin">15</td><td>Front amber LEFT MOSFET</td><td class="v v12">12 V</td><td>On/off</td></tr>
 <tr><td class="pin">16</td><td>Front amber RIGHT MOSFET</td><td class="v v12">12 V</td><td>On/off</td></tr>
 <tr><td class="pin">17</td><td>Rear red LEFT MOSFET</td><td class="v v12">12 V</td><td>PWM (tail / brake)</td></tr>
