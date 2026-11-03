@@ -51,6 +51,7 @@ Stop the ROS2 nodes first, because they hold the serial ports.
 | `python3 scripts/robot_check.py` | Automatic checks |
 | `python3 scripts/robot_check.py --manual` | Adds hand-in-front-of-ToF, bumper, RC, E-stop, horn, light, LCD and speaker checks |
 | `python3 scripts/robot_check.py --baseline` | Also saves this run as the reference; later runs list anything worse |
+| `python3 scripts/robot_check.py --only stm32` | Checks only that board and what is wired to it: `stm32`, `esp32` or `jetson`, or several, such as `--only stm32 esp32`. Works with `--manual` and `--baseline`; a partial `--baseline` keeps the other boards' saved results |
 | `python3 scripts/robot_check.py --spin` | Spins the wheels instead of checking, wheels off the ground; `--spin [left] [right] --time s` sets speed and time |
 
 Only `--spin` sends `CMD`; without it the script cannot move the motors.

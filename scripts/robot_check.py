@@ -6,6 +6,8 @@ Run on the Jetson with the ROS2 nodes stopped (they hold the serial ports):
     python3 scripts/robot_check.py              # automatic checks, about 30 s
     python3 scripts/robot_check.py --manual     # also asks you to press, wave, listen
     python3 scripts/robot_check.py --baseline   # also save this run as the reference
+    python3 scripts/robot_check.py --only stm32         # just one board: stm32, esp32, jetson
+    python3 scripts/robot_check.py --only stm32 esp32   # or several
 
 Every run lists anything that got worse since the saved reference. Needs only
 the Python standard library.
@@ -972,6 +974,8 @@ def main():
     parser.add_argument("--spin", nargs="*", type=int, metavar="ERPM",
                         help="spin the wheels instead of checking: [left] [right], default 1000")
     parser.add_argument("--time", type=float, default=5.0, help="seconds for --spin, default 5")
+    parser.add_argument("--only", nargs="+", choices=("stm32", "esp32", "jetson"),
+                        help="check only these boards and what is wired to them")
     args = parser.parse_args()
 
     if args.spin is not None:
@@ -984,26 +988,38 @@ def main():
     log_path = open_log()
     print(time.strftime("Robot check %Y-%m-%d %H:%M:%S"))
     print("Motors will not move: this script never sends CMD.")
-    stm = check_stm32(args.stm_port)
-    check_esp32(args.esp_port, args.manual)
-    devices = usb_devices()
-    check_jetson_usb(devices, args.manual)
-    check_cameras(devices)
-    stm_port = args.stm_port or find_tty(STM32_VENDOR)
-    esp_port = args.esp_port or find_tty(*ESP32_ID.split(":"))
-    check_serial_devices(stm_port, esp_port)
+    boards = set(args.only or ("stm32", "esp32", "jetson"))
+    if args.only:
+        print("Only checking: " + ", ".join(args.only))
+    stm = check_stm32(args.stm_port) if "stm32" in boards else None
+    if "esp32" in boards:
+        check_esp32(args.esp_port, args.manual)
+    if "jetson" in boards:
+        devices = usb_devices()
+        check_jetson_usb(devices, args.manual)
+        check_cameras(devices)
+        stm_port = args.stm_port or find_tty(STM32_VENDOR)
+        esp_port = args.esp_port or find_tty(*ESP32_ID.split(":"))
+        check_serial_devices(stm_port, esp_port)
     if stm:
         if args.manual:
             manual_stm32(stm)
         stm.close()
-    not_available_yet(args.manual)
+    if not args.only:
+        not_available_yet(args.manual)
 
+    saved = {}
     if os.path.exists(BASELINE_FILE):
         with open(BASELINE_FILE) as f:
-            compare_with_baseline(json.load(f))
+            saved = json.load(f)
+        compare_with_baseline(saved)
     if args.baseline:
+        # With --only, keep the saved results of the boards not checked this time
+        if not args.only:
+            saved = {}
+        saved.update({name: status for name, status, _ in results})
         with open(BASELINE_FILE, "w") as f:
-            json.dump({name: status for name, status, _ in results}, f, indent=1)
+            json.dump(saved, f, indent=1)
         print(f"\nSaved as the reference: {BASELINE_FILE}")
 
     count = {}
