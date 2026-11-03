@@ -25,6 +25,7 @@ __pycache__/
 .DS_Store
 Thumbs.db
 firmware/esp32/irxbot_esp32/build/
+firmware/stm32/*/build/
 
 # Hardware check logs
 scripts/robot_check.log

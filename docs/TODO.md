@@ -7,7 +7,7 @@ See `docs/hardware-check-plan.md` for the plan and decisions.
 ### Hardware check and rewiring
 - [ ] Compile and flash the `STATUS` firmware (see `docs/workflow.md`)
 - [ ] Investigate the check results: invalid ToF readings, VEML7700 failed reads, high dust readings, LiDAR (see `docs/hardware-check-plan.md`)
-- [ ] Confirm where ESP-IDF is, or install version 5.3.2 on the Jetson
+- [ ] Install ESP-IDF 5.3.2 on the Jetson at `~/apps/esp-idf`. The ESP32 was last built on the PC, whose ESP-IDF has since been removed; from now on it is built and flashed on the Jetson only
 - [ ] Run `scripts/robot_check.py --manual --baseline` and correct it from the first real output
 - [ ] Before rewiring, run `robot_check.py --spin` with the wheels up and confirm all 4 wheels turn
 - [ ] Check the Waveshare hub's input voltage on its label before powering it
@@ -67,7 +67,7 @@ See `docs/hardware-check-plan.md` for the plan and decisions.
 - [ ] Foxglove for live data, then a custom dashboard if wanted (`docs/hardware-check-plan.md`)
 - [ ] Resolve the ToF count: spec says 4 with a downward one, firmware has 5 with none
 - [ ] Disable regen below 0 °C for outdoor use
-- [ ] Delete `~/irx_fw_diag` and `~/irx_test.log` on the Jetson
+- [ ] Delete `~/irx_fw_diag`, `~/irx_fw_build` (its .bin files were copied to `firmware/stm32/irx_drive/build/`) and `~/irx_test.log` on the Jetson
 
 ## Only if needed
 - [ ] Wi-Fi upgrade if the signal is weak when closed: try external antennas on the built-in card first, then the AC1200 adapter (kept in the parts box, not in the spec)

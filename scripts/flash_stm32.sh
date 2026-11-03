@@ -4,12 +4,14 @@
 #     ./scripts/flash_stm32.sh
 #
 # Flashing resets the STM32, so the contactor drops and closes again.
-# Before overwriting anything, the current build is kept as previous.bin.
+# The build goes in firmware/stm32/irx_drive/build/, which git ignores. Before
+# overwriting anything, the current build is kept as previous.bin.
 set -euo pipefail
 
 REPO=$(cd "$(dirname "$0")/.." && pwd)
 PORT=/dev/ttyACM0
-BUILD=$HOME/irx_fw_build
+BUILD=$REPO/firmware/stm32/irx_drive/build
+OLD_BUILD=$HOME/irx_fw_build  # used before 2026-11-04; its .bin files are copied over once
 OBJ=$BUILD/obj
 OUT=$BUILD/current
 MIN_SIZE=20000  # catches an empty or failed build; real images are about 50 KB
@@ -33,6 +35,13 @@ CFLAGS="$CFLAGS -IDrivers/CMSIS/Device/ST/STM32F4xx/Include -IDrivers/CMSIS/Incl
 
 echo "Building..."
 mkdir -p "$BUILD"
+if [ -d "$OLD_BUILD" ]; then
+    for old in "$OLD_BUILD"/*.bin "$OLD_BUILD"/*.elf; do
+        if [ -f "$old" ] && [ ! -e "$BUILD/$(basename "$old")" ]; then
+            cp "$old" "$BUILD/"
+        fi
+    done
+fi
 rm -rf "$OBJ"
 mkdir -p "$OBJ"
 objects=()
