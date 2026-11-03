@@ -38,7 +38,7 @@ Each push comes with a note saying which of steps 3 to 6 are required.
 | Script | Use |
 |---|---|
 | `scripts/flash_stm32.sh` | Build and flash the STM32; builds in `firmware/stm32/irx_drive/build/` and keeps the build before it as `previous.bin` there |
-| `scripts/flash_esp32.sh` | Build and flash the ESP32 |
+| `scripts/flash_esp32.sh` | Build and flash the ESP32; add `--monitor` to watch its output afterwards (Ctrl+] quits) |
 | `scripts/build_ros2.sh` | Build the ROS2 code |
 | `scripts/robot_check.py` | Check the hardware; add `--manual` for hands-on checks and `--baseline` to save a reference. See `docs/hardware-check-plan.md`. `--spin [left] [right] [--time s]` spins the wheels instead: wheels off the ground; it asks first and is limited to ERPM 3000 and 60 s |
 | `scripts/irx-esp32-telemetry.service` | Starts the ESP32 telemetry node at boot, so the LCD shows the Jetson's IP. Install steps are at the top of the file |
