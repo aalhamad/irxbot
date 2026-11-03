@@ -53,8 +53,8 @@ Build and flash:
 ```bash
 cd firmware/esp32/irxbot_esp32
 idf.py build
-idf.py -p /dev/ttyUSB0 flash
-idf.py -p /dev/ttyUSB0 monitor
+idf.py -p /dev/serial/by-id/usb-Espressif* flash     # USB port
+idf.py -p /dev/serial/by-id/usb-1a86* monitor       # UART port: logs
 ```
 
 ### ROS2 Package (`ros2/`)
@@ -292,8 +292,8 @@ while returning a perfectly valid table — check the table itself, not the mess
 
 **Blink rate:** 330 ms on / 330 ms off (~90 blinks/min)
 
-| 2 | 12V rail ADC (56k/10k divider, calibrated ratio 7.55) | ADC1_CH1, DB_12 attenuation |
-| 6 | 5V rail ADC (22k/10k divider, calibrated ratio 2.73) | ADC1_CH5, DB_12 attenuation |
+| 2 | 12V rail ADC (56k/10k divider, ratio 6.6) | ADC1_CH1, DB_12 attenuation |
+| 6 | 5V rail ADC (22k/10k divider, ratio 3.2) | ADC1_CH5, DB_12 attenuation |
 | 7 | 3.3V rail ADC (10k/10k divider, ratio 2.0) | ADC1_CH6, DB_12 attenuation |
 
 **TBD pins (not yet wired/documented):** IR illuminators, panel buttons, rear light

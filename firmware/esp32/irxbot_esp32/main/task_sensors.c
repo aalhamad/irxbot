@@ -582,9 +582,9 @@ static float adc_to_volts(adc_channel_t ch, float ratio)
 
 static void read_rails(void)
 {
-    g_sensors.v_12v  = adc_to_volts(RAIL_CH_12V, 7.55f);
-    g_sensors.v_5v   = adc_to_volts(RAIL_CH_5V,  2.73f);
-    g_sensors.v_3v3  = adc_to_volts(RAIL_CH_3V3, 2.0f);
+    g_sensors.v_12v  = adc_to_volts(RAIL_CH_12V, 6.6f);   /* 56k/10k */
+    g_sensors.v_5v   = adc_to_volts(RAIL_CH_5V,  3.2f);   /* 22k/10k */
+    g_sensors.v_3v3  = adc_to_volts(RAIL_CH_3V3, 2.0f);   /* 10k/10k */
 }
 
 static void read_mq2(void)
