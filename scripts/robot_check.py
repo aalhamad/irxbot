@@ -102,14 +102,26 @@ SPIN_SEND_PERIOD_S = 0.2  # the STM32 stops the motors after 1 s without a comma
 
 results = []
 
+# Colours on the screen only; the log file stays plain text
+USE_COLOUR = sys.stdout.isatty() and "NO_COLOR" not in os.environ
+COLOURS = {OK: "32", WARN: "33", FAIL: "1;31", SETUP: "36",
+           NOT_BUILT: "90", NOT_TESTED: "90", "TITLE": "1;36"}
+ANSI_CODE = re.compile(r"\x1b\[[0-9;]*m")
+
+
+def paint(text, kind):
+    if not USE_COLOUR or kind not in COLOURS:
+        return text
+    return f"\x1b[{COLOURS[kind]}m{text}\x1b[0m"
+
 
 def report(name, status, detail=""):
     results.append((name, status, detail))
-    print(f"{name:<32} {status:<10} {detail}", flush=True)
+    print(f"{name:<32} {paint(f'{status:<10}', status)} {detail}", flush=True)
 
 
 def section(title):
-    print(f"\n{title}", flush=True)
+    print(f"\n{paint(title, 'TITLE')}", flush=True)
 
 
 # ---------------------------------------------------------------- Parsing
@@ -864,7 +876,7 @@ def compare_with_baseline(baseline):
     if not worse:
         print("  nothing")
     for name, before, now in worse:
-        print(f"  {name}: was {before}, now {now}")
+        print(f"  {name}: was {paint(before, before)}, now {paint(now, now)}")
 
 
 def stop_wheels(link):
@@ -876,18 +888,18 @@ def stop_wheels(link):
 
 def spin_wheels(left, right, duration, port_arg):
     if max(abs(left), abs(right)) > SPIN_MAX_ERPM:
-        print(f"STOPPED: speed must be within +/-{SPIN_MAX_ERPM} ERPM")
+        print(paint(f"STOPPED: speed must be within +/-{SPIN_MAX_ERPM} ERPM", FAIL))
         return 1
     if not 0 < duration <= SPIN_MAX_SECONDS:
-        print(f"STOPPED: time must be above 0 and at most {SPIN_MAX_SECONDS} s")
+        print(paint(f"STOPPED: time must be above 0 and at most {SPIN_MAX_SECONDS} s", FAIL))
         return 1
     port = port_arg or find_tty(STM32_VENDOR)
     if not port:
-        print("STOPPED: STM32 not found on USB")
+        print(paint("STOPPED: STM32 not found on USB", FAIL))
         return 1
     busy = port_busy(port)
     if busy:
-        print(f"STOPPED: {port} in use by {busy}, stop it first")
+        print(paint(f"STOPPED: {port} in use by {busy}, stop it first", FAIL))
         return 1
 
     print(f"Left {left}, right {right} ERPM for {duration:g} s. Ctrl+C stops.")
@@ -918,11 +930,11 @@ def spin_wheels(left, right, duration, port_arg):
         stop_wheels(link)
         link.close()
 
-    print("Stop sent.")
+    print(paint("Stop sent.", OK))
     if feedback:
         print(f"Last speed feedback (left, right): {feedback}")
     if not acknowledged and not interrupted:
-        print("WARNING: the STM32 never confirmed the command")
+        print(paint("WARNING: the STM32 never confirmed the command", FAIL))
         return 1
     return 0
 
@@ -936,7 +948,7 @@ class Tee:
 
     def write(self, text):
         self.screen.write(text)
-        self.log.write(text)
+        self.log.write(ANSI_CODE.sub("", text))
 
     def flush(self):
         self.screen.flush()
@@ -997,10 +1009,12 @@ def main():
     count = {}
     for _, status, _ in results:
         count[status] = count.get(status, 0) + 1
-    print("\nTOTAL  " + "  ".join(f"{k}: {v}" for k, v in sorted(count.items())))
+    print("\nTOTAL  " + "  ".join(paint(f"{k}: {v}", k) for k, v in sorted(count.items())))
     failed = [name for name, status, _ in results if status == FAIL]
     if failed:
-        print("FAILED: " + ", ".join(failed))
+        print(paint("FAILED: " + ", ".join(failed), FAIL))
+    else:
+        print(paint("No failures", OK))
     print(f"Log: {log_path}")
     return 1 if failed else 0
 
