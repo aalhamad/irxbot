@@ -7,7 +7,7 @@ See `docs/hardware-check-plan.md` for the plan and decisions.
 ### Hardware check and rewiring
 - [ ] Compile and flash the `STATUS` firmware (see `docs/workflow.md`)
 - [ ] Investigate the check results: invalid ToF readings, VEML7700 failed reads, high dust readings, LiDAR (see `docs/hardware-check-plan.md`)
-- [ ] Install ESP-IDF 5.3.2 on the Jetson at `~/apps/esp-idf`. The ESP32 was last built on the PC, whose ESP-IDF has since been removed; from now on it is built and flashed on the Jetson only
+- [x] ESP-IDF 5.3 is on the Jetson at `~/Apps/esp-idf` (capital A); the ESP32 is built and flashed there
 - [ ] Run `scripts/robot_check.py --manual --baseline` and correct it from the first real output
 - [ ] Before rewiring, run `robot_check.py --spin` with the wheels up and confirm all 4 wheels turn
 - [ ] Check the Waveshare hub's input voltage on its label before powering it

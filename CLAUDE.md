@@ -39,14 +39,14 @@ python3 scripts/robot_check.py
 - **hw_test/** — standalone Arduino sketches for per-sensor hardware validation only. Not production code.
 - **Main firmware** (`firmware/esp32/irxbot_esp32/`) — **ESP-IDF + FreeRTOS** (not Arduino). One task per job: sensors, lighting, UART from STM32, telemetry to Jetson over USB serial.
 
-Build and flash on the Jetson (needs ESP-IDF at `~/apps/esp-idf`):
+Build and flash on the Jetson (needs ESP-IDF 5.3 at `~/Apps/esp-idf`, capital A):
 ```bash
 ./scripts/flash_esp32.sh
 ```
 
 To do it by hand, activate the environment first:
 ```bash
-. ~/apps/esp-idf/export.sh
+. ~/Apps/esp-idf/export.sh
 ```
 
 Build and flash:

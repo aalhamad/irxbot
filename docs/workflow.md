@@ -31,7 +31,7 @@ Each push comes with a note saying which of steps 3 to 6 are required.
 - **Serial ports:** stop ROS2 nodes and `minicom` first, because only one program can use a port at a time. The flash scripts stop without flashing if the port is busy. `robot_check.py` reports the port as in use.
 - **Boot service:** if `irx-esp32-telemetry` is installed, stop it with `sudo systemctl stop irx-esp32-telemetry` before `flash_esp32.sh` or `robot_check.py`.
 - **STM32 flash:** it resets the STM32, so the contactor clicks off and on. Keep the RC transmitter off and the E-stop within reach.
-- **ESP32 flash:** it needs ESP-IDF at `~/apps/esp-idf` on the Jetson.
+- **ESP32 flash:** it needs ESP-IDF 5.3, which is at `~/Apps/esp-idf` on the Jetson.
 
 ## Scripts
 

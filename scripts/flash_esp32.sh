@@ -5,14 +5,21 @@
 set -euo pipefail
 
 REPO=$(cd "$(dirname "$0")/.." && pwd)
-IDF_EXPORT=$HOME/apps/esp-idf/export.sh
+# ESP-IDF 5.3 is at ~/Apps/esp-idf on the Jetson; IDF_PATH overrides it
+IDF_EXPORT=""
+for dir in "${IDF_PATH:-}" "$HOME/Apps/esp-idf" "$HOME/apps/esp-idf"; do
+    if [ -n "$dir" ] && [ -f "$dir/export.sh" ]; then
+        IDF_EXPORT=$dir/export.sh
+        break
+    fi
+done
 
 fail() {
     echo "STOPPED: $1. Nothing was flashed." >&2
     exit 1
 }
 
-[ -f "$IDF_EXPORT" ] || fail "ESP-IDF is not installed at $IDF_EXPORT"
+[ -n "$IDF_EXPORT" ] || fail "ESP-IDF was not found in ~/Apps/esp-idf or ~/apps/esp-idf"
 
 PORT=$(ls /dev/serial/by-id/usb-Espressif* 2>/dev/null | head -n 1 || true)
 [ -n "$PORT" ] || fail "the ESP32 was not found on USB"
