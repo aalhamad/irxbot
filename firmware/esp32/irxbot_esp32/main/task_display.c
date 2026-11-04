@@ -49,9 +49,11 @@
 static lv_obj_t *_status, *_uptime;
 static lv_obj_t *_volts, *_amps, *_load;
 static lv_obj_t *_v12, *_v5, *_v33;
-static lv_obj_t *_t_bat, *_t_rear, *_t_front, *_t_air;
+static lv_obj_t *_t_bat, *_t_rear, *_t_front, *_t_air, *_air_name;
 static lv_obj_t *_pm25, *_tvoc, *_eco2, *_lux;
 static lv_obj_t *_gas_panel, *_gas_state, *_jetson_ip;
+
+#define AIR_CYCLE_MS 3000  /* time each BME280 value stays on the LCD */
 
 /* ── Widgets ────────────────────────────────────────────────────────────────── */
 
@@ -134,7 +136,9 @@ static void build_ui(void)
     _t_bat   = make_row(left, 2, "BAT");
     _t_rear  = make_row(left, 29, "REAR");
     _t_front = make_row(left, 56, "FRONT");
-    _t_air   = make_row(left, 83, "AIR");
+    /* BME280 row: cycles air temperature, humidity and pressure */
+    _air_name = make_label(left, LV_ALIGN_TOP_LEFT, 8, 85, &lv_font_montserrat_14, C_MUTED, "AIR");
+    _t_air    = make_label(left, LV_ALIGN_TOP_RIGHT, -8, 83, &lv_font_montserrat_20, C_TEXT, "--");
 
     _pm25 = make_row(right, 2, "PM2.5");
     _tvoc = make_row(right, 29, "TVOC");
@@ -213,7 +217,20 @@ static void update_ui(void)
     set_temp(_t_bat, g_sensors.temp_batt_c);
     set_temp(_t_rear, g_sensors.temp_elec_rear_c);
     set_temp(_t_front, g_sensors.temp_elec_front_c);
-    set_text(_t_air, "%.1f\xC2\xB0", g_sensors.temp_c);
+    switch ((up_ms / AIR_CYCLE_MS) % 3) {
+    case 0:
+        set_text(_air_name, "AIR");
+        set_text(_t_air, "%.1f\xC2\xB0", g_sensors.temp_c);
+        break;
+    case 1:
+        set_text(_air_name, "HUM");
+        set_text(_t_air, "%.0f%%", g_sensors.humidity_pct);
+        break;
+    default:
+        set_text(_air_name, "PRES");
+        set_text(_t_air, "%.0f hPa", g_sensors.pressure_hpa);
+        break;
+    }
 
     set_text(_pm25, "%.0f", g_sensors.pm2_5);
     set_text(_tvoc, "%u", g_sensors.tvoc_ppb);
