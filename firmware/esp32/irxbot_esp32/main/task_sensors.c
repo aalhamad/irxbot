@@ -441,24 +441,38 @@ static bool read_veml7700(void)
 
 static ds18b20_device_handle_t _ds[DS_MAX];
 static int _ds_count = 0;
-static onewire_bus_handle_t _ds_bus;
+static onewire_bus_handle_t _ds_bus = NULL;
+
+/* Finds the sensors on the bus again, so one plugged in or powered after boot
+   is picked up without restarting the ESP32. Sensors are listed in ROM-code
+   order, which stays the same while the same sensors are fitted. */
+static void scan_ds18b20(void)
+{
+    for (int i = 0; i < _ds_count; i++) ds18b20_del_device(_ds[i]);
+    _ds_count = 0;
+
+    onewire_device_iter_handle_t iter;
+    if (onewire_new_device_iter(_ds_bus, &iter) != ESP_OK) return;
+    onewire_device_t dev;
+    while (_ds_count < DS_MAX && onewire_device_iter_get_next(iter, &dev) == ESP_OK) {
+        ds18b20_config_t ds_cfg = {};
+        if (ds18b20_new_device_from_enumeration(&dev, &ds_cfg, &_ds[_ds_count]) == ESP_OK) {
+            ESP_LOGI(TAG, "DS18B20 %d: %016llX", _ds_count, (unsigned long long)dev.address);
+            _ds_count++;
+        }
+    }
+    onewire_del_device_iter(iter);
+}
 
 static bool init_ds18b20(void)
 {
     onewire_bus_config_t bus_cfg     = { .bus_gpio_num = DS_GPIO };
     onewire_bus_rmt_config_t rmt_cfg = { .max_rx_bytes = 10 };
-    if (onewire_new_bus_rmt(&bus_cfg, &rmt_cfg, &_ds_bus) != ESP_OK) return false;
-
-    onewire_device_iter_handle_t iter;
-    if (onewire_new_device_iter(_ds_bus, &iter) != ESP_OK) return false;
-
-    onewire_device_t dev;
-    while (_ds_count < DS_MAX && onewire_device_iter_get_next(iter, &dev) == ESP_OK) {
-        ds18b20_config_t ds_cfg = {};
-        if (ds18b20_new_device_from_enumeration(&dev, &ds_cfg, &_ds[_ds_count]) == ESP_OK)
-            _ds_count++;
+    if (onewire_new_bus_rmt(&bus_cfg, &rmt_cfg, &_ds_bus) != ESP_OK) {
+        _ds_bus = NULL;
+        return false;
     }
-    onewire_del_device_iter(iter);
+    scan_ds18b20();
     return _ds_count > 0;
 }
 
@@ -468,13 +482,12 @@ static bool init_ds18b20(void)
 
 static bool read_ds18b20(void)
 {
-    if (_ds_count == 0) return false;
-
+    static int last_count = -1;
     float t[DS_MAX] = {DS_NOT_READ, DS_NOT_READ, DS_NOT_READ};
     bool all_good = false;
 
     /* Starts all sensors together; the driver waits 800 ms for the conversion */
-    if (ds18b20_trigger_temperature_conversion_for_all(_ds_bus) == ESP_OK) {
+    if (_ds_count > 0 && ds18b20_trigger_temperature_conversion_for_all(_ds_bus) == ESP_OK) {
         all_good = true;
         for (int i = 0; i < _ds_count; i++) {
             if (ds18b20_get_temperature(_ds[i], &t[i]) != ESP_OK) {
@@ -487,7 +500,14 @@ static bool read_ds18b20(void)
     g_sensors.temp_batt_c       = t[0];
     g_sensors.temp_elec_rear_c  = t[1];
     g_sensors.temp_elec_front_c = t[2];
-    return all_good;
+
+    /* Look for missing or reconnected sensors before the next read */
+    if (!all_good || _ds_count < DS_MAX) scan_ds18b20();
+    if (_ds_count != last_count) {
+        ESP_LOGW(TAG, "DS18B20: %d found", _ds_count);
+        last_count = _ds_count;
+    }
+    return all_good && _ds_count > 0;
 }
 
 /* ── MQ-2 ───────────────────────────────────────────────────────────────────── */
@@ -685,7 +705,7 @@ static void sensors_task(void *arg)
         /* Every 10 s */
         if (tick % 10 == 0) {
             if (have_bme) track_read(OK_BIT_BME, read_bme280());
-            if (have_ds)  track_read(OK_BIT_DS, read_ds18b20());
+            if (_ds_bus)  track_read(OK_BIT_DS, read_ds18b20());  /* rescans, so runs even with none found at boot */
         }
 
         if (tick % 5 == 0) {
