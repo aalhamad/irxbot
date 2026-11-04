@@ -462,22 +462,32 @@ static bool init_ds18b20(void)
     return _ds_count > 0;
 }
 
+/* A sensor that fails to read shows -127, the value for "not read", so the
+   LCD and telemetry never keep showing an old temperature. */
+#define DS_NOT_READ -127.0f
+
 static bool read_ds18b20(void)
 {
     if (_ds_count == 0) return false;
 
+    float t[DS_MAX] = {DS_NOT_READ, DS_NOT_READ, DS_NOT_READ};
+    bool all_good = false;
+
     /* Starts all sensors together; the driver waits 800 ms for the conversion */
-    if (ds18b20_trigger_temperature_conversion_for_all(_ds_bus) != ESP_OK) return false;
+    if (ds18b20_trigger_temperature_conversion_for_all(_ds_bus) == ESP_OK) {
+        all_good = true;
+        for (int i = 0; i < _ds_count; i++) {
+            if (ds18b20_get_temperature(_ds[i], &t[i]) != ESP_OK) {
+                t[i] = DS_NOT_READ;
+                all_good = false;
+            }
+        }
+    }
 
-    float t0 = -127.0f, t1 = -127.0f, t2 = -127.0f;
-    if (ds18b20_get_temperature(_ds[0], &t0) != ESP_OK) return false;
-    if (_ds_count > 1 && ds18b20_get_temperature(_ds[1], &t1) != ESP_OK) return false;
-    if (_ds_count > 2 && ds18b20_get_temperature(_ds[2], &t2) != ESP_OK) return false;
-
-    g_sensors.temp_batt_c       = t0;
-    g_sensors.temp_elec_rear_c  = t1;
-    g_sensors.temp_elec_front_c = t2;
-    return true;
+    g_sensors.temp_batt_c       = t[0];
+    g_sensors.temp_elec_rear_c  = t[1];
+    g_sensors.temp_elec_front_c = t[2];
+    return all_good;
 }
 
 /* ── MQ-2 ───────────────────────────────────────────────────────────────────── */

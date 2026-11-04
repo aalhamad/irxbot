@@ -147,6 +147,13 @@ static void build_ui(void)
     _jetson_ip = make_label(_gas_panel, LV_ALIGN_RIGHT_MID, -10, 0, &lv_font_montserrat_14, C_TEXT, "NO JETSON");
 }
 
+/* DS18B20 values of -127 mean the sensor was not read */
+static void set_temp(lv_obj_t *label, float c)
+{
+    if (c <= -100.0f) set_text(label, "--");
+    else              set_text(label, "%.1f\xC2\xB0", c);
+}
+
 /* ── Updates ────────────────────────────────────────────────────────────────── */
 
 static void update_status(uint32_t up_ms, uint8_t ok)
@@ -203,9 +210,9 @@ static void update_ui(void)
     set_text(_v5, "5V  %.2f", g_sensors.v_5v);
     set_text(_v33, "3.3V  %.2f", g_sensors.v_3v3);
 
-    set_text(_t_bat, "%.1f\xC2\xB0", g_sensors.temp_batt_c);
-    set_text(_t_rear, "%.1f\xC2\xB0", g_sensors.temp_elec_rear_c);
-    set_text(_t_front, "%.1f\xC2\xB0", g_sensors.temp_elec_front_c);
+    set_temp(_t_bat, g_sensors.temp_batt_c);
+    set_temp(_t_rear, g_sensors.temp_elec_rear_c);
+    set_temp(_t_front, g_sensors.temp_elec_front_c);
     set_text(_t_air, "%.1f\xC2\xB0", g_sensors.temp_c);
 
     set_text(_pm25, "%.0f", g_sensors.pm2_5);
