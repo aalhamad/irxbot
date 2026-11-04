@@ -272,7 +272,6 @@ while returning a perfectly valid table — check the table itself, not the mess
 | 38 | WS2812B side strip LEFT (23 LEDs) | |
 | 39 | WS2812B side strip RIGHT (23 LEDs) | |
 | 4 | DS18B20 1-Wire | Both battery and DC-DC temp sensors on same bus |
-| 1 | MQ-2 ADC | ADC_11db attenuation (0–3.3 V), 3 min warmup |
 | 21 | Buzzer (MOSFET) | Active HIGH |
 | 10 | ST7789 CS (SPI) | |
 | 11 | ST7789 MOSI (SPI) | |
