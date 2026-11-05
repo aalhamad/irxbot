@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stddef.h>
+
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -46,3 +48,11 @@ typedef struct {
 extern volatile sensor_data_t g_sensors;
 
 void task_sensors_start(void);
+
+/* Addresses that answered the last I2C scan, e.g. "0x10 0x40 0x69", or
+   "none". Refreshed every 10 s. */
+void sensors_get_i2c_scan(char *out, size_t len);
+
+/* DS18B20s found on the 1-Wire data line, by LCD slot, e.g.
+   "bat=8600000079394828 rear=B4000000149D4628:parasite", or "none" */
+void sensors_get_ow_scan(char *out, size_t len);

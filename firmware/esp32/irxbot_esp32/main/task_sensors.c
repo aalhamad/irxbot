@@ -598,16 +598,39 @@ static uint64_t rom_u64(const uint8_t *rom)
 
 /* Finds the sensors on the bus again, so one plugged in or powered after boot
    is picked up without restarting the ESP32 */
+#define OW_SCAN_LEN 112
+static char _ow_scan[OW_SCAN_LEN] = "none";
+static portMUX_TYPE _ow_scan_mux = portMUX_INITIALIZER_UNLOCKED;
+
 static void scan_ds18b20(void)
 {
+    static const char *slot[DS_MAX] = {"bat", "rear", "front"};   /* LCD rows, in ROM order */
+    char text[OW_SCAN_LEN] = "";
+    int pos = 0;
+
     _ds_count = ow_search(_ds_rom, DS_MAX);
     _ds_parasite = false;
     for (int i = 0; i < _ds_count; i++) {
         bool parasite = ds_is_parasite(_ds_rom[i]);
         _ds_parasite |= parasite;
-        ESP_LOGI(TAG, "DS18B20 %d: %016llX%s", i, (unsigned long long)rom_u64(_ds_rom[i]),
+        unsigned long long rom = (unsigned long long)rom_u64(_ds_rom[i]);
+        ESP_LOGI(TAG, "DS18B20 %d: %016llX%s", i, rom,
                  parasite ? " (parasite power: VDD not connected)" : "");
+        pos += snprintf(text + pos, OW_SCAN_LEN - pos, "%s%s=%016llX%s",
+                        pos ? " " : "", slot[i], rom, parasite ? ":parasite" : "");
     }
+
+    taskENTER_CRITICAL(&_ow_scan_mux);
+    strcpy(_ow_scan, pos ? text : "none");
+    taskEXIT_CRITICAL(&_ow_scan_mux);
+}
+
+void sensors_get_ow_scan(char *out, size_t len)
+{
+    taskENTER_CRITICAL(&_ow_scan_mux);
+    strncpy(out, _ow_scan, len - 1);
+    taskEXIT_CRITICAL(&_ow_scan_mux);
+    out[len - 1] = '\0';
 }
 
 static bool init_ds18b20(void)
@@ -746,6 +769,36 @@ static void read_rails(void)
     g_sensors.v_3v3  = adc_to_volts(RAIL_CH_3V3, 2.0f);   /* 10k/10k */
 }
 
+/* ── I2C scan ───────────────────────────────────────────────────────────────── */
+
+/* Lists every address on the bus, to find a missing or misbehaving sensor
+   without a separate scanner sketch */
+#define I2C_SCAN_LEN 96
+static char _i2c_scan[I2C_SCAN_LEN] = "none";
+static portMUX_TYPE _scan_mux = portMUX_INITIALIZER_UNLOCKED;
+
+static void scan_i2c(void)
+{
+    char text[I2C_SCAN_LEN] = "";
+    int pos = 0;
+    for (uint8_t addr = 0x08; addr <= 0x77; addr++) {
+        if (i2c_master_probe(_bus, addr, 20) == ESP_OK && pos < I2C_SCAN_LEN - 6) {
+            pos += snprintf(text + pos, I2C_SCAN_LEN - pos, "%s0x%02X", pos ? " " : "", addr);
+        }
+    }
+    taskENTER_CRITICAL(&_scan_mux);
+    strcpy(_i2c_scan, pos ? text : "none");
+    taskEXIT_CRITICAL(&_scan_mux);
+}
+
+void sensors_get_i2c_scan(char *out, size_t len)
+{
+    taskENTER_CRITICAL(&_scan_mux);
+    strncpy(out, _i2c_scan, len - 1);
+    taskEXIT_CRITICAL(&_scan_mux);
+    out[len - 1] = '\0';
+}
+
 /* ── Task ───────────────────────────────────────────────────────────────────── */
 
 static void sensors_task(void *arg)
@@ -804,6 +857,7 @@ static void sensors_task(void *arg)
 
         /* Every 10 s */
         if (tick % 10 == 0) {
+            scan_i2c();
             if (have_bme) track_read(OK_BIT_BME, read_bme280());
             track_read(OK_BIT_DS, read_ds18b20());  /* rescans, so runs even with none found at boot */
         }

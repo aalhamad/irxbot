@@ -22,8 +22,8 @@ static char         _ip[IP_TEXT_LEN];  /* empty = Jetson reports no network */
 static bool         _ip_seen;
 static TickType_t   _ip_tick;
 
-/* Sends one "ENV ..." line to the Jetson. The USB port carries nothing else:
-   logs go to UART0 only. */
+/* Sends an "ENV ..." line, then "I2C ..." and "OW ..." scan lines, to the Jetson. Logs go
+   to UART0 only. */
 static void telemetry_task(void *arg)
 {
     TickType_t last_wake = xTaskGetTickCount();
@@ -46,6 +46,22 @@ static void telemetry_task(void *arg)
                g_sensors.ok,
                g_sensors.err[0], g_sensors.err[1], g_sensors.err[2],
                g_sensors.err[3], g_sensors.err[4], g_sensors.err[5]);
+        if (len > 0 && len < (int)sizeof(line)) {
+            usb_serial_jtag_write_bytes(line, len, pdMS_TO_TICKS(USB_WRITE_TIMEOUT_MS));
+        }
+
+        /* Which I2C addresses answer, for finding wiring faults */
+        char scan[96];
+        sensors_get_i2c_scan(scan, sizeof(scan));
+        len = snprintf(line, sizeof(line), "I2C %s\n", scan);
+        if (len > 0 && len < (int)sizeof(line)) {
+            usb_serial_jtag_write_bytes(line, len, pdMS_TO_TICKS(USB_WRITE_TIMEOUT_MS));
+        }
+
+        /* Which DS18B20s answer on the 1-Wire data line */
+        char ow[112];
+        sensors_get_ow_scan(ow, sizeof(ow));
+        len = snprintf(line, sizeof(line), "OW %s\n", ow);
         if (len > 0 && len < (int)sizeof(line)) {
             usb_serial_jtag_write_bytes(line, len, pdMS_TO_TICKS(USB_WRITE_TIMEOUT_MS));
         }

@@ -147,9 +147,11 @@ LIGHT <target> <R> <G> <B> <mode>\n
 | Direction | Format | Meaning |
 |---|---|---|
 | ESP32 → Jetson | `ENV key=value ...\n` | Sensor telemetry every 5 s |
+| ESP32 → Jetson | `I2C 0x10 0x40 ...\n` or `I2C none\n` | Addresses that answered the last I²C scan (every 10 s), sent after each ENV line; for finding wiring faults |
+| ESP32 → Jetson | `OW bat=<rom> rear=<rom> front=<rom>\n` or `OW none\n` | DS18B20s found on the 1-Wire line, by LCD slot; `:parasite` after a ROM code means that sensor's VDD is not connected |
 | Jetson → ESP32 | `IP <address>\n` or `IP NONE\n` | Jetson IP for the LCD, every 5 s; the LCD shows `NO JETSON` after 30 s without one |
 
-The USB port carries only these lines. ESP32 logs go to UART0, the board's other USB port.
+The USB port carries only these lines; the ROS2 node and `robot_check.py` ignore the `I2C` and `OW` lines. ESP32 logs go to UART0, the board's other USB port.
 
 ### CAN Bus (STM32 → 4× Flipsky 75100)
 - 500 kbps — prescaler=6, BS1=11TQ, BS2=2TQ on 84 MHz APB1
