@@ -463,7 +463,7 @@ static void scan_ds18b20(void)
     onewire_del_device_iter(iter);
 }
 
-static bool init_ds18b20(void)
+static bool open_ds_bus(void)
 {
     onewire_bus_config_t bus_cfg     = { .bus_gpio_num = DS_GPIO };
     onewire_bus_rmt_config_t rmt_cfg = { .max_rx_bytes = 10 };
@@ -471,6 +471,24 @@ static bool init_ds18b20(void)
         _ds_bus = NULL;
         return false;
     }
+    return true;
+}
+
+/* After a timeout the RMT receiver stays waiting, and every later read fails
+   with "channel not in enable state" until reboot. Closing and reopening the
+   bus clears it. */
+static void reopen_ds_bus(void)
+{
+    for (int i = 0; i < _ds_count; i++) ds18b20_del_device(_ds[i]);
+    _ds_count = 0;
+    if (_ds_bus) onewire_bus_del(_ds_bus);
+    _ds_bus = NULL;
+    if (open_ds_bus()) scan_ds18b20();
+}
+
+static bool init_ds18b20(void)
+{
+    if (!open_ds_bus()) return false;
     scan_ds18b20();
     return _ds_count > 0;
 }
@@ -500,8 +518,10 @@ static bool read_ds18b20(void)
     g_sensors.temp_elec_rear_c  = t[1];
     g_sensors.temp_elec_front_c = t[2];
 
-    /* Look for missing or reconnected sensors before the next read */
-    if (!all_good || _ds_count < DS_MAX) scan_ds18b20();
+    /* A failed read may have left the bus stuck: reopen it. Otherwise look for
+       sensors connected since the last read. */
+    if (!all_good)               reopen_ds_bus();
+    else if (_ds_count < DS_MAX) scan_ds18b20();
     if (_ds_count != last_count) {
         ESP_LOGW(TAG, "DS18B20: %d found", _ds_count);
         last_count = _ds_count;
@@ -654,6 +674,7 @@ static void sensors_task(void *arg)
         if (tick % 10 == 0) {
             if (have_bme) track_read(OK_BIT_BME, read_bme280());
             if (_ds_bus)  track_read(OK_BIT_DS, read_ds18b20());  /* rescans, so runs even with none found at boot */
+            else        { reopen_ds_bus(); track_read(OK_BIT_DS, false); }
         }
 
         if (tick % 5 == 0) {
