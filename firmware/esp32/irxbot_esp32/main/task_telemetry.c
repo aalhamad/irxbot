@@ -35,7 +35,7 @@ static void telemetry_task(void *arg)
         int len = snprintf(line, sizeof(line),
                "ENV vbat=%.2f i=%.3f v12=%.2f v5=%.2f v33=%.2f "
                "t=%.1f h=%.0f p=%.1f tvoc=%u eco2=%u pm25=%.1f pm10=%.1f lux=%.0f "
-               "tb=%.1f tr=%.1f tf=%.1f ok=0x%02X "
+               "tb=%.1f tr=%.1f tf=%.1f mq2=%.3f st=%u ok=0x%02X "
                "err=%u,%u,%u,%u,%u,%u\n",
                g_sensors.bus_v, g_sensors.current_a,
                g_sensors.v_12v, g_sensors.v_5v, g_sensors.v_3v3,
@@ -43,7 +43,7 @@ static void telemetry_task(void *arg)
                g_sensors.tvoc_ppb, g_sensors.eco2_ppm,
                g_sensors.pm2_5, g_sensors.pm10, g_sensors.lux,
                g_sensors.temp_batt_c, g_sensors.temp_elec_rear_c, g_sensors.temp_elec_front_c,
-               g_sensors.ok,
+               g_sensors.mq2_v, g_sensors.mq2_status, g_sensors.ok,
                g_sensors.err[0], g_sensors.err[1], g_sensors.err[2],
                g_sensors.err[3], g_sensors.err[4], g_sensors.err[5]);
         if (len > 0 && len < (int)sizeof(line)) {

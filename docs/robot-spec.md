@@ -56,7 +56,7 @@ Rev 2026-11-01 · Source of truth for hardware
 | Sensor telemetry → Jetson (USB serial) | Sends environmental/power data up |
 | Buzzer (12V, MOSFET + branch fuse) | Startup beeps / status tones (non-critical) |
 | Panel Push Buttons (1–2) | Mode / start-stop |
-| ST7789 2.4" TFT LCD (SPI: CS 10, DC 41, RST 5, MOSI 11, SCK 12) | Sole on-robot display — battery V/I/%, temperatures, air quality, faults, mode, Jetson link status; works with Jetson off |
+| ST7789 2.4" TFT LCD (SPI: CS 10, DC 41, RST 5, MOSI 11, SCK 12) | Sole on-robot display — battery V/I/%, temperatures, air/gas, faults, mode, Jetson link status; works with Jetson off |
 
 ## 4. Sensors
 
@@ -73,6 +73,7 @@ Rev 2026-11-01 · Source of truth for hardware
 | 3.3V Rail Voltage Divider (10k/10k, ratio 2.0, 100nF at ADC) | ESP32-S3 | Internal |
 | DS18B20 Battery | ESP32-S3 | Internal |
 | DS18B20 DC-DC | ESP32-S3 | Internal |
+| MQ-2 Smoke/Gas | ESP32-S3 | Internal (enclosure; not a certified alarm) |
 | SPS30 PM2.5/Smoke Sensor | ESP32-S3 | External (unobstructed inlet/outlet) |
 | SGP30 VOC/eCO₂ | ESP32-S3 | External (ventilated chamber; eCO₂ is estimated) |
 | BME280 Temp/Humidity/Pressure | ESP32-S3 | External (chamber; humidity → SGP30 compensation) |

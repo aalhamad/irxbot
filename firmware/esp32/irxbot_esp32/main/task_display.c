@@ -30,7 +30,8 @@
 #define BUF_PIXELS (LCD_W * BUF_LINES)
 
 #define STARTUP_MS  20000UL        /* every sensor has been read by now */
-#define OK_SENSORS  0x3F           /* ok bits 0-5 */
+#define OK_SENSORS  0x3F           /* ok bits 0-5; bit 6 is only MQ-2 warmup */
+#define OK_MQ2_WARM 0x40
 
 #define LOAD_BAR_MAX_A 20.0f       /* battery continuous discharge limit */
 
@@ -50,7 +51,7 @@ static lv_obj_t *_volts, *_amps, *_load;
 static lv_obj_t *_v12, *_v5, *_v33;
 static lv_obj_t *_t_bat, *_t_rear, *_t_front, *_t_air, *_air_name;
 static lv_obj_t *_pm25, *_tvoc, *_eco2, *_lux;
-static lv_obj_t *_jetson_ip;
+static lv_obj_t *_gas_panel, *_gas_state, *_jetson_ip;
 
 #define AIR_CYCLE_MS 3000  /* time each BME280 value stays on the LCD */
 
@@ -144,10 +145,10 @@ static void build_ui(void)
     _eco2 = make_row(right, 56, "eCO2");
     _lux  = make_row(right, 83, "LUX");
 
-    /* The Jetson's IP address */
-    lv_obj_t *ip_panel = make_panel(scr, 4, 196, 312, 40, C_PANEL);
-    make_label(ip_panel, LV_ALIGN_LEFT_MID, 10, 0, &lv_font_montserrat_14, C_MUTED, "JETSON");
-    _jetson_ip = make_label(ip_panel, LV_ALIGN_RIGHT_MID, -10, 0, &lv_font_montserrat_20, C_TEXT, "NO JETSON");
+    /* Gas, and the Jetson's IP address */
+    _gas_panel = make_panel(scr, 4, 196, 312, 40, C_PANEL);
+    _gas_state = make_label(_gas_panel, LV_ALIGN_LEFT_MID, 10, 0, &lv_font_montserrat_20, C_TEXT, "GAS WARMUP");
+    _jetson_ip = make_label(_gas_panel, LV_ALIGN_RIGHT_MID, -10, 0, &lv_font_montserrat_14, C_TEXT, "NO JETSON");
 }
 
 /* DS18B20 values of -127 mean the sensor was not read */
@@ -178,6 +179,22 @@ static void update_status(uint32_t up_ms, uint8_t ok)
         set_text(_status, "%s", text);
         lv_obj_set_style_text_color(_status, C_RED, 0);
     }
+}
+
+static void update_gas(uint8_t ok, uint8_t st)
+{
+    lv_color_t bg = C_PANEL, fg = C_TEXT;
+    const char *text;
+
+    if (!(ok & OK_MQ2_WARM))  text = "GAS WARMUP";
+    else if (st == 2)         { text = "GAS ALARM"; bg = C_RED;    fg = C_WHITE; }
+    else if (st == 1)         { text = "GAS HIGH";  bg = C_YELLOW; fg = C_BLACK; }
+    else                      text = "GAS OK";
+
+    set_text(_gas_state, "%s", text);
+    lv_obj_set_style_bg_color(_gas_panel, bg, 0);
+    lv_obj_set_style_text_color(_gas_state, fg, 0);
+    lv_obj_set_style_text_color(_jetson_ip, fg, 0);
 }
 
 static void update_ui(void)
@@ -219,6 +236,8 @@ static void update_ui(void)
     set_text(_tvoc, "%u", g_sensors.tvoc_ppb);
     set_text(_eco2, "%u", g_sensors.eco2_ppm);
     set_text(_lux, "%.0f", g_sensors.lux);
+
+    update_gas(ok, g_sensors.mq2_status);
 
     char ip_text[16];
     telemetry_get_ip_text(ip_text, sizeof(ip_text));

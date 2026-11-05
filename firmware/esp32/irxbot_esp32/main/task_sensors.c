@@ -41,6 +41,7 @@ volatile sensor_data_t g_sensors = {0};
 #define OK_BIT_SPS  3
 #define OK_BIT_VEML 4
 #define OK_BIT_DS   5
+#define OK_BIT_MQ2  6
 
 #define FAILS_TO_CLEAR_OK 3   /* consecutive failed reads before an ok bit clears */
 
@@ -463,7 +464,7 @@ static void scan_ds18b20(void)
     onewire_del_device_iter(iter);
 }
 
-static bool open_ds_bus(void)
+static bool init_ds18b20(void)
 {
     onewire_bus_config_t bus_cfg     = { .bus_gpio_num = DS_GPIO };
     onewire_bus_rmt_config_t rmt_cfg = { .max_rx_bytes = 10 };
@@ -471,24 +472,6 @@ static bool open_ds_bus(void)
         _ds_bus = NULL;
         return false;
     }
-    return true;
-}
-
-/* After a timeout the RMT receiver stays waiting, and every later read fails
-   with "channel not in enable state" until reboot. Closing and reopening the
-   bus clears it. */
-static void reopen_ds_bus(void)
-{
-    for (int i = 0; i < _ds_count; i++) ds18b20_del_device(_ds[i]);
-    _ds_count = 0;
-    if (_ds_bus) onewire_bus_del(_ds_bus);
-    _ds_bus = NULL;
-    if (open_ds_bus()) scan_ds18b20();
-}
-
-static bool init_ds18b20(void)
-{
-    if (!open_ds_bus()) return false;
     scan_ds18b20();
     return _ds_count > 0;
 }
@@ -518,10 +501,8 @@ static bool read_ds18b20(void)
     g_sensors.temp_elec_rear_c  = t[1];
     g_sensors.temp_elec_front_c = t[2];
 
-    /* A failed read may have left the bus stuck: reopen it. Otherwise look for
-       sensors connected since the last read. */
-    if (!all_good)               reopen_ds_bus();
-    else if (_ds_count < DS_MAX) scan_ds18b20();
+    /* Look for missing or reconnected sensors before the next read */
+    if (!all_good || _ds_count < DS_MAX) scan_ds18b20();
     if (_ds_count != last_count) {
         ESP_LOGW(TAG, "DS18B20: %d found", _ds_count);
         last_count = _ds_count;
@@ -529,19 +510,26 @@ static bool read_ds18b20(void)
     return all_good && _ds_count > 0;
 }
 
-/* ── Rail voltages (ADC) ────────────────────────────────────────────────────── */
+/* ── MQ-2 ───────────────────────────────────────────────────────────────────── */
 
+#define MQ2_CHANNEL    ADC_CHANNEL_0   /* GPIO 1 = ADC1_CH0 */
 #define RAIL_CH_12V    ADC_CHANNEL_1   /* GPIO 2 = ADC1_CH1 */
 #define RAIL_CH_5V     ADC_CHANNEL_5   /* GPIO 6 = ADC1_CH5 */
 #define RAIL_CH_3V3    ADC_CHANNEL_6   /* GPIO 7 = ADC1_CH6 */
 #define ADC_MV_FULL    3100.0f         /* DB_12 full scale mV */
+#define MQ2_WARMUP_MS  180000UL
 
 static adc_oneshot_unit_handle_t _adc;
 
 /* per-channel calibration handles — ESP32-S3 curve fitting is per-channel */
+static adc_cali_handle_t _cali_ch0 = NULL;   /* MQ2   GPIO1 */
 static adc_cali_handle_t _cali_ch1 = NULL;   /* 12V   GPIO2 */
 static adc_cali_handle_t _cali_ch5 = NULL;   /* 5V    GPIO6 */
 static adc_cali_handle_t _cali_ch6 = NULL;   /* 3V3   GPIO7 */
+
+static float    _mq2_baseline  = 0.0f;
+static bool     _mq2_base_set  = false;
+static uint32_t _mq2_boot_tick = 0;
 
 static adc_cali_handle_t create_cali(adc_channel_t ch)
 {
@@ -556,7 +544,7 @@ static adc_cali_handle_t create_cali(adc_channel_t ch)
     return h;
 }
 
-static void init_adc(void)
+static void init_mq2(void)
 {
     adc_oneshot_unit_init_cfg_t unit_cfg = { .unit_id = ADC_UNIT_1 };
     adc_oneshot_new_unit(&unit_cfg, &_adc);
@@ -565,16 +553,20 @@ static void init_adc(void)
         .atten    = ADC_ATTEN_DB_12,
         .bitwidth = ADC_BITWIDTH_12,
     };
+    adc_oneshot_config_channel(_adc, MQ2_CHANNEL,  &ch_cfg);
     adc_oneshot_config_channel(_adc, RAIL_CH_12V,  &ch_cfg);
     adc_oneshot_config_channel(_adc, RAIL_CH_5V,   &ch_cfg);
     adc_oneshot_config_channel(_adc, RAIL_CH_3V3,  &ch_cfg);
 
+    _cali_ch0 = create_cali(ADC_CHANNEL_0);
     _cali_ch1 = create_cali(ADC_CHANNEL_1);
     _cali_ch5 = create_cali(ADC_CHANNEL_5);
     _cali_ch6 = create_cali(ADC_CHANNEL_6);
 
-    if (!_cali_ch1 && !_cali_ch5 && !_cali_ch6)
+    if (!_cali_ch0 && !_cali_ch1 && !_cali_ch5 && !_cali_ch6)
         ESP_LOGW(TAG, "ADC cali unavailable, using raw");
+
+    _mq2_boot_tick = xTaskGetTickCount();
 }
 
 static int adc_raw_to_mv(adc_channel_t ch)
@@ -584,6 +576,7 @@ static int adc_raw_to_mv(adc_channel_t ch)
 
     adc_cali_handle_t h = NULL;
     switch (ch) {
+        case ADC_CHANNEL_0: h = _cali_ch0; break;
         case ADC_CHANNEL_1: h = _cali_ch1; break;
         case ADC_CHANNEL_5: h = _cali_ch5; break;
         case ADC_CHANNEL_6: h = _cali_ch6; break;
@@ -595,6 +588,16 @@ static int adc_raw_to_mv(adc_channel_t ch)
         return mv;
     }
     return (int)(raw * ADC_MV_FULL / 4095.0f);
+}
+
+static float mq2_read_volts(void)
+{
+    int sum = 0;
+    for (int i = 0; i < 16; i++) {
+        sum += adc_raw_to_mv(MQ2_CHANNEL);
+        vTaskDelay(pdMS_TO_TICKS(10));
+    }
+    return (sum / 16.0f) / 1000.0f;
 }
 
 static float adc_to_volts(adc_channel_t ch, float ratio)
@@ -612,6 +615,33 @@ static void read_rails(void)
     g_sensors.v_12v  = adc_to_volts(RAIL_CH_12V, 6.6f);   /* 56k/10k */
     g_sensors.v_5v   = adc_to_volts(RAIL_CH_5V,  3.2f);   /* 22k/10k */
     g_sensors.v_3v3  = adc_to_volts(RAIL_CH_3V3, 2.0f);   /* 10k/10k */
+}
+
+static void read_mq2(void)
+{
+    uint32_t elapsed_ms = pdTICKS_TO_MS(xTaskGetTickCount() - _mq2_boot_tick);
+
+    float v = mq2_read_volts();
+    g_sensors.mq2_v = v;
+
+    if (elapsed_ms < MQ2_WARMUP_MS) {
+        g_sensors.mq2_status = 0;
+        return;
+    }
+
+    taskENTER_CRITICAL(&_ok_mux);
+    g_sensors.ok |= (1 << OK_BIT_MQ2);   /* mq2 warmed */
+    taskEXIT_CRITICAL(&_ok_mux);
+
+    if (!_mq2_base_set) {
+        _mq2_baseline = v;
+        _mq2_base_set  = true;
+    }
+
+    if (_mq2_baseline > 0.01f) {
+        float rise = (v - _mq2_baseline) / _mq2_baseline * 100.0f;
+        g_sensors.mq2_status = (rise < 20) ? 0 : (rise < 60) ? 1 : 2;
+    }
 }
 
 /* ── Task ───────────────────────────────────────────────────────────────────── */
@@ -647,7 +677,8 @@ static void sensors_task(void *arg)
     ESP_LOGI(TAG, "ina=%d bme=%d sgp=%d sps=%d veml=%d ds=%d(%d)",
              have_ina, have_bme, have_sgp, have_sps, have_veml, have_ds, _ds_count);
 
-    init_adc();
+    init_mq2();
+    ESP_LOGI(TAG, "MQ-2 init, warming up 3 min");
 
     uint32_t tick = 0;
 
@@ -664,6 +695,7 @@ static void sensors_task(void *arg)
         /* Every 2 s */
         if (tick % 2 == 0) {
             if (have_veml) track_read(OK_BIT_VEML, read_veml7700());
+            read_mq2();
             read_rails();
         }
 
@@ -674,18 +706,17 @@ static void sensors_task(void *arg)
         if (tick % 10 == 0) {
             if (have_bme) track_read(OK_BIT_BME, read_bme280());
             if (_ds_bus)  track_read(OK_BIT_DS, read_ds18b20());  /* rescans, so runs even with none found at boot */
-            else        { reopen_ds_bus(); track_read(OK_BIT_DS, false); }
         }
 
         if (tick % 5 == 0) {
-            ESP_LOGI(TAG, "Vbat=%.2f I=%.3fA | 12V=%.2f 5V=%.2f 3V3=%.2f | T=%.1fC H=%.0f%% | TVOC=%u eCO2=%u | PM2.5=%.1f | Lux=%.0f | Tbatt=%.1f Trear=%.1f Tfront=%.1f | ok=0x%02X err=%u,%u,%u,%u,%u,%u",
+            ESP_LOGI(TAG, "Vbat=%.2f I=%.3fA | 12V=%.2f 5V=%.2f 3V3=%.2f | T=%.1fC H=%.0f%% | TVOC=%u eCO2=%u | PM2.5=%.1f | Lux=%.0f | Tbatt=%.1f Trear=%.1f Tfront=%.1f | MQ2=%.3fV st=%u | ok=0x%02X err=%u,%u,%u,%u,%u,%u",
                 g_sensors.bus_v, g_sensors.current_a,
                 g_sensors.v_12v, g_sensors.v_5v, g_sensors.v_3v3,
                 g_sensors.temp_c, g_sensors.humidity_pct,
                 g_sensors.tvoc_ppb, g_sensors.eco2_ppm,
                 g_sensors.pm2_5, g_sensors.lux,
                 g_sensors.temp_batt_c, g_sensors.temp_elec_rear_c, g_sensors.temp_elec_front_c,
-                g_sensors.ok,
+                g_sensors.mq2_v, g_sensors.mq2_status, g_sensors.ok,
                 g_sensors.err[OK_BIT_INA], g_sensors.err[OK_BIT_BME], g_sensors.err[OK_BIT_SGP],
                 g_sensors.err[OK_BIT_SPS], g_sensors.err[OK_BIT_VEML], g_sensors.err[OK_BIT_DS]);
         }
