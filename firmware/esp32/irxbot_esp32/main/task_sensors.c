@@ -317,7 +317,9 @@ static bool read_sgp30(void)
 {
     uint8_t cmd[2] = {0x20, 0x08};  /* Measure_air_quality */
     if (i2c_cmd(_sgp, cmd, 2) != ESP_OK) return false;
-    vTaskDelay(pdMS_TO_TICKS(20));   /* SGP30 needs 12ms; 20ms = 2 ticks at 100Hz */
+    /* SGP30 needs 12 ms. At 100 Hz a 2-tick delay can end after just over
+       10 ms, which read too early about 1 time in 10; 3 ticks is at least 20 ms */
+    vTaskDelay(pdMS_TO_TICKS(30));
 
     uint8_t buf[6];
     if (i2c_recv(_sgp, buf, 6) != ESP_OK) return false;
