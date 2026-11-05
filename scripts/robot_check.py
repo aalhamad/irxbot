@@ -87,7 +87,6 @@ ENV_LIMITS = (
     ("lux", "Light (VEML7700)", 0.0, 120000.0),
     ("tb", "Battery temperature (DS18B20)", -20.0, 60.0),
     ("tr", "DC-DC temperature (DS18B20)", -20.0, 85.0),
-    ("mq2", "Smoke/gas (MQ-2)", 0.01, 3.3),
 )
 # Same order as the firmware's ok bits and err counters
 ENV_CHIPS = ("INA228", "BME280", "SGP30", "SPS30", "VEML7700", "DS18B20")
@@ -95,7 +94,6 @@ ENV_FIELDS_BY_CHIP = {
     "INA228": ("vbat", "i"), "BME280": ("t", "h", "p"), "SGP30": ("tvoc", "eco2"),
     "SPS30": ("pm25", "pm10"), "VEML7700": ("lux",), "DS18B20": ("tb", "tr"),
 }
-MQ2_WARMED_BIT = 6
 PM_SUSPECT = 150.0  # ug/m3; clean indoor air is far below this
 
 SPIN_MAX_ERPM = 3000
@@ -604,8 +602,6 @@ def judge_env(env):
         value = env.get(field)
         if value is None:
             report(name, FAIL, "missing from telemetry")
-        elif field == "mq2" and not env.get("ok", 0) & (1 << MQ2_WARMED_BIT):
-            report(name, WARN, f"{value:g} V, still warming up (3 min after power on)")
         elif field in ("pm25", "pm10") and value > PM_SUSPECT:
             report(name, WARN, f"{value:g} ug/m3 is very high: smoke, dust or a faulty sensor")
         elif judge_env_value(value, low, high):

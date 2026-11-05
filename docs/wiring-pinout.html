@@ -163,7 +163,6 @@ Power: from the Jetson through the <b>USB</b> port; do not also feed the 5V pin.
 <table>
 <tr><th>GPIO</th><th>Goes to</th><th>Voltage</th><th>Notes</th></tr>
 <tr><td class="pin">4</td><td>Both DS18B20 DATA (battery + DC-DC)</td><td class="v v33">3.3 V</td><td>Same wire; 4.7 kΩ pull-up DATA → 3.3 V</td></tr>
-<tr><td class="pin">1</td><td>MQ-2 AO</td><td class="v v5">5 V</td><td>Module on 5 V, but GPIO 1 takes 3.3 V max — divide AO down if it can exceed 3.3 V</td></tr>
 <tr><td class="pin">2</td><td>12 V rail divider (56k / 10k, 100 nF)</td><td class="v v12">12 V</td><td>Divider top to 12 V, middle to GPIO</td></tr>
 <tr><td class="pin">6</td><td>5 V rail divider (22k / 10k, 100 nF)</td><td class="v v5">5 V</td><td></td></tr>
 <tr><td class="pin">7</td><td>3.3 V rail divider (10k / 10k, 100 nF)</td><td class="v v33">3.3 V</td><td></td></tr>
@@ -201,7 +200,7 @@ Power: from the Jetson through the <b>USB</b> port; do not also feed the 5V pin.
 <tr><td class="pin">24 V</td><td>Mean Well DDR-120B-24, fused</td><td class="v v24">24 V</td><td>Electronics, contactor coil chain — not the VESCs</td></tr>
 <tr><td class="pin">19 V</td><td>Own DC-DC, Jetson fuse</td><td class="v v24">19 V</td><td>Jetson only</td></tr>
 <tr><td class="pin">12 V</td><td>Mean Well DDR-120B-12, fused</td><td class="v v12">12 V</td><td>Lights, horn, buzzer, amplifier (5 A fuse)</td></tr>
-<tr><td class="pin">5 V</td><td>24 → 5 V converter, fused</td><td class="v v5">5 V</td><td>WS2812B strips, RC receiver, SPS30, MQ-2</td></tr>
+<tr><td class="pin">5 V</td><td>24 → 5 V converter, fused</td><td class="v v5">5 V</td><td>WS2812B strips, RC receiver, SPS30</td></tr>
 <tr><td class="pin">3.3 V</td><td>Nucleo / ESP32 3V3 pins</td><td class="v v33">3.3 V</td><td>Small sensors only (I2C, ToF, IMU, CAN transceiver, LCD)</td></tr>
 </table>
 

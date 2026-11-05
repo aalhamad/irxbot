@@ -42,7 +42,6 @@ constexpr std::size_t kMaxLineBytes = 512;
 constexpr std::size_t kSensorCount = 6;
 constexpr std::array<const char *, kSensorCount> kSensorNames = {
     "INA228", "BME280", "SGP30", "SPS30", "VEML7700", "DS18B20"};
-constexpr uint8_t kMq2WarmBit = 6;
 
 constexpr float kBatteryCapacityAh = 20.0f;
 
@@ -56,7 +55,7 @@ struct EnvSample
 
 const std::vector<std::string> kNumericKeys = {
     "vbat", "i", "v12", "v5", "v33", "t", "h", "p", "tvoc", "eco2",
-    "pm25", "pm10", "lux", "tb", "tr", "tf", "mq2", "st"};
+    "pm25", "pm10", "lux", "tb", "tr", "tf"};
 
 bool parse_double(const std::string &text, double &out)
 {
@@ -326,8 +325,6 @@ private:
             array.status.push_back(status);
         }
 
-        array.status.push_back(make_gas_status(sample));
-
         DiagnosticStatus rails = make_status("esp32/rails", DiagnosticStatus::OK, "OK");
         rails.values.push_back(key_value("12v", number(sample.values.at("v12"), 2)));
         rails.values.push_back(key_value("5v", number(sample.values.at("v5"), 2)));
@@ -335,25 +332,6 @@ private:
         array.status.push_back(rails);
 
         diagnostics_pub_->publish(array);
-    }
-
-    DiagnosticStatus make_gas_status(const EnvSample &sample) const
-    {
-        const bool warm = (sample.ok & (1u << kMq2WarmBit)) != 0;
-        const int state = static_cast<int>(sample.values.at("st"));
-
-        DiagnosticStatus status;
-        if (!warm) {
-            status = make_status("esp32/MQ2", DiagnosticStatus::WARN, "Warming up");
-        } else if (state >= 2) {
-            status = make_status("esp32/MQ2", DiagnosticStatus::ERROR, "Gas alarm");
-        } else if (state == 1) {
-            status = make_status("esp32/MQ2", DiagnosticStatus::WARN, "Gas elevated");
-        } else {
-            status = make_status("esp32/MQ2", DiagnosticStatus::OK, "OK");
-        }
-        status.values.push_back(key_value("volts", number(sample.values.at("mq2"), 3)));
-        return status;
     }
 
     static void add_sensor_values(std::size_t index, const EnvSample &sample, DiagnosticStatus &status)

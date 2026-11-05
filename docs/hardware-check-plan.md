@@ -38,7 +38,7 @@ From one run on the old STM32 firmware, before any rewiring.
 
 The 4G modem and RealSense also failed, probably because they are not plugged in. The thermal camera failed because it is not wired yet.
 
-A second run changed some of these. BME280 and the second DS18B20 now pass, with the MQ-2 warmed up, so the first failures may only mean the ESP32 had just started. Watch them for repeats. PM2.5 / PM10 fell to 194 / 199 µg/m³, still very high. VEML7700 reported 3 failed reads since boot, then 5, which may be a loose wire.
+A second run changed some of these. BME280 and the second DS18B20 now pass, so the first failures may only mean the ESP32 had just started. Watch them for repeats. PM2.5 / PM10 fell to 194 / 199 µg/m³, still very high. VEML7700 reported 3 failed reads since boot, then 5, which may be a loose wire.
 
 A third run, with the `STATUS` firmware, heard all 4 VESCs.
 
@@ -70,7 +70,7 @@ Each run also saves its output to `scripts/robot_check.log`, replacing the last 
 | Watchdog (IWDG) | Needs a special firmware build that hangs on purpose |
 | Fuses, diodes, TVS protection, CAN resistance (about 60 Ω) | Check by hand |
 
-Passing means a reading is believable, not that it is accurate. For example, the gas sensor can pass without ever being exposed to smoke.
+Passing means a reading is believable, not that it is accurate. For example, the dust sensor can pass without ever being exposed to smoke.
 
 ## Not verified yet
 
