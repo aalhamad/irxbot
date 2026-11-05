@@ -73,7 +73,7 @@ python3 scripts/robot_check.py --spin   # wheels up: ERPM 1000 for 5 s, then sto
 
 ### STM32 ↔ Jetson UART Protocol (USART2, 115200 8N1)
 
-The ROS2 `irx_driver` node communicates with the STM32 over `/dev/ttyACM0`.
+The ROS2 `irx_driver` node finds the STM32 by its USB name in `/dev/serial/by-id/` (`usb-STMicroelectronics*`), because `ttyACM0` and `ttyACM1` can swap after a reboot.
 
 | Direction | Format | Meaning |
 |---|---|---|
@@ -340,7 +340,7 @@ STM32 enable is a normally-off stage: MCU active = coil energized; IWDG reset / 
 
 | Parameter | Default | Notes |
 |---|---|---|
-| `serial_port` | `/dev/ttyACM0` | STM32 USB-serial |
+| `serial_port` | `auto` | Finds the STM32 in `/dev/serial/by-id/`; or give a path. The ESP32 node also defaults to `auto` |
 | `baud_rate` | `115200` | |
 | `wheel_base` | `0.400` m | Track width (left↔right wheel centres), **not** front-to-rear |
 | `wheel_radius` | `0.101` m | Measured 250-4 tyre, 201.5 mm OD loaded |

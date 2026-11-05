@@ -33,6 +33,10 @@ ament_target_dependencies(motor_driver_node
 
 add_executable(esp32_telemetry_node src/esp32_telemetry_node.cpp)
 
+target_include_directories(esp32_telemetry_node PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+
 target_compile_features(esp32_telemetry_node PUBLIC cxx_std_17)
 
 ament_target_dependencies(esp32_telemetry_node

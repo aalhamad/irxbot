@@ -46,7 +46,7 @@ See `docs/hardware-check-plan.md` for the plan and decisions.
 - [ ] Reserve a fixed IP for the Jetson in the router
 - [ ] Connect the native `USB` port (`303a:1001`) to the Jetson; leave the 5V pin and other USB port empty
 - [ ] Power the LED strips from the 5 V rail, not through the ESP32 board
-- [ ] Set up fixed port names for the STM32 and ESP32
+- [x] Set up fixed port names for the STM32 and ESP32 (the nodes find them in `/dev/serial/by-id/`)
 
 ### Close up the robot
 - [ ] Tug-test the front left VESC CAN connector

@@ -1,4 +1,5 @@
 #include "irx_driver/motor_driver.hpp"
+#include "irx_driver/serial_find.hpp"
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -13,7 +14,8 @@ MotorDriver::MotorDriver(const rclcpp::NodeOptions &options)
       x_(0.0), y_(0.0), theta_(0.0)
 {
     // Declare parameters
-    this->declare_parameter("serial_port", "/dev/ttyACM0");
+    // "auto" finds the STM32 by its USB name, whichever ttyACM number it gets
+    this->declare_parameter("serial_port", "auto");
     this->declare_parameter("baud_rate", 115200);
     this->declare_parameter("wheel_base", 0.400);
     this->declare_parameter("wheel_radius", 0.101);
@@ -23,6 +25,16 @@ MotorDriver::MotorDriver(const rclcpp::NodeOptions &options)
 
     // Get parameters
     serial_port_ = this->get_parameter("serial_port").as_string();
+    if (serial_port_ == "auto")
+    {
+        serial_port_ = irx_driver::find_serial_by_id(irx_driver::kStm32Prefix);
+        if (serial_port_.empty())
+        {
+            RCLCPP_ERROR(this->get_logger(), "STM32 not found in /dev/serial/by-id (%s*)",
+                         irx_driver::kStm32Prefix);
+            throw std::runtime_error("STM32 not found");
+        }
+    }
     baud_rate_ = this->get_parameter("baud_rate").as_int();
     wheel_base_ = this->get_parameter("wheel_base").as_double();
     wheel_radius_ = this->get_parameter("wheel_radius").as_double();

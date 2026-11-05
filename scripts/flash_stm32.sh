@@ -9,7 +9,7 @@
 set -euo pipefail
 
 REPO=$(cd "$(dirname "$0")/.." && pwd)
-PORT=/dev/ttyACM0
+PORT=$(ls /dev/serial/by-id/usb-STMicroelectronics* 2>/dev/null | head -n 1 || true)
 BUILD=$REPO/firmware/stm32/irx_drive/build
 OLD_BUILD=$HOME/irx_fw_build  # used before 2026-11-04; its .bin files are copied over once
 OBJ=$BUILD/obj
@@ -23,7 +23,7 @@ fail() {
 
 command -v arm-none-eabi-gcc >/dev/null || fail "arm-none-eabi-gcc is not installed"
 command -v st-flash >/dev/null || fail "st-flash is not installed"
-if fuser "$PORT" >/dev/null 2>&1; then
+if [ -n "$PORT" ] && fuser "$PORT" >/dev/null 2>&1; then
     fail "$PORT is in use: stop the ROS2 nodes or minicom first"
 fi
 

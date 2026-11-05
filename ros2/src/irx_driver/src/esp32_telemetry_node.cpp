@@ -7,6 +7,8 @@
 #include <diagnostic_msgs/msg/diagnostic_status.hpp>
 #include <diagnostic_msgs/msg/key_value.hpp>
 #include <rclcpp/rclcpp.hpp>
+
+#include "irx_driver/serial_find.hpp"
 #include <sensor_msgs/msg/battery_state.hpp>
 
 #include <arpa/inet.h>
@@ -157,7 +159,9 @@ public:
     Esp32TelemetryNode()
     : Node("esp32_telemetry")
     {
-        port_ = declare_parameter<std::string>("serial_port", "/dev/ttyACM1");
+        // "auto" finds the ESP32 by its USB name, whichever ttyACM number it gets
+        requested_port_ = declare_parameter<std::string>("serial_port", "auto");
+        port_ = requested_port_;
         stale_after_s_ = declare_parameter<double>("stale_after_s", 15.0);
 
         battery_pub_ = create_publisher<sensor_msgs::msg::BatteryState>("/battery", 10);
@@ -177,6 +181,14 @@ public:
 private:
     bool open_port()
     {
+        if (requested_port_ == "auto") {
+            port_ = irx_driver::find_serial_by_id(irx_driver::kEsp32Prefix);
+            if (port_.empty()) {
+                port_ = std::string("/dev/serial/by-id/") + irx_driver::kEsp32Prefix + "*";
+                errno = ENOENT;
+                return false;
+            }
+        }
         fd_ = ::open(port_.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
         if (fd_ < 0) return false;
 
@@ -379,6 +391,7 @@ private:
         diagnostics_pub_->publish(array);
     }
 
+    std::string requested_port_;
     std::string port_;
     double stale_after_s_ = 15.0;
     int fd_ = -1;
