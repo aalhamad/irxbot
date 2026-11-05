@@ -259,6 +259,7 @@ static bool init_bme280(void)
     if (i2c_rd(_bme, 0xD0, &id, 1) != ESP_OK || (id != 0x60 && id != 0x58)) {
         /* Try 0x77 */
         i2c_master_bus_rm_device(_bme);
+        _bme = NULL;
         cfg.device_address = 0x77;
         if (i2c_master_bus_add_device(_bus, &cfg, &_bme) != ESP_OK) return false;
         if (i2c_rd(_bme, 0xD0, &id, 1) != ESP_OK || (id != 0x60 && id != 0x58)) return false;
@@ -801,6 +802,21 @@ void sensors_get_i2c_scan(char *out, size_t len)
     out[len - 1] = '\0';
 }
 
+/* ── Finding sensors again ──────────────────────────────────────────────────── */
+
+/* Runs a sensor's init again, dropping its old bus handle first, so a sensor
+   that was loose at boot or lost power comes back without pressing RST */
+static bool reinit(bool (*init)(void), i2c_master_dev_handle_t *dev, const char *name)
+{
+    if (*dev) {
+        i2c_master_bus_rm_device(*dev);
+        *dev = NULL;
+    }
+    bool found = init();
+    if (found) ESP_LOGW(TAG, "%s found", name);
+    return found;
+}
+
 /* ── Task ───────────────────────────────────────────────────────────────────── */
 
 static void sensors_task(void *arg)
@@ -856,6 +872,17 @@ static void sensors_task(void *arg)
 
         /* Every 5 s */
         if (tick % 5 == 0 && have_sps) track_read(OK_BIT_SPS, read_sps30());
+
+        /* Every 60 s: try again for sensors missing at boot, or that failed
+           3 reads in a row (unplugged, or lost power and need starting again) */
+        if (tick % 60 == 0) {
+            uint8_t ok = g_sensors.ok;
+            if (!have_bme  || !(ok & (1 << OK_BIT_BME)))  have_bme  = reinit(init_bme280,   &_bme,  "BME280");
+            if (!have_sgp  || !(ok & (1 << OK_BIT_SGP)))  have_sgp  = reinit(init_sgp30,    &_sgp,  "SGP30");
+            if (!have_sps  || !(ok & (1 << OK_BIT_SPS)))  have_sps  = reinit(init_sps30,    &_sps,  "SPS30");
+            if (!have_veml || !(ok & (1 << OK_BIT_VEML))) have_veml = reinit(init_veml7700, &_veml, "VEML7700");
+            if (!have_ina  || !(ok & (1 << OK_BIT_INA)))  have_ina  = reinit(init_ina228,   &_ina,  "INA228");
+        }
 
         /* Every 10 s */
         if (tick % 10 == 0) {
