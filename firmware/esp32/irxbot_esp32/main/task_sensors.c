@@ -7,8 +7,8 @@
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "onewire_bus.h"
-#include "ds18b20.h"
+#include "driver/gpio.h"
+#include "esp_rom_sys.h"
 #include <string.h>
 #include <math.h>
 
@@ -436,61 +436,213 @@ static bool read_veml7700(void)
 
 /* ── DS18B20 ────────────────────────────────────────────────────────────────── */
 
-#define DS_GPIO 4
-#define DS_MAX  3
+/* 1-Wire done in software, the way the Arduino OneWire and DallasTemperature
+   libraries do it. A sensor on parasite power (VDD not connected) takes its
+   power from the data line, and needs the line driven high while it measures;
+   ESP-IDF's RMT driver can't do that, so those sensors reset mid-reading. */
 
-static ds18b20_device_handle_t _ds[DS_MAX];
-static int _ds_count = 0;
-static onewire_bus_handle_t _ds_bus = NULL;
+#define DS_GPIO     GPIO_NUM_4
+#define DS_MAX      3
+#define DS_CONV_MS  750           /* 12-bit conversion time */
+#define DS_NOT_READ -127.0f       /* shown for a sensor that failed to read */
 
-/* Finds the sensors on the bus again, so one plugged in or powered after boot
-   is picked up without restarting the ESP32. Sensors are listed in ROM-code
-   order, which stays the same while the same sensors are fitted. */
-static void scan_ds18b20(void)
+static uint8_t _ds_rom[DS_MAX][8];
+static int     _ds_count    = 0;
+static bool    _ds_parasite = false;   /* any sensor on parasite power */
+static portMUX_TYPE _ow_mux = portMUX_INITIALIZER_UNLOCKED;
+
+/* Open drain: 0 pulls the line low, 1 lets the pull-up resistor take it high */
+static bool ow_reset(void)
 {
-    for (int i = 0; i < _ds_count; i++) ds18b20_del_device(_ds[i]);
-    _ds_count = 0;
+    gpio_set_level(DS_GPIO, 1);
+    for (int i = 0; i < 125 && !gpio_get_level(DS_GPIO); i++) esp_rom_delay_us(2);
+    if (!gpio_get_level(DS_GPIO)) return false;   /* line held low: short or wiring fault */
 
-    onewire_device_iter_handle_t iter;
-    if (onewire_new_device_iter(_ds_bus, &iter) != ESP_OK) return;
-    onewire_device_t dev;
-    while (_ds_count < DS_MAX && onewire_device_iter_get_next(iter, &dev) == ESP_OK) {
-        ds18b20_config_t ds_cfg = {};
-        if (ds18b20_new_device_from_enumeration(&dev, &ds_cfg, &_ds[_ds_count]) == ESP_OK) {
-            ESP_LOGI(TAG, "DS18B20 %d: %016llX", _ds_count, (unsigned long long)dev.address);
-            _ds_count++;
+    gpio_set_level(DS_GPIO, 0);
+    esp_rom_delay_us(480);
+    portENTER_CRITICAL(&_ow_mux);
+    gpio_set_level(DS_GPIO, 1);
+    esp_rom_delay_us(70);
+    bool present = !gpio_get_level(DS_GPIO);
+    portEXIT_CRITICAL(&_ow_mux);
+    esp_rom_delay_us(410);
+    return present;
+}
+
+static void ow_write_bit(int bit)
+{
+    portENTER_CRITICAL(&_ow_mux);
+    gpio_set_level(DS_GPIO, 0);
+    esp_rom_delay_us(bit ? 6 : 60);
+    gpio_set_level(DS_GPIO, 1);
+    portEXIT_CRITICAL(&_ow_mux);
+    esp_rom_delay_us(bit ? 64 : 10);
+}
+
+static int ow_read_bit(void)
+{
+    portENTER_CRITICAL(&_ow_mux);
+    gpio_set_level(DS_GPIO, 0);
+    esp_rom_delay_us(3);
+    gpio_set_level(DS_GPIO, 1);
+    esp_rom_delay_us(10);
+    int bit = gpio_get_level(DS_GPIO);
+    portEXIT_CRITICAL(&_ow_mux);
+    esp_rom_delay_us(53);
+    return bit;
+}
+
+static void ow_write_byte(uint8_t v)
+{
+    for (int i = 0; i < 8; i++) ow_write_bit((v >> i) & 1);
+}
+
+static uint8_t ow_read_byte(void)
+{
+    uint8_t v = 0;
+    for (int i = 0; i < 8; i++) v |= ow_read_bit() << i;
+    return v;
+}
+
+static uint8_t ow_crc8(const uint8_t *data, int len)
+{
+    uint8_t crc = 0;
+    while (len--) {
+        uint8_t b = *data++;
+        for (int i = 0; i < 8; i++) {
+            uint8_t mix = (crc ^ b) & 1;
+            crc >>= 1;
+            if (mix) crc ^= 0x8C;
+            b >>= 1;
         }
     }
-    onewire_del_device_iter(iter);
+    return crc;
+}
+
+static void ow_select(const uint8_t *rom)
+{
+    ow_write_byte(0x55);                      /* MATCH ROM */
+    for (int i = 0; i < 8; i++) ow_write_byte(rom[i]);
+}
+
+/* Standard 1-Wire search; finds sensors in ROM-code order, so the slots stay
+   the same while the same sensors are fitted */
+static int ow_search(uint8_t roms[][8], int max)
+{
+    uint8_t rom[8] = {0};
+    int found = 0, last_discrepancy = 0;
+
+    while (found < max) {
+        if (!ow_reset()) break;
+        ow_write_byte(0xF0);                  /* SEARCH ROM */
+
+        int last_zero = 0;
+        for (int bit = 1; bit <= 64; bit++) {
+            int id = ow_read_bit(), cmp = ow_read_bit();
+            if (id && cmp) return found;      /* nobody answered */
+
+            uint8_t *byte = &rom[(bit - 1) / 8];
+            uint8_t mask  = 1 << ((bit - 1) % 8);
+            int dir;
+            if (id != cmp)                  dir = id;
+            else if (bit < last_discrepancy) dir = (*byte & mask) != 0;
+            else                             dir = (bit == last_discrepancy);
+            if (id == cmp && !dir) last_zero = bit;
+
+            if (dir) *byte |= mask; else *byte &= ~mask;
+            ow_write_bit(dir);
+        }
+
+        if (ow_crc8(rom, 7) != rom[7]) break;  /* garbled search: try again next time */
+        if (rom[0] == 0x28) memcpy(roms[found++], rom, 8);   /* 0x28 = DS18B20 */
+        last_discrepancy = last_zero;
+        if (last_discrepancy == 0) break;     /* that was the last device */
+    }
+    return found;
+}
+
+/* READ POWER SUPPLY: a sensor on parasite power answers 0 */
+static bool ds_is_parasite(const uint8_t *rom)
+{
+    if (!ow_reset()) return false;
+    ow_select(rom);
+    ow_write_byte(0xB4);
+    return ow_read_bit() == 0;
+}
+
+static bool ds_read_temp(const uint8_t *rom, float *out)
+{
+    uint8_t sp[9];
+    if (!ow_reset()) return false;
+    ow_select(rom);
+    ow_write_byte(0xBE);                      /* READ SCRATCHPAD */
+    for (int i = 0; i < 9; i++) sp[i] = ow_read_byte();
+
+    if (ow_crc8(sp, 8) != sp[8]) return false;   /* garbled read */
+    if ((sp[4] & 0x9F) != 0x1F) return false;    /* config byte wrong: all zeros or not a DS18B20 */
+
+    int16_t raw = (int16_t)((sp[1] << 8) | sp[0]);
+    int res = (sp[4] >> 5) & 3;               /* 0 = 9-bit ... 3 = 12-bit */
+    raw &= ~((1 << (3 - res)) - 1);           /* low bits are undefined below 12-bit */
+    if (raw == 0x0550) return false;          /* 85 °C: power-on value, no conversion happened */
+
+    *out = raw / 16.0f;
+    return true;
+}
+
+static uint64_t rom_u64(const uint8_t *rom)
+{
+    uint64_t v = 0;
+    for (int i = 7; i >= 0; i--) v = (v << 8) | rom[i];
+    return v;
+}
+
+/* Finds the sensors on the bus again, so one plugged in or powered after boot
+   is picked up without restarting the ESP32 */
+static void scan_ds18b20(void)
+{
+    _ds_count = ow_search(_ds_rom, DS_MAX);
+    _ds_parasite = false;
+    for (int i = 0; i < _ds_count; i++) {
+        bool parasite = ds_is_parasite(_ds_rom[i]);
+        _ds_parasite |= parasite;
+        ESP_LOGI(TAG, "DS18B20 %d: %016llX%s", i, (unsigned long long)rom_u64(_ds_rom[i]),
+                 parasite ? " (parasite power: VDD not connected)" : "");
+    }
 }
 
 static bool init_ds18b20(void)
 {
-    onewire_bus_config_t bus_cfg     = { .bus_gpio_num = DS_GPIO };
-    onewire_bus_rmt_config_t rmt_cfg = { .max_rx_bytes = 10 };
-    if (onewire_new_bus_rmt(&bus_cfg, &rmt_cfg, &_ds_bus) != ESP_OK) {
-        _ds_bus = NULL;
-        return false;
-    }
+    gpio_config_t io = {
+        .pin_bit_mask = 1ULL << DS_GPIO,
+        .mode         = GPIO_MODE_INPUT_OUTPUT_OD,
+        .pull_up_en   = GPIO_PULLUP_ENABLE,   /* backs up the external 4.7 kΩ */
+    };
+    gpio_config(&io);
+    gpio_set_level(DS_GPIO, 1);
     scan_ds18b20();
     return _ds_count > 0;
 }
 
-/* A sensor that fails to read shows -127, the value for "not read", so the
-   LCD and telemetry never keep showing an old temperature. */
-#define DS_NOT_READ -127.0f
-
+/* A sensor that fails to read shows -127, so the LCD and telemetry never keep
+   showing an old temperature */
 static bool read_ds18b20(void)
 {
     static int last_count = -1;
     float t[DS_MAX] = {DS_NOT_READ, DS_NOT_READ, DS_NOT_READ};
     bool all_good = false;
 
-    /* Starts all sensors together; the driver waits 800 ms for the conversion */
-    if (_ds_count > 0 && ds18b20_trigger_temperature_conversion_for_all(_ds_bus) == ESP_OK) {
+    if (_ds_count > 0 && ow_reset()) {
+        ow_write_byte(0xCC);                  /* SKIP ROM: all sensors at once */
+        ow_write_byte(0x44);                  /* CONVERT T */
+        /* Parasite power: drive the line high so the sensors have power to measure */
+        if (_ds_parasite) gpio_set_direction(DS_GPIO, GPIO_MODE_INPUT_OUTPUT);
+        vTaskDelay(pdMS_TO_TICKS(DS_CONV_MS));
+        if (_ds_parasite) gpio_set_direction(DS_GPIO, GPIO_MODE_INPUT_OUTPUT_OD);
+
         all_good = true;
         for (int i = 0; i < _ds_count; i++) {
-            if (ds18b20_get_temperature(_ds[i], &t[i]) != ESP_OK) {
+            if (!ds_read_temp(_ds_rom[i], &t[i])) {
                 t[i] = DS_NOT_READ;
                 all_good = false;
             }
@@ -705,7 +857,7 @@ static void sensors_task(void *arg)
         /* Every 10 s */
         if (tick % 10 == 0) {
             if (have_bme) track_read(OK_BIT_BME, read_bme280());
-            if (_ds_bus)  track_read(OK_BIT_DS, read_ds18b20());  /* rescans, so runs even with none found at boot */
+            track_read(OK_BIT_DS, read_ds18b20());  /* rescans, so runs even with none found at boot */
         }
 
         if (tick % 5 == 0) {
